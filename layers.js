@@ -1,0 +1,12 @@
+var layers = [new OpenLayers.Layer.WMS( 'OpenLayers WMS', 'http://labs.metacarta.com/wms/vmap0', {}),
+new OpenLayers.Layer.WMS( 'OpenLayers WMS', 'http://labs.metacarta.com/wms/vmap0', {}),
+new OpenLayers.Layer.GML( 'fa', 'lines.kml', {format:OpenLayers.Format.KML,
+extractStyles:true,
+extractAttributes:true,
+maxDepth:2,
+}),
+new OpenLayers.Layer.GML( 'fa', 'lines.kml', {format:OpenLayers.Format.KML,
+extractStyles:true,
+extractAttributes:true,
+maxDepth:2,
+})]

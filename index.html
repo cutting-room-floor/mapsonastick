@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Preset Saving Demo</title>
+  <script src="js/jquery-1.3.2.js"></script>
+  <script src="js/jQuery.twFile.js"></script>
+  <script src="OpenLayers/OpenLayers.js"></script>
+  <script src="js/map.js"></script>
+  <style type="text/css">
+    body {
+      margin: 0;
+      font-size: 11px;
+      font-family: "Arial", sans-serif;
+    }
+    label {
+      color: white;
+    }
+    .load_save {
+      float: right;
+    }
+    .controls {
+      background-color: #000;
+      line-height: 20px;
+    }
+    #map {
+      position: absolute;
+      top: 23px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    #layer_filename, #save_filename {
+      visibility: hidden;
+      width: 0;
+      height: 0;
+    }
+  </style>
+</head>
+<body>
+  <script src="layers.js"></script>
+  <div id="layerswitcher">
+  </div>
+  <div class="controls">
+  <div class="load_save">
+    <input type="submit" name="save_layer" id="save_layer" value="Save Layers"/>
+  </div>
+  <div class="add_layer">
+    <select id="layer_type" name="layer_type">
+      <option>KML
+      <option>TMS
+    </select>
+    <label for="layer_name">name</label>
+    <input type="text" name="layer_name" id="layer_name" />
+    <label for="layer_url">url</label>
+    <input type="text" name="layer_url" id="layer_url" />
+    <input type="file" name="layer_filename" id="layer_filename" />
+    <input type="button" name="file_trigger" id="file_trigger" value="from file" />
+    <input type="file" name="save_filename" id="save_filename" />
+    <input type="submit" name="add_layer" id="add_layer" value="Add Layer"/>
+  </div>
+
+  </div>
+  <div id="map"></div>
+</body>
+</html>
