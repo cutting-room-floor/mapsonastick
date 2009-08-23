@@ -1,12 +1,2 @@
-var layers = [new OpenLayers.Layer.WMS( 'OpenLayers WMS', 'http://labs.metacarta.com/wms/vmap0', {}),
-new OpenLayers.Layer.WMS( 'OpenLayers WMS', 'http://labs.metacarta.com/wms/vmap0', {}),
-new OpenLayers.Layer.GML( 'fa', 'lines.kml', {format:OpenLayers.Format.KML,
-extractStyles:true,
-extractAttributes:true,
-maxDepth:2,
-}),
-new OpenLayers.Layer.GML( 'fa', 'lines.kml', {format:OpenLayers.Format.KML,
-extractStyles:true,
-extractAttributes:true,
-maxDepth:2,
-})]
+var layers = [new OpenLayers.Layer.GML( 'lines', 'lines.kml', {format:OpenLayers.Format.KML,
+projection: new OpenLayers.Projection('EPSG:4326'),formatOptions:{},})]

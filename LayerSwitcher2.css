@@ -1,0 +1,58 @@
+.olControlLayerSwitcher2 {
+  position : absolute;
+  top : 25px;
+  right : 0px;
+  font-family : sans-serif;
+  margin-top : 3px;
+  margin-left : 3px;
+  margin-bottom : 3px;
+  font-size : normal;   
+  color : black;   
+  background-color : transparent;
+}
+
+.olControlLayerSwitcher2 .layersDiv {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 5px 75px 5px 5px;
+  height: 100%;
+  width: 100%;
+}
+
+.olControlLayerSwitcher2 .baseLbl,
+.olControlLayerSwitcher2 .dataLbl
+{
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 3px auto 3px 3px;
+}
+
+.olControlLayerSwitcher2 .dataLayersDiv {
+  padding-left: 2px;
+}
+
+.olControlLayerSwitcher2 .maximizeDiv,
+.olControlLayerSwitcher2 .minimizeDiv {
+  top : 5px;
+  right : 0px;
+}
+
+.olControlLayerSwitcher2 .style_holder {
+  background-color: #fff;
+  position: absolute;
+  border: 1px solid #000;
+  width: 60px;
+}
+
+.olControlLayerSwitcher2 .style_holder .styleDiv {
+  margin: 3px;
+}
+
+.olControlLayerSwitcher2 .styleDiv {
+  cursor: pointer;
+  width:  12px;
+  height: 12px;
+  float: left;
+  margin: 3px;
+  border-width: 3px;
+}
