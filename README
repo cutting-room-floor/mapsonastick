@@ -1,0 +1,13 @@
+This is mapsona (for the time being)
+
+Uses:
+
+jQuery http://jquery.com/
+twFile http://jquery.tiddlywiki.org/twFile.html
+OpenLayers http://www.openlayers.org/
+
+Browser testing:
+
+Safari 4
+Firefox 3.5.x
+Opera 10
