@@ -119,7 +119,17 @@ OpenLayers.Control.LayerSwitcher2 =
     styleMapToCSS: function(styleMap) {
         css = new Object;
         default_style = styleMap.styles['default'].defaultStyle;
-        css['background-color'] = default_style['fillColor'];
+        if (default_style['fillColor'] == 'transparent' && 
+          typeof default_style['externalGraphic'] != 'undefined') {
+          css['background-image'] = 'url('+default_style['externalGraphic']+')';
+          css['background-repeat'] = 'no-repeat';
+          css['background-color'] = 'transparent';
+          css['width'] = default_style['pointRadius']*2;
+          css['height'] = default_style['pointRadius']*2;
+        }
+        else {
+          css['background-color'] = default_style['fillColor'];
+        }
         if(default_style.strokeWidth > 0) {
           css['border-color'] = default_style['strokeColor'];
         }
@@ -419,16 +429,18 @@ OpenLayers.Control.LayerSwitcher2 =
                     'inputElem': inputElem,
                     'labelSpan': labelSpan
                 });
-                                                     
+
+                layerDiv = document.createElement('div');
+                layerDiv.setAttribute('class', 'layerDiv');
     
                 var groupDiv = (baseLayer) ? this.baseLayersDiv
                                            : this.dataLayersDiv;
-                groupDiv.appendChild(inputElem);
-                groupDiv.appendChild(labelSpan);
+                layerDiv.appendChild(inputElem);
+                layerDiv.appendChild(labelSpan);
                 if(styleDiv != false) {
-                  groupDiv.appendChild(styleDiv);
+                  layerDiv.appendChild(styleDiv);
                 }
-                groupDiv.appendChild(br);
+                groupDiv.appendChild(layerDiv);
             }
         }
 
@@ -591,7 +603,7 @@ OpenLayers.Control.LayerSwitcher2 =
         this.baseLbl.innerHTML = OpenLayers.i18n("baseLayer");
         
         this.baseLayersDiv = document.createElement("div");
-        this.baseLayersDiv.style.paddingLeft = "10px";
+        this.baseLayersDiv.setAttribute('class', 'baseLayersDiv');
         /*OpenLayers.Event.observe(this.baseLayersDiv, "click", 
             OpenLayers.Function.bindAsEventListener(this.onLayerClick, this));
         */

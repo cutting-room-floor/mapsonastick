@@ -7,12 +7,11 @@
   margin-left : 3px;
   margin-bottom : 3px;
   font-size : normal;   
-  color : black;   
-  background-color : transparent;
+  color : #eee;   
+  background : url('images/popup.png');
 }
 
 .olControlLayerSwitcher2 .layersDiv {
-  background-color: #eee;
   border: 1px solid #ccc;
   padding: 5px 75px 5px 5px;
   height: 100%;
@@ -24,7 +23,10 @@
 {
   text-transform: uppercase;
   font-weight: bold;
-  margin: 3px auto 3px 3px;
+  margin-bottom: 5px;
+  padding: 0 3px;
+  border-bottom: 1px dotted #aaa;
+  text-transform: uppercase;
 }
 
 .olControlLayerSwitcher2 .dataLayersDiv {
@@ -55,4 +57,8 @@
   float: left;
   margin: 3px;
   border-width: 3px;
+}
+
+.olControlLayerSwitcher2 .layerDiv {
+  clear: both;
 }

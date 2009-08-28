@@ -1,2 +1,12 @@
-var layers = [new OpenLayers.Layer.GML( 'lines', 'lines.kml', {format:OpenLayers.Format.KML,
-projection: new OpenLayers.Projection('EPSG:4326'),formatOptions:{},})]
+var layers = [new OpenLayers.Layer.GML( 'Airports', 'afgh_pak_airports.kml', {format:OpenLayers.Format.KML,
+projection: new OpenLayers.Projection('EPSG:4326'),formatOptions:{},styleMap:default_styles['airports'],
+}),
+new OpenLayers.Layer.GML( 'Military Installations', 'afgh_pak_mil_struc.kml', {format:OpenLayers.Format.KML,
+projection: new OpenLayers.Projection('EPSG:4326'),formatOptions:{},styleMap:default_styles['military'],
+}),
+new OpenLayers.Layer.GML( 'Educational Facilities', 'afgh_pak_educ_fac.kml', {format:OpenLayers.Format.KML,
+projection: new OpenLayers.Projection('EPSG:4326'),formatOptions:{},styleMap:default_styles['school'],
+}),
+new OpenLayers.Layer.GML( 'Medical Facilities', 'afgh_pak_med_fac.kml', {format:OpenLayers.Format.KML,
+projection: new OpenLayers.Projection('EPSG:4326'),formatOptions:{},styleMap:default_styles['medical'],
+})]

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Preset Saving Demo</title>
+	<title>RMap: Offline</title>
   <script src="js/jquery-1.3.2.js"></script>
   <script src="js/jQuery.twFile.js"></script>
   <script src="OpenLayers/OpenLayers.js"></script>
@@ -13,11 +13,6 @@
 	<link rel="stylesheet" href="LayerSwitcher2.css" type="text/css" media="screen" />
 	<link rel="stylesheet" href="FramedCloud2.css" type="text/css" media="screen" />
   <style type="text/css">
-    body {
-      margin: 0;
-      font-size: 12px;
-      font-family: "Arial", sans-serif;
-    }
     label {
       color: white;
     }
@@ -25,8 +20,9 @@
       float: right;
     }
     .controls {
-      background-color: #000;
-      line-height: 20px;
+      line-height: 35px;
+      font-size: 18px;
+      float: left;
     }
     #map {
       position: absolute;
@@ -41,11 +37,11 @@
       height: 0;
     }
   </style>
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 </head>
 <body>
   <script src="layers.js"></script>
-  <div id="layerswitcher">
-  </div>
+  <div id="header">
   <div class="controls">
   <div class="load_save">
     <input type="submit" name="save_layer" id="save_layer" value="Save Layers"/>
@@ -53,20 +49,23 @@
   <div class="add_layer">
     <select id="layer_type" name="layer_type">
       <option>KML
-      <option>TMS
+      <option>---
     </select>
     <label for="layer_name">name</label>
     <input type="text" name="layer_name" id="layer_name" />
     <label for="layer_url">url</label>
     <input type="text" name="layer_url" id="layer_url" />
     <input type="file" name="layer_filename" id="layer_filename" />
+    <input type="button" name="file_trigger" id="file_trigger" value="file..." />
     <input type="checkbox" name="extract" id="extract" title="Remote styles can cause layers to fail in Firefox" /><label for="extract">use remote styles</label>
-    <input type="button" name="file_trigger" id="file_trigger" value="from file" />
     <input type="file" name="save_filename" id="save_filename" />
     <input type="submit" name="add_layer" id="add_layer" value="Add Layer"/>
   </div>
-
+  </div>
+  <div id="shadow-top"></div>
+  <div id="shadow-bottom"></div>
   </div>
   <div id="map"></div>
+  <div id="footer">&copy; 2009 MapBox</div>
 </body>
 </html>
