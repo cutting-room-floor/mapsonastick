@@ -36,8 +36,6 @@ OpenLayers.Control.LayerSwitcher2 =
 
     style_columns: 5,
 
-
-
     /**  
      * Property: layerStates 
      * {Array(Object)} Basically a copy of the "state" of the map's layers 
@@ -119,11 +117,15 @@ OpenLayers.Control.LayerSwitcher2 =
     styleMapToCSS: function(styleMap) {
         css = new Object;
         default_style = styleMap.styles['default'].defaultStyle;
+        
+        // TODO: fix undefined checking
         if (default_style['fillColor'] == 'transparent' && 
           typeof default_style['externalGraphic'] != 'undefined') {
           css['background-image'] = 'url('+default_style['externalGraphic']+')';
           css['background-repeat'] = 'no-repeat';
           css['background-color'] = 'transparent';
+          
+          // * 2 because we need diameter rather than radius
           css['width'] = default_style['pointRadius']*2;
           css['height'] = default_style['pointRadius']*2;
         }
@@ -136,7 +138,32 @@ OpenLayers.Control.LayerSwitcher2 =
         return css;
     },
 
+    /* Method: setLayerStyle
+     * Callback referenced by toggleStyleChooser
+     * Returns:
+     * null
+     */
+    setLayerStyle: function() {
+        this.layer.styleMap = this.styleMap;
+        $(this.styleDiv).css(this.styleDiv.ls.styleMapToCSS(this.styleMap));
+
+        // remove the styleHolder and its DOM entry
+        $(this.styleDiv.style_holder).remove();
+        delete this.styleDiv.style_holder;
+
+        // redraw the layer with new styles
+        this.styleDiv.layer.redraw();
+    },
+
+    /* Method: toggleStyleChooser
+     * Called by the onclick method of styleDivs if it is enabled
+     * Constructs a styleDiv element and selectors for all defined styles
+     *
+     * Returns:
+     * null
+     */
     toggleStyleChooser: function() {
+        // remove style_holder if it exists
         if(typeof this.style_holder != 'undefined') {
           $(this.style_holder).remove();
           delete this.style_holder;
@@ -148,26 +175,29 @@ OpenLayers.Control.LayerSwitcher2 =
         for(style in this.ls.styles) {
           style_css = this.ls.styleMapToCSS(this.ls.styles[style]);
           style_div = document.createElement('div');
+
+          // set references so to breach the scope of the
+          // onclick handler
           style_div.styleMap = this.ls.styles[style];
-          style_div.style_name = style;
-          style_div.layer = this.layer;
           style_div.styleDiv = this;
+
           $(style_div).css(style_css);
-          $(style_div).click(function() {
-              this.layer.styleMap = this.styleMap;
-              $(this.styleDiv.style_holder).remove();
-              $(this.styleDiv).css(this.styleDiv.ls.styleMapToCSS(this.styleMap));
-              delete this.styleDiv.style_holder;
-              this.layer.redraw();
-          });
+
+          $(style_div).click(this.setLayerStyle);
+
           style_div.setAttribute('class', 'styleDiv');
           style_div.innerHTML = '&nbsp;';
           style_holder.appendChild(style_div);
         }
         this.parentNode.appendChild(style_holder);
+        
+        // position the styleholder to the left of the layerswitcher
+        // TODO: make customizable and compensate for left-alignment
         width = $(style_holder).width();
         $(style_holder).css('left',  position.left - width - 4);
         $(style_holder).css('top', position.top - 1);
+        
+        // make that this layerswitcher has a style_holder on it
         this.style_holder = style_holder;
     },
     /**
@@ -287,15 +317,6 @@ OpenLayers.Control.LayerSwitcher2 =
         return redraw;
     },
 
-    /*
-    fillStyleDivs: function(divs) {
-        for(d in divs) {
-          if(typeof divs[d].layer != 'undefined') {
-            divs[d].css(this.styleMapToCSS(divs[d].layer.styleMap));
-          }
-        }
-    };
-    */
     /** 
      * Method: redraw
      * Goes through and takes the current state of the Map and rebuilds the
@@ -412,15 +433,6 @@ OpenLayers.Control.LayerSwitcher2 =
                 else {
                   styleDiv = false; // this is mostly so that in looping, they won't be reused
                 }
-                
-                /*
-                if(css) {
-                  console.log(css);
-                  for(cls in css) {
-                    styleDiv.setAttribute(cls, css[cls]);
-                  }
-                }
-                */
                 
                 var groupArray = (baseLayer) ? this.baseLayers
                                              : this.dataLayers;
