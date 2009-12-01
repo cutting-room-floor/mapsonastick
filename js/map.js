@@ -26,36 +26,8 @@ function add_kml(layer_title, layer_url, extract_styles) {
     map.addLayer(l);
 }
 
-function parse_tms_url(layer_url) {
-  if (layer_url.match(/1.0.0\/?$/)) {
-    alert('layer name needed.');
-  }
-  else if (layer_url.match(/1.0.0\/\w+\/?$/)) {
-    console.log(layer_url.match(/1.0.0\/\w+\/?$/));
-  }
-  else {
-    console.log(layer_url);
-  }
-}
-
-
-
-
-function add_tms(layer_title, layer_url, layer_name, type) {
-    url_parts = parse_tms_url(layer_url);
-    l = new OpenLayers.Layer.TMS(
-        layer_title,
-        layer_url,
-        {
-            'layername': layer_name,
-            'type': type,
-        }
-    );
-    map.addLayer(l);
-}
-
-
 var baselayers = new Array();
+var myswitcher;
 
 /**
  * TODO: This needs to be rewritten.
@@ -155,8 +127,8 @@ function osm_getTileURL(bounds) {
 
 var map = null;
 
+OpenLayers.ImgPath = 'images/openlayers/';
 $(document).ready(
-
   function() {
     /**
      * set options so that KML markers with lat/lon points can
@@ -184,7 +156,20 @@ $(document).ready(
             
         }
     );
-    map.addLayers([mapnik]);
+
+    afghanistan_winter = new OpenLayers.Layer.TMS(
+      "Afghanistan Roads",
+      "",
+      {
+          type: 'png',
+          layername: 'roads',
+          /*displayOutsideMaxExtent: true,
+          maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34), */
+          attribution: '<a href="http://www.mapbox.org/">MapBox</a>',
+      }
+    )
+
+    map.addLayers([mapnik, afghanistan_winter]);
 
     function onPopupClose(evt) {
         selectControl.unselect(selectedFeature);
@@ -215,12 +200,13 @@ $(document).ready(
         {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
     }
 
-    map.addControl(new OpenLayers.Control.LayerSwitcher2({'styles': default_styles}));
     map.addControl(selectControl);
     selectControl.activate();
-      
     
+    console.log('hi');
+    console.log(OpenLayersPlusBlockswitcher);
     map.zoomToMaxExtent();
+    OpenLayersPlusBlockswitcher._attach($('#layer_switcher'), map);
   }
 );
 
@@ -231,12 +217,7 @@ $(document).ready(
       name = $("#layer_name").val();
       extract = $("#extract").val() == "on";
       url = $("#layer_url").val();
-      if(type == "KML") {
-        add_kml(name, url, extract);
-      }
-      else if(type == 'TMS') {
-        add_tms(name, url);
-      }
+      add_kml(name, url, extract);
     });
     $("#save_layer").click(function() {
       layer_data = $(map).get_layers().serialize_layers();
@@ -252,5 +233,7 @@ $(document).ready(
     $("#layer_filename").change(function() {
       $("#layer_url").val($(this).val());
     });
+
+
   }
 );
