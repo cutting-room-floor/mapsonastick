@@ -2,9 +2,10 @@ This is mapsona (for the time being). It's a purely client-side little mapping t
 
 = Uses:
 
+* {OpenLayers}[http://www.openlayers.org/]
 * {jQuery}[http://jquery.com/]
 * {twFile}[http://jquery.tiddlywiki.org/twFile.html]
-* {OpenLayers}[http://www.openlayers.org/]
+* {openlayers_plus}[http://github.com/developmentseed/openlayers_plus]
 
 = Browser testing:
 

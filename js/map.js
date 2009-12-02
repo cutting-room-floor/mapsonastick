@@ -1,6 +1,6 @@
 /*jslint white: false */
 /*jslint forin: true */
-/*global OpenLayers $ document jQuery window OpenLayersPlusBlockswitcher */
+/*global OpenLayers $ default_styles document jQuery window OpenLayersPlusBlockswitcher */
 
 /**
  * Mapsona 
@@ -12,11 +12,44 @@
  * @version 1.0
  */
 
-var map = null;
-var baselayers = [];
-var myswitcher;
+var map, baselayers, myswitcher, selectedFeature;
+baselayers = [];
 
 OpenLayers.ImgPath = 'system/images/openlayers/';
+
+function onPopupClose(evt) {
+  map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
+}
+
+function onFeatureSelect(feature) {
+  var popup;
+  selectedFeature = feature;
+  popup = new OpenLayers.Popup.FramedCloud("stick", 
+      feature.geometry.getBounds().getCenterLonLat(),
+      null,
+      "<div style='font-size:.8em'>Feature: " + feature.id +"<br />Area: " + feature.geometry.getArea()+"</div>",
+      null, true, onPopupClose);
+  feature.popup = popup;
+  map.addPopup(popup);
+}
+
+function onFeatureUnselect(feature) {
+  map.removePopup(feature.popup);
+  feature.popup.destroy();
+  feature.popup = null;
+}    
+
+/*
+ * From php.js
+ */
+function basename (path, suffix) {
+  var b = path.replace(/^.*[\/\\]/g, '');
+      if (typeof(suffix) === 'string' && b.substr(b.length-suffix.length) === suffix) {
+      b = b.substr(0, b.length-suffix.length);
+  }
+  return b;
+}
+
 
 /**
  * Basic KML constructor. Only necessary to correctly
@@ -33,12 +66,18 @@ function add_kml(layer_title, layer_url) {
     maxDepth: 2
   };
   l = new OpenLayers.Layer.GML(layer_title, layer_url, 
-      {
-      format: OpenLayers.Format.KML, 
-      projection: new OpenLayers.Projection("EPSG:4326"),
-      formatOptions: format_options
-      });
-  console.log(l);
+  {
+    format: OpenLayers.Format.KML, 
+    projection: new OpenLayers.Projection("EPSG:4326"),
+    formatOptions: format_options,
+    styleMap: default_styles.green
+  });
+  l.events.on({
+      'loadend': function() {
+        this.map.zoomToExtent(this.getDataExtent());
+      },
+      'context': this
+  });
   map.addLayer(l);
 }
 /**
@@ -135,111 +174,106 @@ function osm_getTileURL(bounds) {
   }
 }
 
-$(document).ready(
-      function() {
-      /**
-       * @TODO: these should be moved outside this function
-       */
-  function onPopupClose(evt) {
-    selectControl.unselect(selectedFeature);
-  }
-  function onFeatureSelect(feature) {
-    var popup;
-    selectedFeature = feature;
-    popup = new OpenLayers.Popup.FramedCloud2("stick", 
-        feature.geometry.getBounds().getCenterLonLat(),
-        null,
-        "<div style='font-size:.8em'>Feature: " + feature.id +"<br />Area: " + feature.geometry.getArea()+"</div>",
-        null, true, onPopupClose);
-    feature.popup = popup;
-    map.addPopup(popup);
-  }
-  function onFeatureUnselect(feature) {
-    map.removePopup(feature.popup);
-    feature.popup.destroy();
-    feature.popup = null;
-  }    
-
-  var options, mapnik, afghanistan_winter, selectControl;
-      /**
-       * set options so that KML markers with lat/lon points can
-       * be placed on map tiles that are in spherical mercator
-       */
-      options = {
-  projection: new OpenLayers.Projection("EPSG:900913"),
-  displayProjection: new OpenLayers.Projection("EPSG:4326"),
-  units: "m",
-  maxResolution: 156543.0339,
-  maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
-    20037508.34, 20037508.34)
-  };
-
-  map = new OpenLayers.Map('map', options);
-
-  mapnik = new OpenLayers.Layer.TMS(
-    "OpenStreetMap (Mapnik)",
-    "http://tile.openstreetmap.org/",
-    {
-  type: 'png',getURL: osm_getTileURL,
-  displayOutsideMaxExtent: true,
-  maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-  attribution: '<a href="http://www.openstreetmap.org/">OpenStreetMap</a>'
-  }
-  );
-
-  afghanistan_winter = new OpenLayers.Layer.TMS(
-        "Afghanistan Roads",
-        "",
-        {
-    type: 'png',
-    layername: 'roads',
-    /*displayOutsideMaxExtent: true,
-      maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34), */
-    attribution: '<a href="http://www.mapbox.org/">MapBox</a>'
+function attachSelect() {
+  var layer, layers, selecter;
+  layers = [];
+  for (layer in map.layers) {
+    if (map.layers[layer].CLASS_NAME === 'OpenLayers.Layer.GML') {
+      layers.push(map.layers[layer]);
     }
-  );
-
-  map.addLayers([mapnik, afghanistan_winter]);
-
-  /**
-   * add layers defined in layers.js if they are available
-   */
-  if(typeof layers !== "undefined") {
-    map.addLayers(layers);
-    selectControl = new OpenLayers.Control.SelectFeature(layers,
-        {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
   }
+  map.removeControl(
+    map.getControlsByClass('OpenLayers.Control.SelectFeature')[0]);
+  selecter = new OpenLayers.Control.SelectFeature(layers,
+        {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
+  map.addControl(selecter);
+  selecter.activate();
+}
 
-  map.addControl(selectControl);
-  selectControl.activate();
+$(document).ready(
+  function() {
+    /**
+     * @TODO: these should be moved outside this function
+     */
 
-  map.zoomToMaxExtent();
-  OpenLayersPlusBlockswitcher._attach($('.openlayers-blockswitcher'), map);
+
+    var options, mapnik, afghanistan_winter, selectControl;
+        /**
+         * set options so that KML markers with lat/lon points can
+         * be placed on map tiles that are in spherical mercator
+         */
+        options = {
+    projection: new OpenLayers.Projection("EPSG:900913"),
+    displayProjection: new OpenLayers.Projection("EPSG:4326"),
+    units: "m",
+    maxResolution: 156543.0339,
+    controls: [
+      new OpenLayers.Control.PanZoomBar(),
+      new OpenLayers.Control.Navigation()
+      ],
+    maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
+      20037508.34, 20037508.34)
+    };
+
+    map = new OpenLayers.Map('map', options);
+
+    mapnik = new OpenLayers.Layer.TMS(
+      "OpenStreetMap (Mapnik)",
+      "http://tile.openstreetmap.org/",
+      {
+    type: 'png',getURL: osm_getTileURL,
+    displayOutsideMaxExtent: true,
+    transitionEffect: 'resize',
+    maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+    attribution: '<a href="http://www.openstreetmap.org/">OpenStreetMap</a>'
+    }
+    );
+
+    afghanistan_winter = new OpenLayers.Layer.TMS(
+          "Afghanistan Roads",
+          "",
+          {
+      type: 'png',
+      layername: 'roads',
+      /*displayOutsideMaxExtent: true,
+        maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34), */
+      attribution: '<a href="http://www.mapbox.org/">MapBox</a>'
+      }
+    );
+
+    map.addLayers([mapnik, afghanistan_winter]);
+
+    /**
+     * add layers defined in layers.js if they are available
+     */
+    selectControl = new OpenLayers.Control.SelectFeature([],
+        {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
+
+    map.addLayers(layers);
+    map.addControl(selectControl);
+    selectControl.activate();
+    map.zoomToMaxExtent();
+    OpenLayersPlusBlockswitcher._attach($('.openlayers-blockswitcher'), map);
   }
 );
 
 $(document).ready(
-    function() {
-    $('#kml-file-submit').click(function() {
-      var name, url;
-      name = 'test';
-      url = $("#kml-file-input").val();
-      add_kml(name, url);
+  function() {
+  $('#kml-file-submit').click(function() {
+    var name, url;
+    url = $("#kml-file-input").val();
+    name = basename(url, '.kml');
+    add_kml(name, url);
+    attachSelect();
+  });
+  $("#save_layer").click(function() {
+    var layer_data, basepath, filepath;
+    layer_data = $(map).get_layers().serialize_layers();
+    $("#save_filename").click();
+    basepath = document.location.href.substring(0, document.location.href.lastIndexOf('/') + 1);
+    filepath = basepath+'layers.js'; 
+    filepath = $.twFile.convertUriToLocalPath(filepath); 
+    $.twFile.save(filepath, layer_data);
     });
-    $("#save_layer").click(function() {
-      var layer_data, basepath, filepath;
-      layer_data = $(map).get_layers().serialize_layers();
-      $("#save_filename").click();
-      basepath = document.location.href.substring(0, document.location.href.lastIndexOf('/') + 1);
-      filepath = basepath+'layers.js'; 
-      filepath = $.twFile.convertUriToLocalPath(filepath); 
-      $.twFile.save(filepath, layer_data);
-      });
-    $("#file_trigger").click(function() {
-      $("#layer_filename").click();
-      });
-    $("#layer_filename").change(function() {
-      $("#layer_url").val($(this).val());
-      });
-    }
+  }
 );
