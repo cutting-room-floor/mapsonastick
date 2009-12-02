@@ -13,75 +13,25 @@ a {
 /**
  * Header =============================================================
  */
-  #header {
-    z-index:5000;
-    position:fixed;
-    left:0px;
-    top:0px;
-    right:0px;
-
-    background:#444;
-    padding:0px 20px;
-    line-height:40px;
-    height:40px;
-    overflow:hidden;
+#header {
+  bottom:auto;
+  position:static;
+  width: 100%;
+  top:auto;
+  background-color:#182824;
+  border-color:#152420;
+  -moz-background-clip:border;
+  -moz-background-inline-policy:continuous;
+  -moz-background-origin:padding;
+  background:#222222 none repeat scroll 0 0;
+  border-bottom:3px solid #111111;
+  height:47px;
+  line-height:50px;
+  overflow:hidden;
+  display:inline-block;
 }
+  
 
-#header a { color:#fff; }
-
-#header ul.links {
-  padding:7px 0px;
-  line-height:25px;
-  font-size:13px;
-  float:right;
-}
-
-#header ul.links a {
-  -moz-border-radius:13px;
-  -webkit-border-radius:13px;
-  -khtml-border-radius:13px;
-
-  padding:0px 15px;
-  font-weight:300;
-  }
-
-  #header ul.links a:hover { background:#222; }
-
-  #header ul.links li.active a,
-  #header ul.links li a.active {
-    background:#eee;
-    color:#222;
-  }
-
-  #header h1.site-name {
-    letter-spacing:-1px;
-    font-size:18px;
-    font-weight:bold;
-    float:left;
-}
-
-#header h1.site-name small {
-  color:#ccc;
-  letter-spacing:0px;
-  font-weight:300;
-  font-size:15px;
-  margin-left:10px;
-  }
-
-  #header h1.site-name .edit {
-    margin-left:10px;
-
-    font-size:10px;
-    text-transform:uppercase;
-    vertical-align:middle;
-
-    background:#68a;
-    padding:3px 10px;
-
-    -moz-border-radius:10px;
-    -webkit-border-radius:10px;
-    -khtml-border-radius:10px;
-  }
 
   /**
    * Superchill footer ==================================================
@@ -103,7 +53,11 @@ a {
     right:0px;
 
     z-index:1000;
-}
+  }
+
+  #footer a {
+    color: #eee;
+  }
 
 /**
  * Shadow =============================================================
@@ -119,7 +73,7 @@ a {
 
 #shadow-top {
   background:url(images/shadow_top.png) repeat-x;
-  top:40px;
+  top:50px;
   }
 
   #shadow-bottom {
@@ -224,6 +178,11 @@ div.olPopupContent div.ol-popup-name div.meta {
   background:#F8F8F8 none repeat scroll 0 0;
   float:left;
   width:25%;
+  bottom:0;
+  left:0;
+  overflow:auto;
+  position:fixed;
+  top:50px;
 }
 
 
@@ -402,6 +361,7 @@ label {
   bottom: 25px;
   top: 0;
   position: absolute;
+  top: 50px;
   left:25%;
   right:0;
 }
@@ -411,6 +371,7 @@ label {
   float:right;
   min-height:400px;
   width:75%;
+  top: 50px;;
 }
 
 #block-openlayers_plus-blockswitcher {
@@ -528,3 +489,25 @@ div.kml-input {
 
 div.kml-input #kml-file-input {
 }
+
+/*
+ * POPUPS
+ */
+
+#stick_contentDiv {
+  color: #fff;
+}
+
+div.openlayers-blockswitcher span.key {
+  height:15px !important;
+  width:15px !important;
+}
+
+.openlayers-blockswitcher span.key {
+  display:block;
+  float:left;
+  height:20px;
+  margin-right:5px;
+  width:20px;
+}
+

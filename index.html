@@ -1,23 +1,25 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html lang='en'>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
 	<title>MapBox Maps on a Stick</title>
-  <script src="http://openlayers.org/api/OpenLayers.js"></script>
-  <script src="js/jquery-1.3.2.js"></script>
-  <!--<script src="js/jQuery.twFile.js"></script>-->
-  <script src="styles.js"></script>
-  <script src="FramedCloud2.js"></script>
-  <script src="js/openlayers_plus/behaviors/openlayers_js_blockswitcher.js"></script>
-  <script src="js/map.js"></script>
-	<link rel="stylesheet" href="FramedCloud2.css" type="text/css" media="screen" />
- 	<link rel="stylesheet" href="system/style.css" type="text/css" media="screen" />
+  <script src='http://openlayers.org/dev/OpenLayers.js'></script>
+  <script src='js/jquery-1.3.2.js'></script>
+  <!--<script src='js/jQuery.twFile.js'></script>-->
+  <script src='resources/styles.js'></script>
+  <script src='FramedCloud2.js'></script>
+  <script src='js/openlayers_plus/behaviors/openlayers_js_blockswitcher.js'></script>
+  <script src='js/map.js'></script>
+	<link rel='stylesheet' href='FramedCloud2.css' type='text/css' media='screen' />
+ 	<link rel='stylesheet' href='system/style.css' type='text/css' media='screen' />
 </head>
 <body>
-  <script src="layers.js"></script>
-  <div id="shadow-bottom"></div>
-  <div id="left">
-    <div class="openlayers-blockswitcher">
+  <script src='resources/layers.js'></script>
+  <div id='header'>
+    <h1 class="site-name">Mapsona</h1>
+  </div>
+  <div id='left'>
+    <div class='openlayers-blockswitcher'>
       <div class='layers base'>
         <h2 class='layers-title'>Base layers</h2>
         <div class='layers-content'>
@@ -43,9 +45,11 @@
       <input id='kml-file-submit' class='form-submit-mini' type='button' value='Add to Map' />
     </div>
   </div> <!-- #left -->
-  <div id="canvas">
-    <div id="map"></div>
+  <div id='shadow-bottom'></div>
+  <div id='shadow-top'></div>
+  <div id='canvas'>
+    <div id='map'></div>
   </div>
-  <div id="footer">&copy; 2009 <a title="MapBox is a suite of open source tools to create beautiful custom maps in Amazon's cloud." href="http://www.mapbox.com/">MapBox</a></div>
+  <div id='footer'>&copy; 2009 <a href='http://www.mapbox.com/'>MapBox</a></div>
 </body>
 </html>
