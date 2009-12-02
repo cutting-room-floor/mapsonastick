@@ -12,13 +12,26 @@
  * @version 1.0
  */
 
-var map, baselayers, myswitcher, selectedFeature;
+var map, baselayers, myswitcher, selectedFeature, styleindex;
+var styleindex = 0;
 baselayers = [];
 
 OpenLayers.ImgPath = 'system/images/openlayers/';
 
 function onPopupClose(evt) {
   map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
+}
+
+function new_style(dict) {
+  var k, i;
+  styleindex++;
+  i = 0;
+  for (k in dict) {
+    if (i === styleindex) {
+      return dict[k];
+    }
+    i++;
+  }
 }
 
 function attributes_to_table(attributes) {
@@ -92,7 +105,7 @@ function add_kml(layer_title, layer_url) {
     format: OpenLayers.Format.KML, 
     projection: new OpenLayers.Projection("EPSG:4326"),
     formatOptions: format_options,
-    styleMap: default_styles.green
+    styleMap: new_style(default_styles)
   });
   l.events.on({
       'loadend': function() {
