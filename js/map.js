@@ -244,6 +244,7 @@ $(document).ready(
     maxResolution: 156543.0339,
     controls: [
       new OpenLayers.Control.PanZoomBar(),
+      new OpenLayers.Control.Attribution(),
       new OpenLayers.Control.Navigation()
       ],
     maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
@@ -252,31 +253,30 @@ $(document).ready(
 
     map = new OpenLayers.Map('map', options);
 
-    mapnik = new OpenLayers.Layer.TMS(
-      "OpenStreetMap (Mapnik)",
-      "http://tile.openstreetmap.org/",
-      {
-    type: 'png',getURL: osm_getTileURL,
-    displayOutsideMaxExtent: true,
-    transitionEffect: 'resize',
-    maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-    attribution: '<a href="http://www.openstreetmap.org/">OpenStreetMap</a>'
-    }
-    );
-
-    afghanistan_winter = new OpenLayers.Layer.TMS(
-          "Afghanistan Roads",
-          "",
-          {
+    var afghanistan_winter = new OpenLayers.Layer.MapBox('Afghanistan Winter',
+    {
+      layername: 'afghanistan-winter',
       type: 'png',
-      layername: 'roads',
-      /*displayOutsideMaxExtent: true,
-        maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34), */
-      attribution: '<a href="http://www.mapbox.org/">MapBox</a>'
-      }
-    );
+    });
 
-    map.addLayers([mapnik, afghanistan_winter]);
+    var afghanistan_summer = new OpenLayers.Layer.MapBox('Afghanistan Summer',
+    {
+      layername: 'afghanistan-summer',
+      type: 'png',
+    });
+ 
+    var world_light = new OpenLayers.Layer.MapBox('World Light',
+    {
+      layername: 'world-light',
+      type: 'png',
+    });
+  
+    var world_dark = new OpenLayers.Layer.MapBox('World Dark',
+    {
+      layername: 'world-dark',
+      type: 'png',
+    });     
+    map.addLayers([world_dark, world_light, afghanistan_winter, afghanistan_summer]);
 
     /**
      * add layers defined in layers.js if they are available
