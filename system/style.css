@@ -10,41 +10,6 @@ a {
   color:#68a;
 }
 
-.view-vote-count .view-footer p a {
-  font-weight:bold;
-}
-
-.page-votecount .view-footer p a {
-}
-
-.view-vote-count .views-table caption {
-  font-weight:bold;
-  font-size:16px;
-  line-height:30px;
-}
-
-body.votecounts #page .limiter {
-  background-color:#eee;
-  background-image:url(images/map_bg.jpg);
-  background-position:0 0;
-  background-repeat:no-repeat;
-}
-
-body.votecounts #page .limiter #main #content {
-  background: rgba(255, 255, 255, 0.5);
-  margin:0px 0px 10px 10px;
-}
-
-body.votecounts table tr th {
-  font-size:13px;
-  font-weight:bold;
-  background: #fff);
-}
-
-body.votecounts h2.page-title {
-  padding:10px 10px 0px;
-}
-
 /**
  * Header =============================================================
  */
@@ -163,13 +128,13 @@ body.votecounts h2.page-title {
     bottom:30px;
   }
 
-  /**
-   * Map ================================================================
-   */
-  div.openlayers-views-map { background:#eee; }
+/**
+ * Map ================================================================
+ */
+div.openlayers-views-map { background:#eee; }
 
-  div.openlayers-views-map,
-  div.openlayers-views-map div.openlayers-map {
+div.openlayers-views-map,
+div.openlayers-views-map div.openlayers-map {
     position:fixed;
 
     top:40px;
@@ -194,9 +159,6 @@ div.olControlScaleLineTop {
 }
 
 div.olControlScaleLineBottom { border-width:2px 2px 0px; }
-
-/* @TODO: Figure out how to remove this through OpenLayers module */
-.openlayers-controls-fullscreen { display:none; }
 
 div.olPopup {
   width:240px;
@@ -243,82 +205,6 @@ div.olPopupContent div.ol-popup-name div.meta {
 
   div.olPopupContent div.ol-popup-name a { color:#fff; }
 
-  /**
-   * Super-aggressive CSS for layer switcher.
-   */
-  div.olControlLayerSwitcher { width:240px !important; }
-
-  div.olControlLayerSwitcher div span { display:none !important; }
-
-  div.olControlLayerSwitcher div {
-    -moz-border-radius-topleft:5px;
-    -moz-border-radius-bottomleft:5px;
-    -webkit-border-top-left-radius:5px;
-    -webkit-border-bottom-left-radius:5px;
-
-    padding:0px !important;
-    opacity:1 !important;
-    background:url(images/popup.png) !important;
-}
-
-div.olControlLayerSwitcher div#OpenLayers_Control_MaximizeDiv img,
-div.olControlLayerSwitcher div#OpenLayers_Control_MinimizeDiv img { display:none; }
-
-div.olControlLayerSwitcher div#OpenLayers_Control_MaximizeDiv { background:url(openlayers/layer-switcher-maximize.png) no-repeat !important; }
-div.olControlLayerSwitcher div#OpenLayers_Control_MinimizeDiv { background:url(openlayers/layer-switcher-minimize.png) no-repeat !important; }
-
-div.olControlLayerSwitcher div div {
-  -moz-border-radius:0px;
-  -webkit-border-radius:0px;
-
-  background:transparent !important;
-  margin:0px !important;
-  padding:10px !important;
-  text-transform:uppercase;
-  font:10px/10px "Helvetica Neue",Arial,sans-serif;
-}
-
-div.olControlLayerSwitcher div div input {
-  vertical-align:middle;
-  margin-right:5px;
-  }
-
-  div.olControlLayerSwitcher div div span {
-    white-space:nowrap;
-    text-transform:none;
-    font:300 15px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;
-    vertical-align:middle;
-    display:inline !important;
-    visibility:visible;
-  }
-
-  /**
-   * Tabs ===============================================================
-   */
-  div.tabs ul.links {
-    border-top:1px solid #ddd;
-    padding:9px 0px 10px;
-}
-
-div.tabs ul.links a {
-  -moz-border-radius:10px;
-  -webkit-border-radius:10px;
-  -khtml-border-radius:10px;
-  color:#999;
-  font-size:11px;
-  padding:0px 10px;
-}
-
-div.tabs ul.links a:hover {
-  background:#fff;
-  color:#666;
-}
-
-div.tabs ul.links li.active a,
-div.tabs ul.links li a.active {
-  color:#fff;
-  background:#68a;
-}
 
 /**
  * Page ===============================================================
@@ -356,56 +242,11 @@ div.tabs ul.links li a.active {
 }
 
 /**
- * Titles, comments, bylines ==========================================
+ * Forms ==============================================================
  */
-  h2.comment-title,
-  h2.node-title,
-  h2.page-title {
-    font-weight:300;
-    margin:0px 0px 20px;
-    letter-spacing:-1px;
-    font-size:32px;
-    line-height:40px;
-}
 
-h2.comment-title,
-h2.node-title {
-  font-size:24px;
-  line-height:30px;
-}
-
-div.comment-submitted,
-div.node-submitted {
-  color:#666;
-  font-size:11px;
-  margin:0px 0px 20px;
-}
-
-div.comment-links ul.links,
-div.node-links ul.links {
-  font-size:11px;
-  float:right;
-}
-
-div.comment-links ul.links li,
-div.node-links ul.links li { padding:0px 5px; }
-
-div.comment-links ul.links a,
-div.node-links ul.links a {
-  -moz-border-radius:10px;
-  -webkit-border-radius:10px;
-  -khtml-border-radius:10px;
-
-  background:#f8f8f8;
-  padding:0px 10px;
-  }
-
-  /**
-   * Forms ==============================================================
-   */
-
-  /* Items */
-  div.form-item {
+/* Items */
+div.form-item {
     border-top:1px solid #fff;
     background:#f8f8f8 url(images/bleed.gif) 0px 100% repeat-x;
     padding:9px 10px 10px;
@@ -429,10 +270,12 @@ div.form-item label.option {
     padding:0px;
   }
 
-  /* Elements */
-  input.form-text,
-  textarea,
-  select {
+/*
+ * Elements
+ * */
+input.form-text,
+textarea,
+select {
     padding:5px;
     background:#fff;
     border-color:#ccc;
@@ -448,14 +291,35 @@ input.form-submit {
 
   color:#222;
   background:#ccc;
-  padding:5px 15px;
+  padding:0 10px;
   margin:5px;
 }
 
 input.form-submit:hover { background:#444; color:#fff; }
 input.form-submit:active { background:#000; color:#fff; }
 
-/* Fieldsets */
+input.form-submit-mini {
+  -moz-border-radius:10px;
+  -webkit-border-radius:10px;
+  -khtml-border-radius:10px;
+
+  font-size:11px;
+  letter-spacing:-1px;
+
+  color:#222;
+  background:#ccc;
+  padding:5px 15px;
+  margin:5px;
+}
+
+input.form-submit-mini:hover { background:#444; color:#fff; }
+input.form-submit-mini:active { background:#000; color:#fff; }
+
+
+
+/*
+ * Fieldsets
+ */
 div.fieldset {
   padding:5px;
   background:#eee;
@@ -478,7 +342,7 @@ div.fieldset-content {
   background:#fff;
 }
 
-/**
+/*
  * TABLES =============================================================
  */
   table tr.even,
@@ -497,64 +361,9 @@ table tr td.active { background:#e0e4e8; }
 div.form-item table,
 div.fieldset table { margin:0px; }
 
-/**
- * Blocks =============================================================
+/*
+ * OPENLAYERS POPUPS
  */
-  #right { font-size:11px; }
-  #right a { color:#999; }
-  #right h2.block-title {
-    background:#e8e8e8;
-    padding:5px 10px 4px;
-    border-bottom:1px solid #ddd;
-}
-
-#right div.block ul.links li,
-#right div.block ul.links li a {
-  display:block;
-  float:none;
-}
-
-#right div.block ul.links li a {
-  font-size:11px;
-  padding:5px 10px 4px;
-  border-bottom:1px solid #ddd;
-}
-
-#right div.block ul.links li a:hover {
-  background:#fff;
-  color:#666;
-}
-
-#right div.block ul.links li a.active {
-  background:#68a;
-  color:#fff;
-}
-
-/**
- * Comment threads ====================================================
- */
-  div.box,
-  div.comment {
-    margin:0px 0px 10px;
-    padding:9px;
-    border:1px solid #eee;
-    background:#fff;
-}
-
-#comments {
-  margin:20px 0px 0px;
-  border:1px solid #eee;
-  background:#f8f8f8;
-}
-
-#comments div.box,
-#comments div.comment { margin:10px; }
-
-#comments div.indented {
-  margin-left:10px;
-  border-left:1px solid #d8e8e8;
-}
-
 #stick_GroupDiv h1 {
   font-size: 18px;
   color: #fff;
@@ -604,18 +413,25 @@ label {
   width:75%;
 }
 
-
 #block-openlayers_plus-blockswitcher {
   display:none;
 }
+
+
+/*
+ * OPENLAYERS BLOCKSWITCHER
+ */
+
 div.navbar #block-openlayers_plus-blockswitcher, div.openlayers-map #block-openlayers_plus-blockswitcher {
   display:block;
 }
+
 div.openlayers-blockswitcher span.key {
   height:15px !important;
   width:15px !important;
 }
-div.openlayers-blockswitcher h2.layers-title, div.openlayers-blockswitcher div.form-item {
+
+div.openlayers-blockswitcher h2.layers-title, div.openlayers-blockswitcher div.form-item, h2.form-title {
   -moz-background-clip:border;
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
@@ -624,26 +440,29 @@ div.openlayers-blockswitcher h2.layers-title, div.openlayers-blockswitcher div.f
   line-height:15px;
   padding:5px 5px 4px 20px;
 }
+
 div.openlayers-blockswitcher div.radio {
   -moz-background-clip:border;
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
-  background:transparent url(/pubcount/sites/all/themes/afcount/images/sprite.png) no-repeat scroll 15px 0;
+  background:transparent url(images/sprite.png) no-repeat scroll 15px 0;
   cursor:pointer;
   padding-left:40px;
 }
+
 div.openlayers-blockswitcher div.activated {
   background-position:15px -25px;
 }
-div.openlayers-blockswitcher h2.layers-title, div.openlayers-blockswitcher div.form-item label {
+div.openlayers-blockswitcher h2.layers-title, div.openlayers-blockswitcher div.form-item label, h2.form-title {
   font-size:11px;
 }
-div.openlayers-blockswitcher h2.layers-title {
+div.openlayers-blockswitcher h2.layers-title, h2.form-title {
   -moz-background-clip:border;
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
   background:#FFFFFF none repeat scroll 0 0;
   font-weight:bold;
+  margin: 0;
 }
 div.openlayers-map #block-openlayers_plus-blockswitcher {
   -moz-border-radius-bottomright:5px;
@@ -658,7 +477,7 @@ div.openlayers-map #block-openlayers_plus-blockswitcher h2.block-title {
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
   -moz-border-radius-bottomright:5px;
-  background:#203830 url(/pubcount/sites/all/themes/afcount/images/sprite.png) no-repeat scroll -365px -90px;
+  background:#203830 url(images/sprite.png) no-repeat scroll -365px -90px;
   color:#FFFFFF;
   font-size:15px;
   font-weight:bold;
@@ -689,10 +508,23 @@ div.openlayers-map div.openlayers-blockswitcher div.radio {
 div.openlayers-map div.openlayers-blockswitcher div.activated {
   background-position:5px -25px;
 }
-div.openlayers-map div.openlayers-blockswitcher h2.layers-title {
+div.openlayers-map div.openlayers-blockswitcher h2.layers-title, h2.form-title {
   -moz-background-clip:border;
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
   background:#F8F8F8 none repeat scroll 0 0;
 }
 
+h2.form-title {
+  margin-top: 15px;
+}
+
+/*
+ * KML INPUT
+ */
+div.kml-input {
+  padding: 15px;
+}
+
+div.kml-input #kml-file-input {
+}

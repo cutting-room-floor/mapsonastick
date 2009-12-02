@@ -16,7 +16,7 @@ var map = null;
 var baselayers = [];
 var myswitcher;
 
-OpenLayers.ImgPath = 'images/openlayers/';
+OpenLayers.ImgPath = 'system/images/openlayers/';
 
 /**
  * Basic KML constructor. Only necessary to correctly
@@ -25,25 +25,20 @@ OpenLayers.ImgPath = 'images/openlayers/';
  * @param layer_url URL to the KML feed
  * @return none
  */
-function add_kml(layer_title, layer_url, extract_styles) {
+function add_kml(layer_title, layer_url) {
   var format_options, l;
-  if (extract_styles) {
-    format_options = {
-               extractStyles: true, 
-               extractAttributes: true,
-               maxDepth: 2
-    };
-  }
-  else {
-    format_options = [];
-  }
-
+  format_options = {
+    extractStyles: true, 
+    extractAttributes: true,
+    maxDepth: 2
+  };
   l = new OpenLayers.Layer.GML(layer_title, layer_url, 
       {
       format: OpenLayers.Format.KML, 
       projection: new OpenLayers.Projection("EPSG:4326"),
       formatOptions: format_options
       });
+  console.log(l);
   map.addLayer(l);
 }
 /**
@@ -225,14 +220,12 @@ $(document).ready(
 
 $(document).ready(
     function() {
-    $("#add_layer").click(function() {
-      var type, name, extract, url, add_kml;
-      type = $("#layer_type").val();
-      name = $("#layer_name").val();
-      extract = $("#extract").val() === "on";
-      url = $("#layer_url").val();
-      add_kml(name, url, extract);
-      });
+    $('#kml-file-submit').click(function() {
+      var name, url;
+      name = 'test';
+      url = $("#kml-file-input").val();
+      add_kml(name, url);
+    });
     $("#save_layer").click(function() {
       var layer_data, basepath, filepath;
       layer_data = $(map).get_layers().serialize_layers();
