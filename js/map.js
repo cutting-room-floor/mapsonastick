@@ -29,7 +29,7 @@ function add_kml(layer_title, layer_url, extract_styles) {
   var format_options, l;
   if (extract_styles) {
     format_options = {
-extractStyles: true, 
+               extractStyles: true, 
                extractAttributes: true,
                maxDepth: 2
     };
@@ -40,11 +40,11 @@ extractStyles: true,
 
   l = new OpenLayers.Layer.GML(layer_title, layer_url, 
       {
-format: OpenLayers.Format.KML, 
-projection: new OpenLayers.Projection("EPSG:4326"),
-formatOptions: format_options
-});
-map.addLayer(l);
+      format: OpenLayers.Format.KML, 
+      projection: new OpenLayers.Projection("EPSG:4326"),
+      formatOptions: format_options
+      });
+  map.addLayer(l);
 }
 /**
  * TODO: This needs to be rewritten.
@@ -205,8 +205,6 @@ $(document).ready(
   );
 
   map.addLayers([mapnik, afghanistan_winter]);
-
-
 
   /**
    * add layers defined in layers.js if they are available
