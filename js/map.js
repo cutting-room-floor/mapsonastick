@@ -21,14 +21,36 @@ function onPopupClose(evt) {
   map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
 }
 
+function attributes_to_table(attributes) {
+  var key, out;
+  out = "";
+  for (key in attributes) {
+    if (typeof attributes[key] === 'string') {
+      out += "<tr><th>" + 
+        "Name" +
+        "</th><td>" + 
+        attributes[key] + "</td></tr>";
+    }
+    else {
+      out += "<tr><th>" + 
+        attributes[key].displayName + 
+        "</th><td>" + 
+        attributes[key].value + "</td></tr>";
+    }
+  }
+  return "<table>" + out + "</table>";
+}
+
+
 function onFeatureSelect(feature) {
   var popup;
   selectedFeature = feature;
   popup = new OpenLayers.Popup.FramedCloud("stick", 
       feature.geometry.getBounds().getCenterLonLat(),
       null,
-      "<div style='font-size:.8em'>Feature: " + feature.id +"<br />Area: " + feature.geometry.getArea()+"</div>",
+      "<div style='font-size:.8em'><h3>" + attributes_to_table(feature.attributes) + "</h3></div>",
       null, true, onPopupClose);
+  console.log(feature);
   feature.popup = popup;
   map.addPopup(popup);
 }
