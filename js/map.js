@@ -1,3 +1,23 @@
+/*jslint white: false */
+/*jslint forin: true */
+/*global OpenLayers $ document jQuery window */
+
+/**
+ * Mapsona 
+ *
+ * This file contains all of the custom javascript logic 
+ * for mapsona.
+ *
+ * @author Tom MacWright
+ * @version 1.0
+ */
+
+var map = null;
+var baselayers = new Array();
+var myswitcher;
+
+OpenLayers.ImgPath = 'images/openlayers/';
+
 /**
  * Basic KML constructor. Only necessary to correctly
  * set projections
@@ -6,7 +26,7 @@
  * @return none
  */
 function add_kml(layer_title, layer_url, extract_styles) {
-    if(extract_styles) {
+    if (extract_styles) {
       format_options = {
         extractStyles: true, 
         extractAttributes: true,
@@ -25,10 +45,6 @@ function add_kml(layer_title, layer_url, extract_styles) {
     })
     map.addLayer(l);
 }
-
-var baselayers = new Array();
-var myswitcher;
-
 /**
  * TODO: This needs to be rewritten.
  * Specialized object serializer for OpenLayers layer objects
@@ -42,11 +58,11 @@ function hash_to_string(hash) {
        // this is for formats, mostly OpenLayers.Format.KML
        out  += n+":"+hash[n].prototype.CLASS_NAME+",\n";
      }
-     else if(hash[n].CLASS_NAME == 'OpenLayers.Projection') {
+     else if(hash[n].CLASS_NAME === 'OpenLayers.Projection') {
        // make a constructor for projections
        out += n+": new "+hash[n].CLASS_NAME+"('"+hash[n].projCode+"'),";
      }
-     else if(typeof hash[n] == "object") {
+     else if(typeof hash[n] === "object") {
        // basically the options array
        out += n+":{"+hash_to_string(hash[n])+"},";
      }
@@ -66,9 +82,9 @@ function hash_to_string(hash) {
  */
 $.fn.get_layers = function(options) {
   var all_layers = this[0].layers.slice(); // not certain of why .slice is called
-  var layers = new Array();
+  var layers = [];
   $.each(all_layers, function() {
-    if(this.isBaseLayer == false) {
+    if(this.isBaseLayer === false) {
       layers.push(this);
     }
   });
@@ -95,7 +111,6 @@ function layer_serialize(layer) {
   // If the layer has a styleMap, and it's one of the defaults, do this.
   if((typeof layer.styleMap.name != 'undefined')
       && (typeof default_styles[layer.styleMap.name] != 'undefined')) {
-    console.log(default_styles);
     layer.options['styleMap'] = "default_styles['"+layer.styleMap.name+"']";
   }
   return "new "+layer.CLASS_NAME+"( \
@@ -125,9 +140,6 @@ function osm_getTileURL(bounds) {
     }
 }
 
-var map = null;
-
-OpenLayers.ImgPath = 'images/openlayers/';
 $(document).ready(
   function() {
     /**
@@ -176,7 +188,6 @@ $(document).ready(
     }
     function onFeatureSelect(feature) {
         selectedFeature = feature;
-        console.log(feature);
         popup = new OpenLayers.Popup.FramedCloud2("stick", 
           feature.geometry.getBounds().getCenterLonLat(),
           null,
@@ -203,10 +214,8 @@ $(document).ready(
     map.addControl(selectControl);
     selectControl.activate();
     
-    console.log('hi');
-    console.log(OpenLayersPlusBlockswitcher);
     map.zoomToMaxExtent();
-    OpenLayersPlusBlockswitcher._attach($('#layer_switcher'), map);
+    OpenLayersPlusBlockswitcher._attach($('.openlayers-blockswitcher'), map);
   }
 );
 
@@ -215,7 +224,7 @@ $(document).ready(
     $("#add_layer").click(function() {
       type = $("#layer_type").val();
       name = $("#layer_name").val();
-      extract = $("#extract").val() == "on";
+      extract = $("#extract").val() === "on";
       url = $("#layer_url").val();
       add_kml(name, url, extract);
     });
@@ -233,7 +242,5 @@ $(document).ready(
     $("#layer_filename").change(function() {
       $("#layer_url").val($(this).val());
     });
-
-
   }
 );
