@@ -100,7 +100,6 @@ div.openlayers-views-map div.openlayers-map {
     height:100%;
 }
 
-div.olControlScaleLine { opacity:.65; }
 
 div.olControlScaleLineBottom,
 div.olControlScaleLineTop {
@@ -511,3 +510,29 @@ div.openlayers-blockswitcher span.key {
   width:20px;
 }
 
+#map .olImageLoadError {
+  opacity: 1;
+  background-color: white;
+}
+.mapbox-branding {
+  background: url(images/mapbox.png);
+  float: left;
+  clear: left;
+  margin-right: 10px;
+  width: 80px;
+  height: 22px;
+}
+
+div.olMapViewport div.olControlPermalink {
+  top: 5px;
+  right: 10px;
+  left: auto;
+  bottom: auto;
+  text-align: right;
+}
+
+div.olMapViewport div.olControlAttribution {
+  right: auto;
+  left: 15px;
+  bottom: 10px;
+}

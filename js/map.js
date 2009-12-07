@@ -230,8 +230,6 @@ $(document).ready(
     /**
      * @TODO: these should be moved outside this function
      */
-
-
     var options, mapnik, afghanistan_winter, selectControl;
         /**
          * set options so that KML markers with lat/lon points can
