@@ -27,6 +27,6 @@ Adding Tiles to a USB Drive
 Code that Mapsona uses
 ======================
 
-* {OpenLayers}[http://www.openlayers.org/]
-* {jQuery}[http://jquery.com/]
-* {openlayers_plus}[http://github.com/developmentseed/openlayers_plus]
+* `OpenLayers <http://www.openlayers.org/>`_
+* `jQuery <http://jquery.com/>`_
+* `openlayers_plus <http://github.com/developmentseed/openlayers_plus>`_
