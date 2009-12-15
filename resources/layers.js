@@ -11,6 +11,7 @@ var layers = [
       'tiles/',
       {
         layername: 'world-dark',
+        wrapDateLine: true,
         type: 'png'
       }
   )

@@ -1,6 +1,6 @@
 /*jslint white: false */
 /*jslint forin: true */
-/*global OpenLayers $ default_styles document jQuery window OpenLayersPlusBlockswitcher */
+/*global OpenLayers $ default_styles document jQuery window OpenLayersPlusBlockswitcher layers */
 
 /**
  * Mapsona 
@@ -63,7 +63,6 @@ function onFeatureSelect(feature) {
       null,
       "<div style='font-size:.8em'><h3>" + attributes_to_table(feature.attributes) + "</h3></div>",
       null, true, onPopupClose);
-  console.log(feature);
   feature.popup = popup;
   map.addPopup(popup);
 }
@@ -251,42 +250,17 @@ $(document).ready(
 
     map = new OpenLayers.Map('map', options);
 
-    var afghanistan_winter = new OpenLayers.Layer.MapBox('Afghanistan Winter',
-    {
-      layername: 'afghanistan-winter',
-      type: 'png',
-    });
-
-    var afghanistan_summer = new OpenLayers.Layer.MapBox('Afghanistan Summer',
-    {
-      layername: 'afghanistan-summer',
-      type: 'png',
-    });
- 
-    var world_light = new OpenLayers.Layer.MapBox('World Light',
-    {
-      layername: 'world-light',
-      type: 'png',
-    });
-  
-    var world_dark = new OpenLayers.Layer.MapBox('World Dark',
-    {
-      layername: 'world-dark',
-      type: 'png',
-    });     
-    map.addLayers([world_dark, world_light, afghanistan_winter, afghanistan_summer]);
-
+    map.addLayers(layers);
     /**
      * add layers defined in layers.js if they are available
      */
     selectControl = new OpenLayers.Control.SelectFeature([],
         {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
 
-    map.addLayers(layers);
     map.addControl(selectControl);
     selectControl.activate();
     map.zoomToMaxExtent();
-    OpenLayersPlusBlockswitcher._attach($('.openlayers-blockswitcher'), map);
+    OpenLayersPlusBlockswitcher.hattach($('.openlayers-blockswitcher'), map);
   }
 );
 

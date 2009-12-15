@@ -11,7 +11,7 @@ OpenLayersPlusBlockswitcher.layerStates = [];
 /**
  * Initializes the blockswitcher and attaches to DOM elements.
  */
-OpenLayersPlusBlockswitcher._attach = function(element, map) {
+OpenLayersPlusBlockswitcher.hattach = function(element, map) {
   this.map = map;
 
   //  var block = $(data.map.behaviors.openlayers_plus_behavior_blockswitcher.block);
