@@ -1,22 +1,32 @@
-This is mapsona (for the time being). It's a purely client-side little mapping tool aimed at carrying around tilesets and mashing up information with minimal internet connectivity.
+This is mapsona, the code that runs Maps on a Stick. It's a purely client-side mapping tool aimed at carrying around tilesets and mashing up information with minimal internet connectivity.
 
-= Installation
+Installation
+============
 
-This is basically it: in its current form, you can download or `git clone` mapsona, and that's it. You'll have to add offline data yourself, by adding KML to the system and by adding tiles in a tiles/1.0.0/layername directory, and then adding these to resources/. This will be a bit easier in the future, but for the time being it is quite straightforward if you're familiar with HTML/CSS.
 
-= Notes
+Basic Installation
+------------------
 
-Two big issues with this type of approach are offline saving and bringing in data from the rest of the web. Both are primarily issues of browser security restrictions, and both are difficult to sidestep. Mapsona approaches the former by making the addition of KML to the flash drive or folder simple, and it handles the second by using twFile, a library developed by the {TiddlyWiki}[http://www.tiddlywiki.com/] project that tries to handle cross-browser local file access.
+* Download the mapsona code either with git or as a zip or tgz file from GitHub.
+* This code doesn't include any map tiles because of their size: you'll need to
+  download them seperately. Here are two tilesets that are freely downloadable:
+  `the world up to zoom level 8 <http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-8.tgz>`_ and `the world up to zoom level 9 <http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-9.tgz>`_. Download one of these (if you aren't sure, up to zoom 8 will be much faster to transfer).
+* Download and decompress the tileset: the examples produce a folder called world-dark.
+* Move the tileset to the tiles/1.0.0/ directory of the mapsona code. So its path should now be tiles/1.0.0/world-dark/.
+* Open index.html in a browser.
 
-= Uses
+
+Adding Tiles to a USB Drive
+---------------------------
+
+
+* Quickly making USB drives full of map data is an interesting challenge and is
+  more thoroughly documented elsewhere.
+
+
+Code that Mapsona uses
+======================
 
 * {OpenLayers}[http://www.openlayers.org/]
 * {jQuery}[http://jquery.com/]
-* {twFile}[http://jquery.tiddlywiki.org/twFile.html]
 * {openlayers_plus}[http://github.com/developmentseed/openlayers_plus]
-
-= Browser testing
-
-* Safari 4
-* Firefox 3.5.x
-* Opera 10
