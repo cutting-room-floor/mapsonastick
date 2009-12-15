@@ -1,3 +1,10 @@
+/**
+ * mapsona style definitions
+ *
+ * clicking the legend-color (the box to the left of layer names)
+ * will cycle through styles for vector layers.
+ */
+
 var default_styles = {
   'green': new OpenLayers.StyleMap(
     OpenLayers.Util.applyDefaults(
