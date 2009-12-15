@@ -1,0 +1,7 @@
+This is the directory in which you should place map tilesets.
+A typical tileset will contain numeric folders, which contain
+numeric folders, which contain number-named tile images.
+
+You can then add layer definitions in resources/layers.js,
+copying the example and making sure that entries are seperated
+by one comma.
