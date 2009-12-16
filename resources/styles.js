@@ -9,9 +9,10 @@ var default_styles = {
   'green': new OpenLayers.StyleMap(
     OpenLayers.Util.applyDefaults(
         {
-          fillColor: "green", 
-          fillOpacity: 0.6, 
-          strokeColor: "green"
+          fillColor: "#93ce54", 
+          fillOpacity: 1, 
+          strokeColor: "#4c8014",
+          pointRadius: 4
         },
         OpenLayers.Feature.Vector.style["default"]
       )
@@ -19,9 +20,10 @@ var default_styles = {
   'yellow': new OpenLayers.StyleMap(
     OpenLayers.Util.applyDefaults(
         {
-          fillColor: "yellow", 
-          fillOpacity: 0.6, 
-          strokeColor: "yellow"
+          fillColor: "#ffae00", 
+          fillOpacity: 1, 
+          strokeColor: "#8d6000",
+          pointRadius: 4
         },
         OpenLayers.Feature.Vector.style["default"]
       )
@@ -31,7 +33,8 @@ var default_styles = {
         {
           fillColor: "black", 
           fillOpacity: 0.6, 
-          strokeColor: "black"
+          strokeColor: "white",
+          pointRadius: 4
         },
         OpenLayers.Feature.Vector.style["default"]
       )
