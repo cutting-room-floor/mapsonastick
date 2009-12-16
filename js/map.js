@@ -269,7 +269,9 @@ $(document).ready(
   $('#kml-file-submit').click(function() {
     var name, url;
     url = $("#kml-file-input").val();
+    url = "kml/" + basename(url)
     name = basename(url, '.kml');
+    console.log(name);
     add_kml(name, url);
     attachSelect();
   });
