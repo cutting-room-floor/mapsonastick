@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html lang='en'>
+<head>
+	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+	<title>Maps on a Stick Help</title>
+  <link rel='stylesheet' href='system/style.css' type='text/css' media='screen' />
+</head>
+<body>
+  <!-- layers.js is included within the body so that it's in the javascript global namespace -->
+  <div id='header'>
+    <h1 class="site-name"></h1>
+  </div>
+  <div id='left'>
+    <h1 class='form-title'>Maps on a Stick Documentation</h1>
+    <ul>
+      <li><a href='#getting-started'>Getting Started</a></li>
+      <li><a href='#customizing'>Customizing Maps on a Stick</a></li>
+      <li><a href='#loading-tiles'>Advanced: Loading Tiles &amp; Data onto a USB Drive</a></li>
+    </ul>
+  </div> <!-- #left -->
+  <div id='shadow-bottom'></div>
+  <div id='shadow-top'></div>
+  <div id='canvas'>
+    <a name='getting-started'></a>
+    <div id='map'>
+      <div id='documentation-page'>
+        <h2>Getting Started</h2>
+        <h3>Setting up New Tiles</h3>
+        <p>
+          Maps on a Stick is made so that it can work with any map tiles that the 
+          <a href="http://www.openlayers.org/">OpenLayers Library</a> can handle. To start off 
+          with, there are two sample tilesets for free consumption (and freely licensed) online.
+        </p>
+        <ul>
+          <li><a href="http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-8.tgz">The World from Zoom 0 to 8</a></li>
+          <li><a href="http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-9.tgz">The World from Zoom 0 to 9</a></li>
+        </ul>
+        <p>
+          Tilesets become much larger with higher zoom levels, so it will be much faster to 
+          start off running with the <a href="http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-8.tgz">smaller tileset</a> for testing purposes.
+        </p>
+        <p>
+          Tools are included on Mac OSX and Linux to decompress these files; on Windows, we recommend 
+          <a href="http://www.7-zip.org/">7-Zip</a> to do the unpacking. Once the files are unpacked,
+          there will be a directory called <code>world-dark</code>. Move this directory into the mapsona
+          folder, under the path <code>tiles/1.0.0</code>. The resulting path should be 
+          <code>tiles/1.0.0/world-dark</code>, and will contain numerical directories leading down to
+          numerically-named png files.
+        </p>
+        <p>
+          The world-dark layer is included by default in the Maps on a Stick code, so you should be able to
+          head over to the <a href="start.html">Maps on a Stick Application</a> and see a beautiful indigo-colored
+          world.
+        </p>
+
+        <h3>Using KML</h3>
+        <p>
+          Maps on a Stick can handle KML layers like you would use in Google Earth, and has two layers
+          included by default: Earthquake Activity (December 2009, USGS source), and World Cities.
+        <p>
+        <p>
+          You can include each of these KML layers in a map by first clicking <strong>Choose File</strong> in the
+          left-hand column. Select the KML file you want to use (in the directory <strong>kml</strong>), and then
+          click <strong>Add to Map</strong>. The map will become populated with points indicating earthquakes
+          or cities.
+        <p>
+        <p id='customizing'>
+          For unstyled KML, like the cities example, you can trigger different layer styles by clicking 
+          the colored square to the right of the layer name.
+        <p>
+
+        <h2>Customizing Maps on a Stick</h2>
+        <h3>Adding New KML</h3>
+        <p>
+          You can easily add new KML layers by dropping the KML files into the <code>kml</code> directory, and 
+          then adding them with the process under Using KML.
+        </p>
+        <h4>Caveats</h4>
+        <ul>
+          <li>
+            Some KML files are not actually self-contained, but include external, online elements like icons or 
+            references to extra online KML files.
+          </li>
+          <li>
+            Maps on a Stick does not currently support KMZ files - files with a <code>.kmz</code> extension
+            which are essentially zipped KML. These can be supported by unzipping the files and then adding
+            the contained KML.
+          </li>
+          <li>
+            For security reasons, KML files much currently be placed in the <code>kml</code> directory and
+            cannot be included from external websites or other directories.
+          </li>
+        </ul>
+
+        <h3>Adding New Tiles</h3>
+        <p>
+          Maps on a Stick fully supports adding new TMS layers. Online layers can be added by adding their
+          map definitions to <code>resources/layers.js</code>, and new offline tilesets can be placed in 
+          <code>tiles/1.0.0</code> and added to the same file by mimicking the existing layer definition.
+          More details can be found in the actual source file.
+        </p>
+
+        <h2>Troubleshooting</h2>
+        <p>
+          Maps on a Stick has been tested in Firefox 3.5, Safari 4, and IE7. Currently Google Chrome does 
+          not support opening local files, so Maps on a Stick is not supported in Chrome.
+        </p>
+        <p id="loading-tiles">
+          For other problems, please <a href="http://github.com/tmcw/mapsona/issues">post on the issue queue</a>
+          or <a href="mailto:macwright@gmail.com">email me.</a>
+        </p>
+
+        <h2>ADVANCED: Loading Tiles & Code onto USB Drives</h2>
+        <p>Flash drives are fast for many things - flash memory, especially when it's used in SSDs, has gotten a good reputation for being fast. However, flash, like many types of storage, has some problems dealing with lots of small files, so it's impractical to simply copy map tilesets from your computer to a USB drive. We're working on a better solution which consists of making an disk image, like an ISO, of the data you want to put on a drive, and then writing that image, complete with a filesystem, to the drive.</p>
+
+        <h3>Requirements</h3>
+
+        <ul>
+        <li>This process will require familiarity with some low-level POSIX utilities, especially <code>dd</code>. This is not a guide you can run through by copying commands - it will require, at the very least, careful editing of the sample commands.</li>
+        <li>This is written for Apple Macintosh computers. POSIX equivalents to Mac helper applications like <code>hdiutil</code> certainly exist and a guide for doing this with Linux, etc., is certainly possible.</li>
+        </ul>
+
+
+        <h3>Create an Image from Folder</h3>
+
+        <p><code>
+        sudo hdiutil create -verbose -fs MS-DOS -fsargs "-F 32 -c 16" -srcfolder your_map_application your_map_application.dmg
+        </code></p>
+
+        <p>This command creates an <a href="http://en.wikipedia.org/wiki/Apple_Disk_Image">Apple Disk Image</a> from a folder on your computer. Notably, the image will have a FAT32 filesystem - the <code>-F 32</code> argument specifies that this will be the case, rather than FAT16, which is limited to a 2 gigabyte partition.</p>
+
+        <h3>Attach the Image as a Device</h3>
+
+        <p><code>
+        hdiutil attach -nomount your_map_application.dmg
+        </code></p>
+
+        <p>Note the output of this command: if it succeeds, it will report something like <code>/dev/disk3</code>.</p>
+
+        <h3>Attach USB Drive</h3>
+
+        <p>Put the USB flash device in your computer's USB port, and then run <code>df</code> in the console and note the output. The leftmost column shows what the device of the USB flash drive is, and the rightmost will show the mount point. Remember the left column (which will be something like <code>/dev/disk1s2</code>) and then run</p>
+
+        <p><code>
+        umount /Volumes/USBDrive
+        </code></p>
+
+        <p>To unmount the drive</p>
+
+        <h3>Image the drive</h3>
+
+        <p>Make absolutely sure that the if and of parameters of the following command are accurate; the dd utility is able to write over essential data if you accidentally put the device of another drive in the of parameter.</p>
+
+        <p><code>
+        sudo dd if=/dev/FROM_DISKIMAGE of=/dev/TO_USBDRIVE bs=32k
+        </code></p>
+
+        <p>You can tune the last parameter, bs, which specifies the block size of the transfer operation.</p>
+
+        <h3>Checking progress</h3>
+
+        <p>The <code>dd</code> operation that is now running can take a while, and it doesn't provide any status information. However, it can.</p>
+
+        <p>Open a new terminal and run</p>
+
+        <p><code>
+        ~$ ps aux | grep "dd"
+        tmcw      1797   0.3  0.0  2425520    176 s001  R+   12:30PM   0:00.01 grep dd
+        root      1698   0.1  0.0  2434768    252 s000  U+   12:18PM   0:01.67 dd if=/dev/disk2 of=/dev/disk1s2 bs=32k
+        root        58   0.0  0.0  2436444    852   ??  Ss   10:16AM   0:00.04 /usr/libexec/hidd
+        </code></p>
+
+        <p>Note the process id: the first number in the row of your <code>dd</code> process. In the above output, it is 1698. Use this id in the following command.</p>
+
+        <p><code>
+          ~$ sudo kill -s INFO PROCESS_ID
+        </code></p>
+
+        <p>Going back to the terminal which is running dd will show a count of how many bytes have been transferred. To get a figure in megabytes, you can use the <code>units</code> utility.</p>
+
+        <p><code>
+          ~$ units "70000 bytes" "megabytes"</p>
+
+        <pre><code>* 0.066757202
+        / 14.979657
+        </code></pre>
+
+          <p></code></p>
+
+        <p>So, 70000 bytes is 0.06 megabytes.</p>
+
+        <p>When <code>dd</code> completes, it will output a summary of how much information was transferred and in what timeframe.</p>
+
+      </div>
+    </div>
+  </div>
+  <div id='footer'>
+    &copy; 2009 <a href='http://www.mapbox.com/'>MapBox</a>
+  </div>
+</body>
+</html>
