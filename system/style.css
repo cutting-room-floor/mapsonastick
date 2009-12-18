@@ -15,11 +15,12 @@ a {
  */
 #header {
   bottom:auto;
-  position:static;
+  position:fixed;
   width: 100%;
   top:auto;
   background-color:#182824;
   border-color:#152420;
+  z-index: 20000;
   -moz-background-clip:border;
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
@@ -391,7 +392,7 @@ div.openlayers-blockswitcher span.key {
   width:15px !important;
 }
 
-div.openlayers-blockswitcher h2.layers-title, div.openlayers-blockswitcher div.form-item, h2.form-title {
+div.openlayers-blockswitcher h2.layers-title, div.openlayers-blockswitcher div.form-item, .form-title {
   -moz-background-clip:border;
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
@@ -413,10 +414,16 @@ div.openlayers-blockswitcher div.radio {
 div.openlayers-blockswitcher div.activated {
   background-position:15px -25px;
 }
+
 div.openlayers-blockswitcher h2.layers-title, div.openlayers-blockswitcher div.form-item label, h2.form-title {
   font-size:11px;
 }
-div.openlayers-blockswitcher h2.layers-title, h2.form-title {
+
+h1.form-title {
+  font-size: 14px;
+}
+
+div.openlayers-blockswitcher h2.layers-title, .form-title {
   -moz-background-clip:border;
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
@@ -536,3 +543,22 @@ div.olMapViewport div.olControlAttribution {
   left: 15px;
   bottom: 10px;
 }
+
+/*
+ * DOCUMENTATION
+ */
+
+div#documentation-page {
+  margin: -41px 20px 100px 20px;
+}
+
+  div#documentation-page h2 {
+    border-top: 1px solid #888;
+    margin: 40px -20px 20px -20px;
+    padding: 20px;
+  }
+
+  div#documentation-page code {
+    background: #fff;
+    padding: 2px;
+  }
