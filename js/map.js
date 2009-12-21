@@ -84,6 +84,60 @@ function basename (path, suffix) {
   return b;
 }
 
+function add_kml_href_callback(XHRobj) {
+  console.log(XHRobj.readyState);
+  if (XHRobj.readyState == 4) {
+    var format_options, l;
+    format_options = {
+      extractStyles: true, 
+      extractAttributes: true,
+      maxDepth: 2
+    };
+    l = new OpenLayers.Layer.GML(layer_title, layer_url, 
+    {
+      format: OpenLayers.Format.KML, 
+      projection: new OpenLayers.Projection("EPSG:4326"),
+      formatOptions: format_options,
+      styleMap: new_style(default_styles)
+    });
+    l.events.on({
+        'loadend': function() {
+          this.map.zoomToExtent(this.getDataExtent());
+        },
+        'context': this
+    });
+    map.addLayer(l);
+  }
+}
+
+function add_kml_href_error(errObj) {
+	alert("Error: "+errObj.number
+		+"\nType: "+errObj.name
+		+"\nDescription: "+errObj.description
+		+"\nSource Object Id: "+errObj.srcElement.instanceId
+	);
+}
+
+/**
+ * Remote KML constructor. Only necessary to correctly
+ * set projections
+ * @param layer_title Any alphanumeric layer title
+ * @param layer_url URL to the KML feed
+ * @return none
+ */
+function add_kml_href(layer_title, layer_url) {
+  var kml_proxy = new flensed.flXHR(
+    {
+      autoUpdatePlayer:true, 
+      instanceId:"kml_proxy", 
+      xmlResponseText:false, 
+      onerror:add_kml_href_error, 
+      onreadystatechange:add_kml_href_callback
+    }
+  );
+	kml_proxy.open("GET", layer_url);
+	kml_proxy.send("");
+}
 
 /**
  * Basic KML constructor. Only necessary to correctly
@@ -266,23 +320,29 @@ $(document).ready(
 
 $(document).ready(
   function() {
-  $('#kml-file-submit').click(function() {
-    var name, url;
-    url = $("#kml-file-input").val();
-    url = "kml/" + basename(url)
-    name = basename(url, '.kml');
-    console.log(name);
-    add_kml(name, url);
-    attachSelect();
-  });
-  $("#save_layer").click(function() {
-    var layer_data, basepath, filepath;
-    layer_data = $(map).get_layers().serialize_layers();
-    $("#save_filename").click();
-    basepath = document.location.href.substring(0, document.location.href.lastIndexOf('/') + 1);
-    filepath = basepath+'layers.js'; 
-    filepath = $.twFile.convertUriToLocalPath(filepath); 
-    $.twFile.save(filepath, layer_data);
+    $('#kml-file-submit').click(function() {
+      var name, url;
+      url = $("#kml-file-input").val();
+      url = "kml/" + basename(url);
+      name = basename(url, '.kml');
+      add_kml(name, url);
+      attachSelect();
     });
+    $('#kml-href-submit').click(function() {
+      var name, url;
+      url = $("#kml-href-input").val();
+      name = basename(url, '.kml');
+      add_kml_href(name, url);
+      attachSelect();
+    });
+    $("#save_layer").click(function() {
+      var layer_data, basepath, filepath;
+      layer_data = $(map).get_layers().serialize_layers();
+      $("#save_filename").click();
+      basepath = document.location.href.substring(0, document.location.href.lastIndexOf('/') + 1);
+      filepath = basepath+'layers.js'; 
+      filepath = $.twFile.convertUriToLocalPath(filepath); 
+      $.twFile.save(filepath, layer_data);
+      });
   }
 );

@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
 	<title>Mapsona</title>
+  <script src='js/flXHR/flXHR.js'></script>
   <script src='js/OpenLayers.js'></script>
   <script src='js/mapbox.js'></script>
   <script src='js/jquery-1.3.2.js'></script>
@@ -45,6 +46,11 @@
     <div class='kml-input'>
       <input id='kml-file-input' type='file' />
       <input id='kml-file-submit' class='form-submit-mini' type='button' value='Add to Map' />
+    </div>
+    <h2 class='form-title'>Add Remote KML Layer</h2>
+    <div class='kml-input'>
+      <input type='text' id='kml-href-input' />
+      <input id='kml-href-submit' class='form-submit-mini' type='button' value='Add to Map' />
     </div>
     <h1 class="form-title"><a href="help.html">Help</a></h1>
   </div> <!-- #left -->
