@@ -260,6 +260,7 @@ $(document).ready(
     map.addControl(selectControl);
     selectControl.activate();
     map.zoomToMaxExtent();
+    map.zoomTo(2);
     OpenLayersPlusBlockswitcher.hattach($('.openlayers-blockswitcher'), map);
   }
 );
