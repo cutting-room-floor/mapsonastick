@@ -2,7 +2,6 @@ This is mapsona, the code that runs Maps on a Stick. It's a purely client-side m
 
 # Installation
 
-
 # Basic Installation
 
 * Download the mapsona code either with git or as a zip or tgz file from GitHub.
@@ -11,14 +10,10 @@ This is mapsona, the code that runs Maps on a Stick. It's a purely client-side m
   [the world up to zoom level 8](http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-8.tgz) and [the world up to zoom level 9](http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-9.tgz). Download one of these (if you aren't sure, up to zoom 8 will be much faster to transfer).
 * Download and decompress the tileset: the examples produce a folder called world-dark.
 * Move the tileset to the tiles/1.0.0/ directory of the mapsona code. So its path should now be tiles/1.0.0/world-dark/.
-* Open index.html in a browser.
+* Open start.html in a browser.
 
-
-# Adding Tiles to a USB Drive
-
-
-* Quickly making USB drives full of map data is an interesting challenge and is
-  more thoroughly documented elsewhere.
+Full documentation is located in the start.html file, which is browsable once the
+package is downloaded.
 
 
 # Code that Mapsona uses
