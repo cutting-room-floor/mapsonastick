@@ -34,7 +34,7 @@ var layers = [
  * layer to be called in the legend and what the 
  * tileset directory is called, respectively.
  */
-  new OpenLayers.Layer.TMS('World',
+  new OpenLayers.Layer.lMapBox('World',
       'tiles/',
       {
         layername: 'world-dark',
