@@ -21,7 +21,8 @@ OpenLayers.Layer.MapBox = OpenLayers.Class(OpenLayers.Layer.TMS, {
             isBaseLayer: true,
             numZoomLevels: 19,
             displayOutsideMaxExtent: true,
-            wrapDateLine: true
+            wrapDateLine: true,
+            buffer: 0
         }, options);
         urls = [
             "http://a.tile.mapbox.com/",
