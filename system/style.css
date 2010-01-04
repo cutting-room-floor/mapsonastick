@@ -38,12 +38,12 @@ a {
    * Superchill footer ==================================================
    */
   #footer {
-    background:#444;
+    background:#212320;
     color:#ccc;
 
     overflow:hidden;
-    height:30px;
-    line-height:30px;
+    height:40px;
+    line-height:40px;
     font-size:11px;
 
     padding:0px 20px;
@@ -59,6 +59,20 @@ a {
   #footer a {
     color: #eee;
   }
+
+  #footer a.ds {
+    background: url(images/ds.gif) no-repeat;
+    z-index: 50000;
+    border: 0px;
+    bottom: 5px;
+    height: 30px;
+    overflow: hidden;
+    position: absolute;
+    right: 40px;
+    text-indent: -999px;
+    width: 150px;
+  }
+  
 
 /**
  * Shadow =============================================================
@@ -80,7 +94,7 @@ a {
   #shadow-bottom {
     background:url(images/shadow_bottom.png) repeat-x;
     z-index:5000;
-    bottom:30px;
+    bottom:40px;
   }
 
 /**
@@ -93,7 +107,7 @@ div.openlayers-views-map div.openlayers-map {
     position:fixed;
 
     top:40px;
-    bottom:30px;
+    bottom:40px;
     left:0px;
     right:0px;
 
@@ -358,7 +372,7 @@ label {
 }
 
 #map {
-  bottom: 25px;
+  bottom: 40px;
   top: 0;
   position: absolute;
   top: 50px;
