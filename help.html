@@ -134,7 +134,7 @@
         <h3>Create an Image from Folder</h3>
 
         <p><code>
-        sudo hdiutil create -verbose -fs MS-DOS -fsargs "-F 32 -c 16" -srcfolder your_map_application your_map_application.dmg
+        sudo hdiutil create -verbose -fs MS-DOS -volname "Maps on a Stick" -fsargs "-F 32 -c 16" -srcfolder your_map_application your_map_application.dmg
         </code></p>
 
         <p>This command creates an <a href="http://en.wikipedia.org/wiki/Apple_Disk_Image">Apple Disk Image</a> from a folder on your computer. Notably, the image will have a FAT32 filesystem - the <code>-F 32</code> argument specifies that this will be the case, rather than FAT16, which is limited to a 2 gigabyte partition.</p>

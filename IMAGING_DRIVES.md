@@ -8,7 +8,7 @@ Flash drives are fast for many things - flash memory, especially when it's used 
 # Create an Image from Folder
 
 <code>
-sudo hdiutil create -verbose -fs MS-DOS -fsargs "-F 32 -c 16" -srcfolder your_map_application your_map_application.dmg
+sudo hdiutil create -verbose -fs MS-DOS -fsargs "-F 32 -c 16" -volname "Maps on a Stick" -srcfolder your_map_application your_map_application.dmg
 </code>
 
 This command creates an [Apple Disk Image](http://en.wikipedia.org/wiki/Apple_Disk_Image) from a folder on your computer. Notably, the image will have a FAT32 filesystem - the `-F 32` argument specifies that this will be the case, rather than FAT16, which is limited to a 2 gigabyte partition.
