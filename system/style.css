@@ -577,3 +577,29 @@ div#documentation-page {
     background: #fff;
     padding: 2px;
   }
+
+/**
+ * KML Form
+ */
+div#kml_window {
+  position: absolute;
+  left: 400px;
+  top: 100px;
+  width: 555px;
+  background: #fff;
+  border: 1px solid #aaa;
+}
+
+  div#kml_window div.diagram {
+    padding: 10px;
+    width: 532px;
+  }
+
+    div#kml_window div.diagram p {
+      margin-bottom: 0;
+    }
+
+  div#kml_window div.kml-file-input-wrapper {
+    padding: 10px;
+    background-color: #eee;
+  }

@@ -230,7 +230,7 @@ $(document).ready(
     /**
      * @TODO: these should be moved outside this function
      */
-    var options, mapnik, afghanistan_winter, selectControl;
+    var options, mapnik, selectControl;
         /**
          * set options so that KML markers with lat/lon points can
          * be placed on map tiles that are in spherical mercator
@@ -268,14 +268,28 @@ $(document).ready(
 
 $(document).ready(
   function() {
-  $('#kml-file-submit').click(function() {
-    var name, url;
-    url = $("#kml-file-input").val();
-    url = "kml/" + basename(url);
-    name = basename(url, '.kml');
-    add_kml(name, url);
-    attachSelect();
-  });
+    $('#kml-file-chooser').toggle(
+      function() {
+        $('#kml_window').css({'z-index': 50000000});
+      },
+      function() {
+        $('#kml_window').css({'z-index': 0});
+      }
+    );
+    $('#kml-file-input-cancel').click(
+      function() {
+        $('#kml_window').css({'z-index': 0});
+      }
+      );
+    $('#kml-file-submit').click(function() {
+      var name, url;
+      url = $("#kml-file-input").val();
+      url = "kml/" + basename(url);
+      name = basename(url, '.kml');
+      add_kml(name, url);
+      attachSelect();
+    });
+  /*
   $("#save_layer").click(function() {
     var layer_data, basepath, filepath;
     layer_data = $(map).get_layers().serialize_layers();
@@ -286,4 +300,6 @@ $(document).ready(
     $.twFile.save(filepath, layer_data);
     });
   }
+  */
+ }
 );
