@@ -114,6 +114,7 @@ function add_kml(layer_title, layer_url) {
   });
   map.addLayer(l);
 }
+
 /**
  * TODO: This needs to be rewritten.
  * Specialized object serializer for OpenLayers layer objects
@@ -234,7 +235,7 @@ $(document).ready(
          * set options so that KML markers with lat/lon points can
          * be placed on map tiles that are in spherical mercator
          */
-        options = {
+    options = {
     projection: new OpenLayers.Projection("EPSG:900913"),
     displayProjection: new OpenLayers.Projection("EPSG:4326"),
     units: "m",
@@ -260,7 +261,7 @@ $(document).ready(
     map.addControl(selectControl);
     selectControl.activate();
     map.zoomToMaxExtent();
-    map.zoomTo(2);
+    map.zoomTo(0);
     OpenLayersPlusBlockswitcher.hattach($('.openlayers-blockswitcher'), map);
   }
 );
