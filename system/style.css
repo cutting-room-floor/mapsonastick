@@ -372,6 +372,7 @@ label {
 }
 
 #map {
+  background-color: #fff;
   bottom: 40px;
   top: 0;
   position: absolute;
