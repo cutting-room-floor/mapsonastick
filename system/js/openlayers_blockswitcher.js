@@ -13,14 +13,6 @@ OpenLayersPlusBlockswitcher.layerStates = [];
  */
 OpenLayersPlusBlockswitcher.hattach = function(element, map) {
   this.map = map;
-
-  //  var block = $(data.map.behaviors.openlayers_plus_behavior_blockswitcher.block);
-  //  block.addClass(data.map.behaviors.openlayers_plus_behavior_blockswitcher.map.position);
-  //  $('h2.block-title', block).click(function() {
-  //    $(this).parents('div.block').toggleClass('expanded');
-  //    $(this).siblings('div.block-content').toggle();
-  //  });
-  //  $(context).append(block);
   this.blockswitcher = element;
 
   map.events.on({
@@ -159,25 +151,22 @@ OpenLayersPlusBlockswitcher.redraw = function() {
 };
 
 OpenLayersPlusBlockswitcher.selectStyle = function(element) {
-  var k,y;
+  var k,j,y;
   y = false;
   current_style = $(this).data('layer').styleMap.name;
+
+  default_styles_keys = [];
+
+  // basically array_keys, there may be a js saying
   for (k in default_styles) {
-    if (y) {
-      $(this).data('layer').styleMap = default_styles[k];
-      y = false;
-      break;
-    }
-    if (k === current_style) {
-      y = true;
-    }
+    default_styles_keys.push(k);
   }
-  if (y) {
-    for (k in default_styles) {
-      $(this).data('layer').styleMap = default_styles[k];
-      break;
-    }
-  }
+  current_index = default_styles_keys.indexOf(current_style);
+
+  $(this).data('layer').styleMap = 
+    default_styles[default_styles_keys[
+      (current_index + 1) % (default_styles_keys.length)]];
+
   $(this).data('layer').redraw();
   OpenLayersPlusBlockswitcher.styleChanged = true;
   OpenLayersPlusBlockswitcher.redraw();

@@ -116,37 +116,6 @@ function add_kml(layer_title, layer_url) {
 }
 
 /**
- * TODO: This needs to be rewritten.
- * Specialized object serializer for OpenLayers layer objects
- * @param hash javascript dictionary/hash object
- * @return javascript string that nearly initializes that object
- */
-function hash_to_string(hash) {
-  var out, n;
-  out = "";
-  for(n in hash) {
-    if(typeof(hash[n].prototype) !== 'undefined') {
-      // this is for formats, mostly OpenLayers.Format.KML
-      out  += n+":"+hash[n].prototype.CLASS_NAME+",\n";
-    }
-    else if(hash[n].CLASS_NAME === 'OpenLayers.Projection') {
-      // make a constructor for projections
-      out += n+": new "+hash[n].CLASS_NAME+"('"+hash[n].projCode+"'),";
-    }
-    else if(typeof hash[n] === "object") {
-      // basically the options array
-      out += n+":{"+hash_to_string(hash[n])+"},";
-    }
-    else {
-      // plain properties
-      out  += n+":"+hash[n]+",\n";
-    }
-  }
-  return out;
-}
-
-
-/**
  * jQuery function which gets layers out of an OpenLayers map object
  * @param options optional options dictionary
  * @return jquery object with property layers: layer array
@@ -161,32 +130,6 @@ $.fn.get_layers = function(options) {
       }
       });
   return $({'layers':layers});
-};
-
-/**
- * layer_serialize: A wrapper that writes valid javascript for layer objects
- * @param layer an OpenLayers layer object
- * @return javascript string definition of that layer
- */
-function layer_serialize(layer) {
-  // If the layer has a styleMap, and it's one of the defaults, do this.
-  if((typeof layer.styleMap.name !== 'undefined') &&
-      (typeof default_styles[layer.styleMap.name] !== 'undefined')) {
-    layer.options.styleMap = "default_styles['"+layer.styleMap.name+"']";
-  }
-  return "new "+layer.CLASS_NAME+"( '"+
-    layer.name+"', '"+
-    layer.url+"', {"+hash_to_string(layer.options)+"})";
-}
-
-/**
- * jQuery function that runs after .get_layers and returns a javascript
- * layer intialization string
- * @return javascript object initialization string
- */
-$.fn.serialize_layers = function(options) {
-  var serialized_layers = "var layers = ["+this[0].layers.map(layer_serialize).join(",\n")+"]";
-  return serialized_layers;
 };
 
 /**
@@ -270,17 +213,20 @@ $(document).ready(
   function() {
     $('#kml-file-chooser').toggle(
       function() {
-        $('#kml_window').css({'z-index': 50000000});
+        $('#kml_window').css({'display': 'block'});
       },
       function() {
-        $('#kml_window').css({'z-index': 0});
+        $('#kml_window').css({'display': 'none'});
       }
     );
     $('#kml-file-input-cancel').click(
       function() {
-        $('#kml_window').css({'z-index': 0});
+        $('#kml-file-chooser').click();
       }
-      );
+    );
+    $('#kml-file-input').change(function() {
+      $('#kml-file-submit').attr({'disabled': false});
+    });
     $('#kml-file-submit').click(function() {
       var name, url;
       url = $("#kml-file-input").val();
@@ -288,18 +234,8 @@ $(document).ready(
       name = basename(url, '.kml');
       add_kml(name, url);
       attachSelect();
-    });
-  /*
-  $("#save_layer").click(function() {
-    var layer_data, basepath, filepath;
-    layer_data = $(map).get_layers().serialize_layers();
-    $("#save_filename").click();
-    basepath = document.location.href.substring(0, document.location.href.lastIndexOf('/') + 1);
-    filepath = basepath+'layers.js'; 
-    filepath = $.twFile.convertUriToLocalPath(filepath); 
-    $.twFile.save(filepath, layer_data);
+      $('#kml-file-submit').attr({'disabled': true});
+      $('#kml-file-chooser').click();
     });
   }
-  */
- }
 );

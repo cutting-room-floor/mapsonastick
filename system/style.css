@@ -387,6 +387,7 @@ label {
   min-height:400px;
   width:75%;
   top: 50px;;
+  background-color: #fff;
 }
 
 #block-openlayers_plus-blockswitcher {
@@ -583,6 +584,8 @@ div#documentation-page {
  */
 div#kml_window {
   position: absolute;
+  z-index: 40000;
+  display: none;
   left: 400px;
   top: 100px;
   width: 555px;

@@ -18,6 +18,26 @@
 <body>
   <!-- layers.js is included within the body so that it's in the javascript global namespace -->
   <script src='resources/layers.js'></script>
+  <div id='kml_window'>
+    <div class='diagram'>
+      <img src='system/images/kml_diagram.jpg' />
+      <p>
+        First copy new KML files from their folder or URL to 
+        the KML folder in Maps on a Stick. This ensures that the browser 
+        can access them and that they won't be lost when the USB
+        Drive is disconnected.
+      </p>
+    </div>
+    <!-- TODO: layer chooser appears while loading tiles -->
+    <div class='kml-file-input-wrapper'>
+      1 <input type='file' name='kml-file-input' id='kml-file-input' />
+      2 <input disabled='true' type='submit' name='kml-file-submit' id='kml-file-submit' value='Add Layer' />
+      <div style='float: right;'>
+        <a href="#" id='kml-file-input-cancel'>cancel</a>
+      </div>
+    </div>
+  </div>
+
   <div id='header'>
     <h1 class="site-name"></h1>
   </div>
@@ -63,23 +83,5 @@
       <a href="http://www.mapbox.com/">MapBox.com</a> and 
       <a href="http://www.developmentseed.org/">DevelopmentSeed.org</a>
   </div>
-  <div id='kml_window'>
-    <div class='diagram'>
-      <img src='system/images/kml_diagram.jpg' />
-      <p>
-        First copy new KML files from their folder or URL to 
-        the KML folder in Maps on a Stick. This ensures that the browser 
-        can access them and that they won't be lost when the USB
-        Drive is disconnected.
-      </p>
-    </div>
-    <div class='kml-file-input-wrapper'>
-      1 <input type='file' name='kml-file-input' id='kml-file-input' />
-      2 <input type='submit' name='kml-file-submit' id='kml-file-submit' value='Add Layer' />
-      <div style='float: right;'>
-        <a href="#" id='kml-file-input-cancel'>cancel</a>
-      </div>
-    </div>
-  </div>
-</body>
+  </body>
 </html>
