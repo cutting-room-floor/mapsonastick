@@ -108,7 +108,14 @@ function add_kml(layer_title, layer_url) {
   });
   l.events.on({
       'loadend': function() {
-        this.map.zoomToExtent(this.getDataExtent());
+        if(this.features.length > 0) {
+          this.map.zoomToExtent(this.getDataExtent());
+        }
+        else {
+          alert('This KML layer could not be loaded.' + 
+          'Check that it has been added to the KML Data folder.');
+          this.map.removeLayer(this);
+        }
       },
       'context': this
   });
