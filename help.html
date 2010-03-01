@@ -16,6 +16,7 @@
       <li><a href='#getting-started'>Getting Started</a></li>
       <li><a href='#customizing'>Customizing Maps on a Stick</a></li>
       <li><a href='#loading-tiles'>Advanced: Loading Tiles &amp; Data onto a USB Drive</a></li>
+      <li><a href='#running-firefox-on-windows'>Running Firefox on Windows</a></li>
     </ul>
     <h1 class='form-title'><a href='start.html'>&laquo; Maps on a Stick Application</a></h1>
   </div> <!-- #left -->
@@ -174,12 +175,12 @@
 
         <p>Open a new terminal and run</p>
 
-        <p><code>
+        <pre><code>
         ~$ ps aux | grep "dd"
         tmcw      1797   0.3  0.0  2425520    176 s001  R+   12:30PM   0:00.01 grep dd
         root      1698   0.1  0.0  2434768    252 s000  U+   12:18PM   0:01.67 dd if=/dev/disk2 of=/dev/disk1s2 bs=32k
         root        58   0.0  0.0  2436444    852   ??  Ss   10:16AM   0:00.04 /usr/libexec/hidd
-        </code></p>
+        </code></pre>
 
         <p>Note the process id: the first number in the row of your <code>dd</code> process. In the above output, it is 1698. Use this id in the following command.</p>
 
@@ -189,18 +190,25 @@
 
         <p>Going back to the terminal which is running dd will show a count of how many bytes have been transferred. To get a figure in megabytes, you can use the <code>units</code> utility.</p>
 
-        <p><code>
-          ~$ units "70000 bytes" "megabytes"</p>
+        <pre><code>
+          ~$ units "70000 bytes" "megabytes"
 
-        <pre><code>* 0.066757202
+        * 0.066757202
         / 14.979657
         </code></pre>
 
-          <p></code></p>
 
         <p>So, 70000 bytes is 0.06 megabytes.</p>
 
         <p>When <code>dd</code> completes, it will output a summary of how much information was transferred and in what timeframe.</p>
+
+        <a name='running-firefox-on-windows'></a>
+        <h2>Running Firefox on Windows</h2>
+
+        <p>Internet Explorer tends to be an extremely slow browser 
+        for applications like Maps on a Stick, so this package includes 
+        a portable version of Firefox, which can be started by double-clicking 
+        the 'windows_firefox_start.bat' batchfile.</p>
 
       </div>
     </div>
