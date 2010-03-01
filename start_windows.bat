@@ -1,2 +1,2 @@
 @echo off
-FirefoxPortable.exe start.html
+Firefox\FirefoxPortable.exe start.html
