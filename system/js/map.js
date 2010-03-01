@@ -230,7 +230,7 @@ $(document).ready(
     $('#kml-file-submit').click(function() {
       var name, url;
       url = $("#kml-file-input").val();
-      url = "kml/" + basename(url);
+      url = "KML Data/" + basename(url);
       name = basename(url, '.kml');
       add_kml(name, url);
       attachSelect();
