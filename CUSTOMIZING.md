@@ -1,5 +1,7 @@
 Customizing Maps on a Stick
 
+Documentation Version 1
+
 The initial distribution of Maps on a Stick is only an example, and is made to be modified with new data and layers for any purpose imaginable. Doing so requires some knowledge of Javascript, but given that requirement, it is quite straightforward.
 
 ## Adding new KML Layers

@@ -123,35 +123,42 @@
         </p>
 
         <h2>ADVANCED: Loading Tiles & Code onto USB Drives</h2>
-        <p>Flash drives are fast for many things - flash memory, especially when it's used in SSDs, has gotten a good reputation for being fast. However, flash, like many types of storage, has some problems dealing with lots of small files, so it's impractical to simply copy map tilesets from your computer to a USB drive. We're working on a better solution which consists of making an disk image, like an ISO, of the data you want to put on a drive, and then writing that image, complete with a filesystem, to the drive.</p>
+        
+        <p>Flash drives are very fast for common operations, but for the task of transferring multitude of files at one time, flash storage is extremely slow - transferring Maps on a Stick to a USB drive with the Mac OS X file would take more than 17 hours. A better, although more detailed, solution, is to create an image of the USB drive, including filesystem, and essentially &#8216;burning&#8217; this virtual volume to the USB drive. This way, the filesystem is controlled and constructed on a fast disk and then the raw information of the files and filesystem is transferred directly to the storage device.</p>
 
-        <h3>Requirements</h3>
+        <h3 id="requirements">Requirements</h3>
 
         <ul>
         <li>This process will require familiarity with some low-level POSIX utilities, especially <code>dd</code>. This is not a guide you can run through by copying commands - it will require, at the very least, careful editing of the sample commands.</li>
-        <li>This is written for Apple Macintosh computers. POSIX equivalents to Mac helper applications like <code>hdiutil</code> certainly exist and a guide for doing this with Linux, etc., is certainly possible.</li>
+        <li>This is written for Apple Macintosh computers. POSIX equivalents to Mac helper applications like <code>hdiutil</code> certainly exist and a guide for doing this with Linux, etc., is certainly possible, but not provided here.</li>
         </ul>
 
-
-        <h3>Create an Image from Folder</h3>
-
-        <p><code>
-        sudo hdiutil create -verbose -fs MS-DOS -volname "Maps on a Stick" -fsargs "-F 32 -c 16" -srcfolder your_map_application your_map_application.dmg
-        </code></p>
-
-        <p>This command creates an <a href="http://en.wikipedia.org/wiki/Apple_Disk_Image">Apple Disk Image</a> from a folder on your computer. Notably, the image will have a FAT32 filesystem - the <code>-F 32</code> argument specifies that this will be the case, rather than FAT16, which is limited to a 2 gigabyte partition.</p>
-
-        <h3>Attach the Image as a Device</h3>
+        <h3 id="create_an_image_from_folder">Create an Image from Folder</h3>
 
         <p><code>
-        hdiutil attach -nomount your_map_application.dmg
+        sudo hdiutil create -verbose -fs MS-DOS -fsargs "-F 32 -c 4" -volname "Maps on a Stick" -srcfolder your<em>map</em>application your<em>map</em>application.dmg
         </code></p>
 
-        <p>Note the output of this command: if it succeeds, it will report something like <code>/dev/disk3</code>.</p>
+        <p>This command creates an <a href="http://en.wikipedia.org/wiki/Apple_Disk_Image">Apple Disk Image</a> from a folder on your computer. Notably, the image will have a FAT32 filesystem - the <code>-F 32</code> argument specifies that this will be the case, rather than FAT16, which is limited to a 2 gigabyte partition. The <code>-c 4</code> option specifies that the clusters on the disk - which determine the minimum space used for a single file - are limited to 4K, which is conveniently a similar size to the size of a typical tile.</p>
 
-        <h3>Attach USB Drive</h3>
+        <h3 id="attach_the_image_as_a_device">Attach the Image as a Device</h3>
 
-        <p>Put the USB flash device in your computer's USB port, and then run <code>df</code> in the console and note the output. The leftmost column shows what the device of the USB flash drive is, and the rightmost will show the mount point. Remember the left column (which will be something like <code>/dev/disk1s2</code>) and then run</p>
+        <p><code>
+        hdiutil attach -nomount mapsonstick.dmg
+        </code></p>
+
+        <p>This command will typically return two paths, like</p>
+
+        <p><code>
+        /dev/disk1              FDisk_partition_scheme <br>
+        /dev/disk1s1            DOS_FAT_32
+        </code></p>
+
+        <p>Use the latter path (<code>/dev/disk1s1</code>) for future steps.</p>
+
+        <h3 id="attach_usb_drive">Attach USB Drive</h3>
+
+        <p>Put the USB flash device in your computer&#8217;s USB port, and then run <code>df</code> in the console and note the output. The leftmost column shows what the device of the USB flash drive is, and the rightmost will show the mount point. Remember the left column (which will be something like <code>/dev/disk1s2</code>) and then run</p>
 
         <p><code>
         umount /Volumes/USBDrive
@@ -159,49 +166,45 @@
 
         <p>To unmount the drive</p>
 
-        <h3>Image the drive</h3>
+        <h3 id="image_the_drive">Image the drive</h3>
 
-        <p>Make absolutely sure that the if and of parameters of the following command are accurate; the dd utility is able to write over essential data if you accidentally put the device of another drive in the of parameter.</p>
+        <p>Make absolutely sure that the <code>if</code> and <code>of</code> parameters of the following command are accurate; the dd utility is able to write over essential data if you accidentally put the device of another drive in the of parameter.</p>
 
         <p><code>
-        sudo dd if=/dev/FROM_DISKIMAGE of=/dev/TO_USBDRIVE bs=32k
+        sudo dd if=/dev/FROM_DISKIMAGE of=/dev/TO_USBDRIVE bs=8m
         </code></p>
 
-        <p>You can tune the last parameter, bs, which specifies the block size of the transfer operation.</p>
+        <p>The last parameter, <code>bs</code>, indicates the blocksize of the transfer; the size of each chunk of data that is transferred. This value is tuned for setups we&#8217;ve encountered, but other values may lead to a faster process.</p>
 
-        <h3>Checking progress</h3>
+        <h3 id="checking_progress">Checking progress</h3>
 
-        <p>The <code>dd</code> operation that is now running can take a while, and it doesn't provide any status information. However, it can.</p>
+        <p>The <code>dd</code> operation that is now running can take a while, and it doesn&#8217;t provide any status information. However, it can.</p>
 
         <p>Open a new terminal and run</p>
 
         <pre><code>
         ~$ ps aux | grep "dd"
-        tmcw      1797   0.3  0.0  2425520    176 s001  R+   12:30PM   0:00.01 grep dd
         root      1698   0.1  0.0  2434768    252 s000  U+   12:18PM   0:01.67 dd if=/dev/disk2 of=/dev/disk1s2 bs=32k
-        root        58   0.0  0.0  2436444    852   ??  Ss   10:16AM   0:00.04 /usr/libexec/hidd
         </code></pre>
 
         <p>Note the process id: the first number in the row of your <code>dd</code> process. In the above output, it is 1698. Use this id in the following command.</p>
 
         <p><code>
-          ~$ sudo kill -s INFO PROCESS_ID
+        ~$ sudo kill -SIGINFO PROCESS_ID
         </code></p>
 
         <p>Going back to the terminal which is running dd will show a count of how many bytes have been transferred. To get a figure in megabytes, you can use the <code>units</code> utility.</p>
 
         <pre><code>
-          ~$ units "70000 bytes" "megabytes"
-
-        * 0.066757202
-        / 14.979657
+        ~$ units "70000 bytes" "megabytes"
+            * 0.066757202
+            / 14.979657
         </code></pre>
-
 
         <p>So, 70000 bytes is 0.06 megabytes.</p>
 
         <p>When <code>dd</code> completes, it will output a summary of how much information was transferred and in what timeframe.</p>
-
+        
         <a name='running-firefox-on-windows'></a>
         <h2>Running Firefox on Windows</h2>
 

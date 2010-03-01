@@ -1,4 +1,6 @@
-This is mapsona, the code that runs Maps on a Stick. It's a purely client-side mapping tool aimed at carrying around tilesets and mashing up information with minimal internet connectivity.
+This is Maps on a Stick. It's a purely client-side mapping tool aimed at carrying around tilesets and mashing up information with minimal internet connectivity.
+
+Documentation Version 2
 
 # Installation
 
@@ -97,5 +99,3 @@ Going back to the terminal which is running dd will show a count of how many byt
 So, 70000 bytes is 0.06 megabytes.
 
 When `dd` completes, it will output a summary of how much information was transferred and in what timeframe.
-
-
