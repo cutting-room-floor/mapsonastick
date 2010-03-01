@@ -10,7 +10,8 @@ OpenLayers.Layer.MapBox = OpenLayers.Class(OpenLayers.Layer.TMS, {
                   // but distributed for performance
         mapbox_logo = "<a class='mapbox-branding' href='http://mapbox.com'></a> | <a href='http://mapbox.com/tos'>Terms of Service</a>";
         options = OpenLayers.Util.extend({
-            attribution: mapbox_logo,
+//          moved just outside the map
+//             attribution: mapbox_logo,
             transitionEffect: 'resize',
             maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
             maxResolution: 156543.0339,
@@ -48,7 +49,8 @@ OpenLayers.Layer.lMapBox = OpenLayers.Class(OpenLayers.Layer.TMS, {
                   // but distributed for performance
         mapbox_logo = "<a class='mapbox-branding' href='http://mapbox.com'></a> | <a href='http://mapbox.com/tos'>Terms of Service</a>";
         options = OpenLayers.Util.extend({
-            attribution: mapbox_logo,
+//          moved just outside the map
+//             attribution: mapbox_logo,
             transitionEffect: 'resize',
             maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34),
             maxResolution: 156543.0339,

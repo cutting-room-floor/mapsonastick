@@ -77,7 +77,9 @@ var layers = [
  * Sample KML file: uncomment and edit to add a new KML file
  * which will exist on the map for every pageload
  *
- ,new OpenLayers.Layer.GML( 'Polling Centers', 'polling_centers.kml', 
+ ,new OpenLayers.Layer.GML(
+   'Polling Centers', // < THE LAYER NAME, editable
+   '../My KML/polling_centers.kml', // THE LOCATION OF KML, editable
   {
     format:OpenLayers.Format.KML, 
     projection: new OpenLayers.Projection('EPSG:4326'),

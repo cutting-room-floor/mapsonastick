@@ -1,8 +1,16 @@
 body {
   background:#eee;
   color:#444;
-  font: 13px/20px "Helvetica Neue",Arial,Helvetica,sans-serif;
+  font-size: 12px;
+  line-height: 20px;
   margin: 0;
+}
+
+body,
+form,
+input,
+select { 
+  font-family:"Helvetica Neue",Arial,Helvetica,sans-serif;
 }
 
 a {
@@ -18,47 +26,56 @@ a {
   position:fixed;
   width: 100%;
   top:auto;
-  background-color:#182824;
-  border-color:#152420;
   z-index: 20000;
-  -moz-background-clip:border;
+  /*-moz-background-clip:border;
   -moz-background-inline-policy:continuous;
-  -moz-background-origin:padding;
-  background:#222222 none repeat scroll 0 0;
-  border-bottom:3px solid #111111;
-  height:47px;
-  line-height:50px;
+  -moz-background-origin:padding;*/
+  background:#404040 url(images/gradient.png) 0 -1px repeat-x;
+  height:30px;
+  line-height:40px;
   overflow:hidden;
   display:inline-block;
 }
   
+h1.site-name {
+  font-size: 18px;
+  line-height: 30px;
+  font-weight:500;
+  text-shadow: 0 1px 0 #000;
+  color:#fff;
+  margin:0;
+  padding:0 20px;
+}
 
+/**
+* Superchill footer ==================================================
+*/
+#footer {
+  background:#eee url(images/gradient.png) 0 0 repeat-x;
+  color:#555;
+  text-shadow: 0 1px 0 #fff;
 
-  /**
-   * Superchill footer ==================================================
-   */
-  #footer {
-    background:#212320;
-    color:#ccc;
+  overflow:hidden;
+  height:30px;
+  line-height:30px;
+  font-size:11px;
 
-    overflow:hidden;
-    height:40px;
-    line-height:40px;
-    font-size:11px;
+  padding:0px 5px;
 
-    padding:0px 20px;
+  position:fixed;
+  bottom:0px;
+  left:0px;
+  right:0px;
 
-    position:fixed;
-    bottom:0px;
-    left:0px;
-    right:0px;
-
-    z-index:1000;
-  }
+  z-index:1000;
+}
 
   #footer a {
-    color: #eee;
+    color: #444;
+    font-weight:bold;
   }
+  
+    #footer a:hover { color:#6688AA; }
 
   #footer a.ds {
     background: url(images/ds.gif) no-repeat;
@@ -73,29 +90,47 @@ a {
     width: 150px;
   }
   
+  #footer img.icon {
+    vertical-align:-20%;
+    border: none;
+  }
+  
+  #footer span.moas { color: #333; font-size: 14px; }
+  
+  #footer span.copyright { float: right; }
 
 /**
  * Shadow =============================================================
  */
-  #shadow-top,
-  #shadow-bottom {
-    position:fixed;
-    left:0px;
-    right:0px;
-    z-index:5000;
-    height:10px;
+#shadow-top,
+#shadow-bottom,
+#shadow-left {
+  background-color:#000;
+  opacity:0.125;
+  position:fixed;
+  left:0px;
+  right:0px;
+  z-index:5000;
 }
 
 #shadow-top {
-  background:url(images/shadow_top.png) repeat-x;
-  top:50px;
-  }
+  height:2px;
+  top: 30px;
+}
 
-  #shadow-bottom {
-    background:url(images/shadow_bottom.png) repeat-x;
-    z-index:5000;
-    bottom:40px;
-  }
+#shadow-bottom {
+  height:1px;
+  z-index:5000;
+  bottom:30px;
+}
+
+#shadow-left {
+  left: 250px;
+  right: auto;
+  width: 1px;
+  top: 5px;
+  bottom: 30px;
+}
 
 /**
  * Map ================================================================
@@ -104,15 +139,15 @@ div.openlayers-views-map { background:#eee; }
 
 div.openlayers-views-map,
 div.openlayers-views-map div.openlayers-map {
-    position:fixed;
+  position:fixed;
 
-    top:40px;
-    bottom:40px;
-    left:0px;
-    right:0px;
+  top:40px;
+  bottom:30px;
+  left:0px;
+  right:0px;
 
-    width:100%;
-    height:100%;
+  width:100%;
+  height:100%;
 }
 
 
@@ -177,26 +212,26 @@ div.olPopupContent div.ol-popup-name div.meta {
 /**
  * Page ===============================================================
  */
-  #page { padding:60px 20px; }
+#page { padding:60px 20px; }
 
-  #right {
-    padding:0px 0px 0px 20px;
-    width:220px;
-    float:left;
+#right {
+  padding:0px 0px 0px 20px;
+  width:220px;
+  float:left;
 }
 
 #left {
   -moz-background-clip:border;
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
-  background:#F8F8F8 none repeat scroll 0 0;
+  background:#f2f2f2 none repeat scroll 0 0;
   float:left;
-  width:25%;
+  width:250px;
   bottom:0;
   left:0;
   overflow:auto;
   position:fixed;
-  top:50px;
+  top: 30px;
 }
 
 
@@ -217,6 +252,13 @@ div.olPopupContent div.ol-popup-name div.meta {
 /**
  * Forms ==============================================================
  */
+ 
+.selector select:focus,
+.radio input:focus,
+.checker input:focus,
+.uploader input:focus {
+  outline: 0;
+}
 
 /* Items */
 div.form-item {
@@ -237,11 +279,11 @@ div.form-item label.option {
   text-transform:none;
   }
 
-  div.form-item div.form-item {
-    background:transparent;
-    border:0px;
-    padding:0px;
-  }
+div.form-item div.form-item {
+  background:transparent;
+  border:0px;
+  padding:0px;
+}
 
 /*
  * Elements
@@ -249,46 +291,65 @@ div.form-item label.option {
 input.form-text,
 textarea,
 select {
-    padding:5px;
-    background:#fff;
-    border-color:#ccc;
+  padding:5px;
+  background:#fff;
+  border-color:#ccc;
 }
 
-input.form-submit {
-  -moz-border-radius:30px;
-  -webkit-border-radius:30px;
-  -khtml-border-radius:30px;
+input.form-submit,
+input.form-submit-mini,
+div.uploader span.action,
+#kml-file-input-cancel {
+  -moz-border-radius:4px;
+  -webkit-border-radius:4px;
+  -khtml-border-radius:4px;
+  
+  border:1px solid #c8c8c8;
+  border-bottom-color:#aaa;
 
-  font-size:15px;
-  letter-spacing:-1px;
+  font-size:14px;
+  font-weight:800;
+  line-height:28px;
+  text-shadow: 0 1px 0 #fff;
 
-  color:#222;
-  background:#ccc;
-  padding:0 10px;
-  margin:5px;
+  color:#4d4d4d;
+  background:#fafafa url(images/gradient.png) 0 0 repeat-x;
+  padding:0px 20px;
+  margin:0px;
+  height:30px;
 }
 
-input.form-submit:hover { background:#444; color:#fff; }
-input.form-submit:active { background:#000; color:#fff; }
+  input.form-submit.disabled {
+    color: #fff;
+  }
 
-input.form-submit-mini {
-  -moz-border-radius:10px;
-  -webkit-border-radius:10px;
-  -khtml-border-radius:10px;
+  input.form-submit:hover,
+  input.form-submit-mini:hover,
+  div.uploader span.action:hover,
+  #kml-file-input-cancel:hover { 
+    background-color:#fff;
+    border-color:#999;
+    cursor:pointer;
+  }
 
-  font-size:11px;
-  letter-spacing:-1px;
+  input.form-submit:active,
+  input.form-submit-mini:active,
+  div.uploader span.action:active,
+  #kml-file-input-cancel:active {
+    background:#f0f0f0;
+    border-color:#888;
+    cursor:pointer;
+  }
 
-  color:#222;
-  background:#ccc;
-  padding:5px 15px;
-  margin:5px;
+#kml-file-input-cancel {
+  margin-left: 10px;
+  height:28px;
 }
 
-input.form-submit-mini:hover { background:#444; color:#fff; }
-input.form-submit-mini:active { background:#000; color:#fff; }
+div .kml-file-input-wrapper div.right { float: right; }
 
-
+  div .kml-file-input-wrapper div.right input,
+  div .kml-file-input-wrapper div.right a { float: left; }
 
 /*
  * Fieldsets
@@ -314,6 +375,99 @@ div.fieldset-content {
   padding:0px 1px 1px;
   background:#fff;
 }
+
+/*
+ * File Upload (Uniform Plugin)
+ */
+.uploader,
+.uploader *{
+  margin: 0;
+  padding: 0;
+}
+ 
+div.uploader {
+  background:none;
+  height: 30px;
+  width: 300px;
+  cursor: pointer;
+  position: relative;
+  float: left;
+  overflow: hidden;
+  cursor: default;
+}
+
+div.uploader.focus span.action,
+div.uploader.hover span.action,
+div.uploader:hover span.action {
+  border-color:#999;
+}
+
+div.uploader.active span.action,
+div.uploader:active span.action {
+  border-color:#888;
+}
+
+div.uploader.focus.active span.action,
+div.uploader:focus.active span.action,
+div.uploader.focus:active span.action,
+div.uploader:focus:active span.action {
+  border-color:#888;
+}
+
+div.uploader.disabled span.action {
+  opacity:0.6;
+  color: #aaa;
+}
+
+div.uploader span.action {
+  height: 28px;
+  line-height: 28px;
+  padding: 0 20px;
+  text-align: center;
+  text-shadow: #fff 0px 1px 0px;
+  font-size: 14px;
+  font-weight: 800;
+  float: left;
+  display: inline;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+div.uploader span.filename {
+  background:#fff;
+  border: 1px solid #c8c8c8;
+  border-top-color: #aaa;
+  -moz-border-radius:4px;
+  -webkit-border-radius:4px;
+  -khtml-border-radius:4px;
+  height: 28px;
+  line-height: 30px;
+  color: #404040;
+  width: 150px;
+  font-size: 14px;
+  padding: 0px 10px;
+  float: right;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 0 #eee;
+  white-space: nowrap;
+  cursor: default;
+}
+
+div.uploader input {
+  width: 100%;
+  height: 30px;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  float: left;
+  border: none;
+  cursor: pointer;
+}
+
 
 /*
  * TABLES =============================================================
@@ -373,11 +527,10 @@ label {
 
 #map {
   background-color: #fff;
-  bottom: 40px;
-  top: 0;
+  bottom: 30px;
   position: absolute;
-  top: 50px;
-  left:25%;
+  top: 30px;
+  left:250px;
   right:0;
 }
 
@@ -385,9 +538,9 @@ label {
   display:inline-block;
   float:right;
   min-height:400px;
-  width:75%;
-  top: 50px;;
-  background-color: #fff;
+  width:100%;
+  top: 30px;
+  left: 250px;
 }
 
 #block-openlayers_plus-blockswitcher {
@@ -413,9 +566,10 @@ div.openlayers-blockswitcher h2.layers-title, div.openlayers-blockswitcher div.f
   -moz-background-inline-policy:continuous;
   -moz-background-origin:padding;
   background:transparent none repeat scroll 0 0;
+  border-top:1px solid #fff;
   border-bottom:1px solid #E8E8E8;
-  line-height:15px;
-  padding:5px 5px 4px 20px;
+  line-height:20px;
+  padding:4px 5px 4px 20px;
 }
 
 div.openlayers-blockswitcher div.radio {
@@ -432,7 +586,7 @@ div.openlayers-blockswitcher div.activated {
 }
 
 div.openlayers-blockswitcher h2.layers-title, div.openlayers-blockswitcher div.form-item label, h2.form-title {
-  font-size:11px;
+  font-size:12px;
 }
 
 h1.form-title {
@@ -479,7 +633,7 @@ div.openlayers-map #block-openlayers_plus-blockswitcher div.block-content {
   padding:0;
   position:absolute;
   right:0;
-  top:30px;
+  top: 30px;
 }
 div.openlayers-map div.openlayers-blockswitcher h2.layers-title, div.openlayers-map div.openlayers-blockswitcher div.form-item {
   padding-left:10px;
@@ -506,10 +660,13 @@ h2.form-title {
  * KML INPUT
  */
 div.kml-input {
-  padding: 15px;
+  padding: 9px 20px;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #e8e8e8;
 }
 
-div.kml-input #kml-file-input {
+div.kml-input #kml-file-chooser {
+  margin: 5px auto;
 }
 
 /*
@@ -565,11 +722,13 @@ div.olMapViewport div.olControlAttribution {
  */
 
 div#documentation-page {
-  margin: -41px 20px 100px 20px;
+  margin: -41px 0px 0px;
+  padding: 0px 20px 40px;
+  background-color: #fff;
 }
 
   div#documentation-page h2 {
-    border-top: 1px solid #888;
+    border-top: 1px solid #aaa;
     margin: 40px -20px 20px -20px;
     padding: 20px;
   }
@@ -579,30 +738,88 @@ div#documentation-page {
     padding: 2px;
   }
 
+#left ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+  #left ul li a {
+    display: block;
+    line-height: 28px;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 0px 10px 0px 20px;
+  }
+  
+    #left ul li a:hover {
+      background-color: #f0f0f0;
+      border-top-color: #f0f0f0;
+    }
+    
+  #left ul li li a { padding-left: 10px; }
+  
 /**
  * KML Form
  */
 div#kml_window {
-  position: absolute;
-  z-index: 40000;
+  z-index: 5000;
   display: none;
-  left: 400px;
-  top: 100px;
-  width: 555px;
-  background: #fff;
-  border: 1px solid #aaa;
+  position: absolute;
+  left: 250px;
+  right: 0;
+  top: 30px;
+  bottom: 30px;
+  background-image:url(images/kml_window.png);
 }
+
+  div#kml_window_inner {
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+    -khtml-border-radius:10px;
+    
+    background:#fff;
+    border:1px solid #666;
+    border-bottom-width: 2px;
+
+    position:relative;
+    width:580px;
+    margin:10px auto;
+  }
 
   div#kml_window div.diagram {
     padding: 10px;
-    width: 532px;
   }
+    
+    div#kml_window div.diagram img {
+      display: block;
+      margin: 10px auto;
+    }
+    
+    div#kml_window h3 {
+      font-size: 13px;
+      font-weight: bold;
+      margin: 10px;
+    }
 
-    div#kml_window div.diagram p {
-      margin-bottom: 0;
+    div#kml_window div.diagram ol {
+      margin: 0;
     }
 
   div#kml_window div.kml-file-input-wrapper {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+  
+    -moz-border-radius-bottomleft:9px;
+    -moz-border-radius-bottomright:9px;
+    -webkit-border-bottom-left-radius:9px;
+    -webkit-border-bottom-right-radius:9px;
+  
     padding: 10px;
-    background-color: #eee;
+    background: #e6e6e6 url(images/gradient.png) 0 0 repeat-x;
+    border-top:1px solid #c8c8c8;
+    height:30px;
   }
+  
+  #kml-file-chooser,
+  #kml-file-input-cancel { display: block; }
