@@ -10,12 +10,12 @@
   </atom:author>
   <atom:link href="http://earthquake.usgs.gov" />
   <Style id="inactive-grey">
-    <IconStyle><Icon><href>./kml/icons/circle-grey.png</href></Icon></IconStyle>
+    <IconStyle><Icon><href>./KML Data/icons/circle-grey.png</href></Icon></IconStyle>
     <LabelStyle><scale>0</scale></LabelStyle>
     <BalloonStyle><text><![CDATA[<font face="Verdana"><table width="400"><tr><td><img src="http://earthquake.usgs.gov/images/ge/banner.jpg" alt="USGS" width="400" height="40" />$[description]</td></tr><tr><td align="right"><img src="http://earthquake.usgs.gov/images/ge/anss.gif" alt="ANSS" width="100" height="31" /></td></tr><tr><td><hr size="1" height="1" /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-age_anim.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" / />Real-time earthquakes (M 1+, animated)</a><br /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/historic/eqs-1970.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" />Historic earthquakes since 1970 (M 3+)</a></td></tr></table></font>]]></text></BalloonStyle>
   </Style>
   <Style id="active-grey">
-    <IconStyle><Icon><href>./kml/icons/circle-grey.png</href></Icon></IconStyle>
+    <IconStyle><Icon><href>./KML Data/icons/circle-grey.png</href></Icon></IconStyle>
     <LabelStyle><scale>1</scale></LabelStyle>
     <BalloonStyle><text><![CDATA[<font face="Verdana"><table width="400"><tr><td><img src="http://earthquake.usgs.gov/images/ge/banner.jpg" alt="USGS" width="400" height="40" />$[description]</td></tr><tr><td align="right"><img src="http://earthquake.usgs.gov/images/ge/anss.gif" alt="ANSS" width="100" height="31" /></td></tr><tr><td><hr size="1" height="1" /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-age_anim.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" / />Real-time earthquakes (M 1+, animated)</a><br /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/historic/eqs-1970.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" />Historic earthquakes since 1970 (M 3+)</a></td></tr></table></font>]]></text></BalloonStyle>
   </Style>
@@ -38,12 +38,12 @@
     <Pair><key>highlight</key><styleUrl>#active-red</styleUrl></Pair>
   </StyleMap>
   <Style id="inactive-orange">
-    <IconStyle><Icon><href>./kml/icons/circle-orange.png</href></Icon></IconStyle>
+    <IconStyle><Icon><href>./KML Data/icons/circle-orange.png</href></Icon></IconStyle>
     <LabelStyle><scale>0</scale></LabelStyle>
     <BalloonStyle><text><![CDATA[<font face="Verdana"><table width="400"><tr><td><img src="http://earthquake.usgs.gov/images/ge/banner.jpg" alt="USGS" width="400" height="40" />$[description]</td></tr><tr><td align="right"><img src="http://earthquake.usgs.gov/images/ge/anss.gif" alt="ANSS" width="100" height="31" /></td></tr><tr><td><hr size="1" height="1" /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-age_anim.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" / />Real-time earthquakes (M 1+, animated)</a><br /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/historic/eqs-1970.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" />Historic earthquakes since 1970 (M 3+)</a></td></tr></table></font>]]></text></BalloonStyle>
   </Style>
   <Style id="active-orange">
-    <IconStyle><Icon><href>./kml/icons/circle-orange.png</href></Icon></IconStyle>
+    <IconStyle><Icon><href>./KML Data/icons/circle-orange.png</href></Icon></IconStyle>
     <LabelStyle><scale>1</scale></LabelStyle>
     <BalloonStyle><text><![CDATA[<font face="Verdana"><table width="400"><tr><td><img src="http://earthquake.usgs.gov/images/ge/banner.jpg" alt="USGS" width="400" height="40" />$[description]</td></tr><tr><td align="right"><img src="http://earthquake.usgs.gov/images/ge/anss.gif" alt="ANSS" width="100" height="31" /></td></tr><tr><td><hr size="1" height="1" /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-age_anim.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" / />Real-time earthquakes (M 1+, animated)</a><br /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/historic/eqs-1970.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" />Historic earthquakes since 1970 (M 3+)</a></td></tr></table></font>]]></text></BalloonStyle>
   </Style>
@@ -52,12 +52,12 @@
     <Pair><key>highlight</key><styleUrl>#active-orange</styleUrl></Pair>
   </StyleMap>
   <Style id="inactive-yellow">
-    <IconStyle><Icon><href>./kml/icons/circle-yellow.png</href></Icon></IconStyle>
+    <IconStyle><Icon><href>./KML Data/icons/circle-yellow.png</href></Icon></IconStyle>
     <LabelStyle><scale>0</scale></LabelStyle>
     <BalloonStyle><text><![CDATA[<font face="Verdana"><table width="400"><tr><td><img src="http://earthquake.usgs.gov/images/ge/banner.jpg" alt="USGS" width="400" height="40" />$[description]</td></tr><tr><td align="right"><img src="http://earthquake.usgs.gov/images/ge/anss.gif" alt="ANSS" width="100" height="31" /></td></tr><tr><td><hr size="1" height="1" /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-age_anim.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" / />Real-time earthquakes (M 1+, animated)</a><br /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/historic/eqs-1970.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" />Historic earthquakes since 1970 (M 3+)</a></td></tr></table></font>]]></text></BalloonStyle>
   </Style>
   <Style id="active-yellow">
-    <IconStyle><Icon><href>./kml/icons/circle-yellow.png</href></Icon></IconStyle>
+    <IconStyle><Icon><href>./KML Data/icons/circle-yellow.png</href></Icon></IconStyle>
     <LabelStyle><scale>1</scale></LabelStyle>
     <BalloonStyle><text><![CDATA[<font face="Verdana"><table width="400"><tr><td><img src="http://earthquake.usgs.gov/images/ge/banner.jpg" alt="USGS" width="400" height="40" />$[description]</td></tr><tr><td align="right"><img src="http://earthquake.usgs.gov/images/ge/anss.gif" alt="ANSS" width="100" height="31" /></td></tr><tr><td><hr size="1" height="1" /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-age_anim.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" / />Real-time earthquakes (M 1+, animated)</a><br /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/historic/eqs-1970.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" />Historic earthquakes since 1970 (M 3+)</a></td></tr></table></font>]]></text></BalloonStyle>
   </Style>
@@ -80,12 +80,12 @@
     <Pair><key>highlight</key><styleUrl>#active-green</styleUrl></Pair>
   </StyleMap>
   <Style id="inactive-blue">
-    <IconStyle><Icon><href>./kml/icons/circle-blue.png</href></Icon></IconStyle>
+    <IconStyle><Icon><href>./KML Data/icons/circle-blue.png</href></Icon></IconStyle>
     <LabelStyle><scale>0</scale></LabelStyle>
     <BalloonStyle><text><![CDATA[<font face="Verdana"><table width="400"><tr><td><img src="http://earthquake.usgs.gov/images/ge/banner.jpg" alt="USGS" width="400" height="40" />$[description]</td></tr><tr><td align="right"><img src="http://earthquake.usgs.gov/images/ge/anss.gif" alt="ANSS" width="100" height="31" /></td></tr><tr><td><hr size="1" height="1" /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-age_anim.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" / />Real-time earthquakes (M 1+, animated)</a><br /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/historic/eqs-1970.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" />Historic earthquakes since 1970 (M 3+)</a></td></tr></table></font>]]></text></BalloonStyle>
   </Style>
   <Style id="active-blue">
-    <IconStyle><Icon><href>./kml/icons/circle-blue.png</href></Icon></IconStyle>
+    <IconStyle><Icon><href>./KML Data/icons/circle-blue.png</href></Icon></IconStyle>
     <LabelStyle><scale>1</scale></LabelStyle>
     <BalloonStyle><text><![CDATA[<font face="Verdana"><table width="400"><tr><td><img src="http://earthquake.usgs.gov/images/ge/banner.jpg" alt="USGS" width="400" height="40" />$[description]</td></tr><tr><td align="right"><img src="http://earthquake.usgs.gov/images/ge/anss.gif" alt="ANSS" width="100" height="31" /></td></tr><tr><td><hr size="1" height="1" /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-age_anim.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" / />Real-time earthquakes (M 1+, animated)</a><br /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/historic/eqs-1970.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" />Historic earthquakes since 1970 (M 3+)</a></td></tr></table></font>]]></text></BalloonStyle>
   </Style>
@@ -94,12 +94,12 @@
     <Pair><key>highlight</key><styleUrl>#active-blue</styleUrl></Pair>
   </StyleMap>
   <Style id="inactive-purple">
-    <IconStyle><Icon><href>./kml/icons/circle-purple.png</href></Icon></IconStyle>
+    <IconStyle><Icon><href>./KML Data/icons/circle-purple.png</href></Icon></IconStyle>
     <LabelStyle><scale>0</scale></LabelStyle>
     <BalloonStyle><text><![CDATA[<font face="Verdana"><table width="400"><tr><td><img src="http://earthquake.usgs.gov/images/ge/banner.jpg" alt="USGS" width="400" height="40" />$[description]</td></tr><tr><td align="right"><img src="http://earthquake.usgs.gov/images/ge/anss.gif" alt="ANSS" width="100" height="31" /></td></tr><tr><td><hr size="1" height="1" /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-age_anim.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" / />Real-time earthquakes (M 1+, animated)</a><br /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/historic/eqs-1970.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" />Historic earthquakes since 1970 (M 3+)</a></td></tr></table></font>]]></text></BalloonStyle>
   </Style>
   <Style id="active-purple">
-    <IconStyle><Icon><href>./kml/icons/circle-purple.png</href></Icon></IconStyle>
+    <IconStyle><Icon><href>./KML Data/icons/circle-purple.png</href></Icon></IconStyle>
     <LabelStyle><scale>1</scale></LabelStyle>
     <BalloonStyle><text><![CDATA[<font face="Verdana"><table width="400"><tr><td><img src="http://earthquake.usgs.gov/images/ge/banner.jpg" alt="USGS" width="400" height="40" />$[description]</td></tr><tr><td align="right"><img src="http://earthquake.usgs.gov/images/ge/anss.gif" alt="ANSS" width="100" height="31" /></td></tr><tr><td><hr size="1" height="1" /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-age_anim.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" / />Real-time earthquakes (M 1+, animated)</a><br /><a href="http://earthquake.usgs.gov/earthquakes/catalogs/historic/eqs-1970.kmz"><img src="http://earthquake.usgs.gov/images/ge/ge.gif" alt="GE" width="18" height="18" border="0" />Historic earthquakes since 1970 (M 3+)</a></td></tr></table></font>]]></text></BalloonStyle>
   </Style>
