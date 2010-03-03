@@ -190,6 +190,7 @@ $(document).ready(
     displayProjection: new OpenLayers.Projection("EPSG:4326"),
     units: "m",
     maxResolution: 156543.0339,
+    theme: 'system/images/openlayers/style.css',
     controls: [
       new OpenLayers.Control.PanZoomBar(),
       new OpenLayers.Control.Attribution(),
