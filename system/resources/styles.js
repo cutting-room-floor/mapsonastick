@@ -1,5 +1,5 @@
 /**
- * mapsona style definitions
+ * Maps on a Stick style definitions
  *
  * clicking the legend-color (the box to the left of layer names)
  * will cycle through styles for vector layers.

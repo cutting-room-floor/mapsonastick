@@ -3,10 +3,10 @@
 /*global OpenLayers $ default_styles document jQuery window OpenLayersPlusBlockswitcher layers */
 
 /**
- * Mapsona 
+ * Maps on a Stick 
  *
  * This file contains all of the custom javascript logic 
- * for mapsona.
+ * for Maps on a Stick.
  *
  * @author Tom MacWright
  * @version 1.0

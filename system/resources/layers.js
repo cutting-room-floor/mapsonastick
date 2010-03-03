@@ -1,5 +1,5 @@
 /*
- * mapsona layer definitions
+ * Maps on a Stick layer definitions
  *
  * Layers defined here will appear on the map on
  * initial pageloads: you can dynamically load KML after that,
