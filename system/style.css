@@ -18,6 +18,11 @@ a {
   color:#68a;
 }
 
+  a.offset_a {
+    position: relative:
+    top: -70px;
+  }
+
 /**
  * Header =============================================================
  */
@@ -823,3 +828,4 @@ div#kml_window {
   
   #kml-file-chooser,
   #kml-file-input-cancel { display: block; }
+
