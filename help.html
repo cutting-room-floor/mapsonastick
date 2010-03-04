@@ -29,33 +29,7 @@
     <div id='map'>
       <div id='documentation-page'>
         <h2>Getting Started</h2>
-        <h3>Setting up New Tiles</h3>
-        <p>
-          Maps on a Stick is made so that it can work with any map tiles that the 
-          <a href="http://www.openlayers.org/">OpenLayers Library</a> can handle. To start off 
-          with, there are two sample tilesets for free consumption (and freely licensed) online.
-        </p>
-        <ul>
-          <li><a href="http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-8.tgz">The World from Zoom 0 to 8</a></li>
-          <li><a href="http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-9.tgz">The World from Zoom 0 to 9</a></li>
-        </ul>
-        <p>
-          Tilesets become much larger with higher zoom levels, so it will be much faster to 
-          start off running with the <a href="http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-8.tgz">smaller tileset</a> for testing purposes.
-        </p>
-        <p>
-          Tools are included on Mac OSX and Linux to decompress these files; on Windows, we recommend 
-          <a href="http://www.7-zip.org/">7-Zip</a> to do the unpacking. Once the files are unpacked,
-          there will be a directory called <code>world-dark</code>. Move this directory into the Maps on a Stick
-          folder, under the path <code>tiles/1.0.0</code>. The resulting path should be 
-          <code>tiles/1.0.0/world-dark</code>, and will contain numerical directories leading down to
-          numerically-named png files.
-        </p>
-        <p>
-          The world-dark layer is included by default in the Maps on a Stick code, so you should be able to
-          head over to the <a href="start.html">Maps on a Stick Application</a> and see a beautiful indigo-colored
-          world.
-        </p>
+
 
         <h3>Using KML</h3>
         <p>
@@ -104,13 +78,37 @@
             cannot be included from external websites or other directories.
           </li>
         </ul>
-
-        <h3>Adding New Tiles</h3>
-        <p>
-          Maps on a Stick fully supports adding new TMS layers. Online layers can be added by adding their
+        <h3>Setting up New Tiles</h3>
+        <p>Maps on a Stick fully supports adding new TMS layers. Online layers can be added by adding their
           map definitions to <code>system/resources/layers.js</code>, and new offline tilesets can be placed in 
           <code>tiles/1.0.0</code> and added to the same file by mimicking the existing layer definition.
           More details can be found in the actual source file.
+          </p>
+        <p>
+          If you've 
+          downloaded a distribution (.dmg file) of Maps on a Stick, you have a world tile layer 
+          called world-light already included. We've also created and distribute two other tilesets,
+          named world-dark.
+        </p>
+        <ul>
+          <li><a href="http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-8.tgz">The World from Zoom 0 to 8</a></li>
+          <li><a href="http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-9.tgz">The World from Zoom 0 to 9</a></li>
+        </ul>
+        <p>
+          Tilesets become much larger with higher zoom levels, so it will be much faster to 
+          start off running with the <a href="http://mapbox-tilesets.s3.amazonaws.com/world-dark-0-8.tgz">smaller tileset</a> for testing purposes.
+        </p>
+        <p>
+          Tools are included on Mac OSX and Linux to decompress these files; on Windows, we recommend 
+          <a href="http://www.7-zip.org/">7-Zip</a> to do the unpacking. Once the files are unpacked,
+          there will be a directory called <code>world-dark</code>. Move this directory into the Maps on a Stick
+          folder, under the path <code>tiles/1.0.0</code>. The resulting path should be 
+          <code>tiles/1.0.0/world-dark</code>, and will contain numerical directories leading down to
+          numerically-named png files.
+        </p>
+        <p>
+          To switch to world-dark tiles, you'll need to edit the layers definitions, which are 
+          located in system/resources/layers.js.
         </p>
 
         <a class='offset_a' id='troubleshooting'>&nbsp;</a>
