@@ -196,8 +196,8 @@ $(document).ready(
       new OpenLayers.Control.Attribution(),
       new OpenLayers.Control.Navigation()
       ],
-    maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
-      20037508.34, 20037508.34)
+    maxExtent: new OpenLayers.Bounds(-20037508, -20037508,
+      20037508, 20037508)
     };
 
     map = new OpenLayers.Map('map', options);
