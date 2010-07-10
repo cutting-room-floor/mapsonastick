@@ -16,7 +16,7 @@ var map, baselayers, myswitcher, selectedFeature, styleindex;
 var styleindex = 0;
 baselayers = [];
 
-OpenLayers.ImgPath = 'system/images/openlayers/';
+OpenLayers.ImgPath = '/static/images/openlayers/';
 
 function onPopupClose(evt) {
   map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
@@ -175,6 +175,23 @@ function attachSelect() {
   selecter.activate();
 }
 
+function load_layers() {
+  var layer_list;
+  $.getJSON('/layers', function(resp) {
+    for(var i = 0; i < resp.length; i++) {
+      map.addLayer(
+        new OpenLayers.Layer.TMS(resp[i][1], '/tiles/',
+        {
+          layername: resp[i][0],
+          type: 'png'
+        }
+      ));
+      map.zoomToMaxExtent();
+      map.zoomTo(2);
+    }
+  });
+}
+
 $(document).ready(
   function() {
     /**
@@ -186,23 +203,23 @@ $(document).ready(
          * be placed on map tiles that are in spherical mercator
          */
     options = {
-    projection: new OpenLayers.Projection("EPSG:900913"),
-    displayProjection: new OpenLayers.Projection("EPSG:4326"),
-    units: "m",
-    maxResolution: 156543.0339,
-    theme: 'system/images/openlayers/style.css',
-    controls: [
-      new OpenLayers.Control.PanZoomBar(),
-      new OpenLayers.Control.Attribution(),
-      new OpenLayers.Control.Navigation()
-      ],
-    maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
-      20037508.34, 20037508.34)
+        projection: new OpenLayers.Projection("EPSG:900913"),
+        displayProjection: new OpenLayers.Projection("EPSG:4326"),
+        units: "m",
+        maxResolution: 156543.0339,
+        // theme: 'system/images/openlayers/style.css',
+        controls: [
+          new OpenLayers.Control.PanZoomBar(),
+          new OpenLayers.Control.Attribution(),
+          new OpenLayers.Control.Navigation()
+          ],
+        maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
+          20037508.34, 20037508.34)
     };
 
     map = new OpenLayers.Map('map', options);
 
-    map.addLayers(layers);
+    load_layers();
     /**
      * add layers defined in layers.js if they are available
      */
@@ -211,8 +228,6 @@ $(document).ready(
 
     map.addControl(selectControl);
     selectControl.activate();
-    map.zoomToMaxExtent();
-    map.zoomTo(0);
     OpenLayersPlusBlockswitcher.hattach($('.openlayers-blockswitcher'), map);
   }
 );

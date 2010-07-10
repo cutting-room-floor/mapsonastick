@@ -78,13 +78,8 @@
   <div id='kml_window'>
     <div id='kml_window_inner'>
       <div class='diagram'>
-        <img src='{{ url_for('static', filename='images/kml-diagram.png') }}' />
-        <h3>Add KML to the Map in three steps:</h3>
-        <ol>
-          <li>Copy KML files on your computer to the "KML Data" folder in Maps on a Stick.</li>
-          <li>Click "Choose File", open the "KML Data" folder on the USB drive and select the kml file.</li>
-          <li>Click "Add Layer" and your KML data will be available to view on the map.</li>
-        </ol>
+        <label for='kml_url'>KML URL</label>
+        <input type='text' name='kml_url' id='kml_url' />
       </div>
       <div class='kml-file-input-wrapper'>
         <input type='file' name='kml-file-input' id='kml-file-input' />
