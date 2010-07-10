@@ -4,8 +4,8 @@
 	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
 	<title>Maps on a Stick</title>
   <!-- big libraries -->
-  <script src='system/js/OpenLayers.js'></script>
-  <script src='system/js/jquery-1.3.2.js'></script>
+  <script src='{{ url_for('static', filename='js/OpenLayers.js') }}'></script>
+  <script src='{{ url_for('static', filename='js/jquery-1.3.2.js') }}'></script>
   <!-- small libraries -->
   <script src='./system/js/colorbox/colorbox/jquery.colorbox.js'></script>
   <script src='{{ url_for('static', filename='js/jquery.uniform.js') }}'></script>
@@ -17,6 +17,7 @@
   <script src='{{ url_for('static', filename='js/openlayers_blockswitcher.js') }}'></script>
   <script src='{{ url_for('static', filename='js/styles.js') }}'></script>
   <script src='{{ url_for('static', filename='js/layers.js') }}'></script>
+  <script src='{{ url_for('static', filename='js/map.js') }}'></script>
  	<link rel='stylesheet' href='{{ url_for('static', filename='style.css') }}' type='text/css' media='screen' />
 </head>
 <body>
