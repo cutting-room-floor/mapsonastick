@@ -6,7 +6,7 @@ __version__ = '0.1'
 __license__ = 'BSD'
 
 import sqlite3, urllib2, os, json
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from werkzeug import Response
 
 """
@@ -23,8 +23,9 @@ def home():
 @app.route('/kml')
 def kml():
     """ proxy an external kml file """
-    url = get['kml'] # TODO: rewrite
-    remote_file = urllib2.urlopen(url)
+    url = request.args.get('url', False)
+    if url:
+        return urllib2.urlopen(url).read()
 
 def layers_list():
     """ return a json object of layers ready for configuration """

@@ -18,6 +18,8 @@ baselayers = [];
 
 OpenLayers.ImgPath = '/static/images/openlayers/';
 
+OpenLayers.ProxyHost = '/kml?url='
+
 function onPopupClose(evt) {
   map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
 }
@@ -99,21 +101,29 @@ function add_kml(layer_title, layer_url) {
     extractAttributes: true,
     maxDepth: 2
   };
-  l = new OpenLayers.Layer.GML(layer_title, layer_url, 
-  {
-    format: OpenLayers.Format.KML, 
-    projection: new OpenLayers.Projection("EPSG:4326"),
-    formatOptions: format_options,
-    styleMap: new_style(default_styles)
-  });
+  l = new OpenLayers.Layer.Vector(
+    layer_title,
+    {
+      projection:'EPSG:4326',
+      strategies:[new OpenLayers.Strategy.Fixed()],
+      protocol:new OpenLayers.Protocol.HTTP({
+        url:layer_url,
+        format:new OpenLayers.Format.KML(format_options),
+      })
+    }
+  );
   l.events.on({
       'loadend': function() {
-        if(this.features.length > 0) {
-          this.map.zoomToExtent(this.getDataExtent());
+        if (this.features.length > 0) {
+          if (this.features.length == 1) {
+            this.map.zoomToExtent(this.getDataExtent());
+            this.map.zoomTo(10); // TODO: zoom to max provided by baselayer
+          }
+          else {
+            this.map.zoomToExtent(this.getDataExtent());
+          }
         }
         else {
-          alert('This KML layer could not be loaded.' + 
-          'Check that it has been added to the KML Data folder.');
           this.map.removeLayer(this);
         }
       },
@@ -247,14 +257,9 @@ $(document).ready(
         $('#kml-file-chooser').click();
       }
     );
-    $('#kml-file-input').change(function() {
-      $('#kml-file-submit').attr({'disabled': false});
-    });
-    $('#kml-file-submit').click(function() {
+    $('#kml-url-add').click(function() {
       var name, url;
-      url = $("#kml-file-input").val();
-      url = "KML Data/" + basename(url);
-      name = basename(url, '.kml');
+      url = $("#kml-url").val();
       add_kml(name, url);
       attachSelect();
       $('#kml-file-submit').attr({'disabled': true});

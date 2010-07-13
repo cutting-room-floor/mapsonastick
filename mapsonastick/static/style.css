@@ -777,6 +777,10 @@ div#kml_window {
   background-image:url(images/kml_window.png);
 }
 
+  div#kml_window label {
+    color: #000;
+    }
+
   div#kml_window_inner {
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
