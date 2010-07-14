@@ -7,12 +7,11 @@ setup(
     packages=['mapsonastick'],
     include_package_data=True,
     zip_safe=False,
-    app=['runner.py'],
+    app=['mapsonastick/server.py'],
+    setup_requires=['py2app'],
     options={
       'py2app': {
-        'argv_emulation': True,
-        'includes': ['PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4._qt'],
-        'excludes': ['PyQt4.QtDesigner', 'PyQt4.QtNetwork', 'PyQt4.QtOpenGL', 'PyQt4.QtScript', 'PyQt4.QtSql', 'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml', 'PyQt4.phonon']
+        'includes': ['werkzeug.local', 'werkzeug.templates', 'jinja2.ext', 'werkzeug.serving']
         }
       },
     install_requires=['flask', 'werkzeug']

@@ -149,26 +149,6 @@ $.fn.get_layers = function(options) {
   return $({'layers':layers});
 };
 
-/**
- * Get a tile from OpenStreetMap.
- * This code reused, will probably be killed soon
- */
-function osm_getTileURL(bounds) {
-  var res, x, y, z, limit;
-  res = this.map.getResolution();
-  x = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
-  y = Math.round((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
-  z = this.map.getZoom();
-  limit = Math.pow(2, z);
-
-  if (y < 0 || y >= limit) {
-    return OpenLayers.Util.getImagesLocation() + "404.png";
-  } else {
-    x = ((x % limit) + limit) % limit;
-    return this.url + z + "/" + x + "/" + y + "." + this.type;
-  }
-}
-
 function attachSelect() {
   var layer, layers, selecter;
   layers = [];
