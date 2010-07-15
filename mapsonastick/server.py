@@ -6,28 +6,19 @@ __version__ = '0.1'
 __license__ = 'BSD'
 
 import sqlite3, urllib2, os, json, sys, base64
-from flask import Flask, render_template, request
-from werkzeug import Response
+from flask import Flask, render_template, request, redirect, url_for
+from werkzeug import Response, secure_filename
 
 """
     Maps on a Stick: a simple tile server
 """
 
 MAPS_DIR = 'Maps'
+KML_DIR = 'KML'
+UPLOAD_FOLDER = 'KML'
+ALLOWED_EXTENSIONS = set(['kml'])
 
 app = Flask(__name__)
-
-@app.route('/')
-def home():
-    """ serve the home page """
-    return render_template('start.html')
-
-@app.route('/kml')
-def kml():
-    """ proxy an external kml file """
-    url = request.args.get('url', False)
-    if url:
-        return urllib2.urlopen(url).read()
 
 def maps_dir():
     if sys.platform == 'darwin' and hasattr(sys, 'frozen'):
@@ -36,6 +27,12 @@ def maps_dir():
     else:
         return MAPS_DIR
 
+def kml_dir():
+    if sys.platform == 'darwin' and hasattr(sys, 'frozen'):
+        if os.path.exists("../../../%s" % KML_DIR):
+            return "../../../%s" % KML_DIR
+    else:
+        return KML_DIR
 
 def layers_list():
     """ return a json object of layers ready for configuration """
@@ -43,11 +40,46 @@ def layers_list():
     for root, dirs, files in os.walk(maps_dir()):
         for file in files:
             if os.path.splitext(file)[1] == '.mbtiles':
-                # TODO: layer files should include their own titles
                 layers.append((base64.urlsafe_b64encode(os.path.join(root, file)), file))
-    return layers
+    overlays = []
+    for root, dirs, files in os.walk(kml_dir()):
+        for file in files:
+            if os.path.splitext(file)[1] == '.kml':
+                overlays.append(file)
+    return {'layers': layers, 'overlays': overlays}
 
-@app.route('/layers')
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+@app.route('/')
+def home():
+    """ serve the home page """
+    return render_template('start.html')
+
+@app.route('/kml', methods=['GET', 'POST'])
+def kml():
+    """ proxy an external kml file """
+    if request.method == 'POST':
+        file = request.files['kml-file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            return 'KML saved'
+        else:
+            return 'File not allowed'
+    else:
+        url = request.args.get('url', False)
+        return open(os.path.join(kml_dir(), url)).read()
+
+
+@app.route('/proxy', methods=['GET'])
+def proxy():
+    url = request.args.get('url', False)
+    if url:
+        return urllib2.urlopen(url).read()
+
+@app.route('/layers', methods=['GET'])
 def layers():
     return Response(json.dumps(layers_list()))
 
@@ -65,4 +97,4 @@ def tile(layername_64, z, x, y):
     return Response(tile.fetchone(), mimetype="image/png")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

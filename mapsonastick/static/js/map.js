@@ -18,7 +18,7 @@ baselayers = [];
 
 OpenLayers.ImgPath = '/static/images/openlayers/';
 
-OpenLayers.ProxyHost = '/kml?url='
+OpenLayers.ProxyHost = '/proxy?url='
 
 function onPopupClose(evt) {
   map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
@@ -168,16 +168,19 @@ function attachSelect() {
 function load_layers() {
   var layer_list;
   $.getJSON('/layers', function(resp) {
-    for(var i = 0; i < resp.length; i++) {
+    for(var i = 0; i < resp.layers.length; i++) {
       map.addLayer(
-        new OpenLayers.Layer.TMS(resp[i][1], '/tiles/',
+        new OpenLayers.Layer.TMS(resp.layers[i][1], '/tiles/',
         {
-          layername: resp[i][0],
+          layername: resp.layers[i][0],
           type: 'png'
         }
       ));
       map.zoomToMaxExtent();
       map.zoomTo(2);
+    }
+    for(var i = 0; i < resp.overlays.length; i++) {
+      add_kml(resp.overlays[i], "/kml?url=" + resp.overlays[i]);
     }
   });
 }
@@ -224,7 +227,7 @@ $(document).ready(
 
 $(document).ready(
   function() {
-    $('#kml-file-chooser').toggle(
+    $('#kml-url-add').toggle(
       function() {
         $('#kml_window').css({'display': 'block'});
       },
@@ -232,12 +235,20 @@ $(document).ready(
         $('#kml_window').css({'display': 'none'});
       }
     );
+    $('#kml-file-button').click(function() {
+      $('#kml-file-input').click();
+    });
     $('#kml-file-input-cancel').click(
       function() {
         $('#kml-file-chooser').click();
       }
     );
-    $('#kml-url-add').click(function() {
+    $('#kml-file-input').change(
+      function() {
+        $('#kml-file-form').submit();
+      }
+    );
+    $('#kml-url-submit').click(function() {
       var name, url;
       url = $("#kml-url").val();
       add_kml(name, url);

@@ -351,10 +351,7 @@ div.uploader span.action,
   height:28px;
 }
 
-div .kml-file-input-wrapper div.right { float: right; }
-
-  div .kml-file-input-wrapper div.right input,
-  div .kml-file-input-wrapper div.right a { float: left; }
+div#kml-window-inner div.right { float: right; }
 
 /*
  * Fieldsets
@@ -781,7 +778,7 @@ div#kml_window {
     color: #000;
     }
 
-  div#kml_window_inner {
+  div#kml-window-inner {
     -moz-border-radius:10px;
     -webkit-border-radius:10px;
     -khtml-border-radius:10px;
@@ -800,34 +797,23 @@ div#kml_window {
   }
     
     div#kml_window div.diagram img {
-      display: block;
-      margin: 10px auto;
+      display:block;
+      margin:10px auto;
     }
     
     div#kml_window h3 {
-      font-size: 13px;
-      font-weight: bold;
-      margin: 10px;
+      font-size:13px;
+      font-weight:bold;
+      margin:10px;
     }
 
     div#kml_window div.diagram ol {
-      margin: 0;
+      margin:0;
     }
 
-  div#kml_window div.kml-file-input-wrapper {
-    -moz-background-clip:border;
-    -moz-background-inline-policy:continuous;
-    -moz-background-origin:padding;
-  
-    -moz-border-radius-bottomleft:9px;
-    -moz-border-radius-bottomright:9px;
-    -webkit-border-bottom-left-radius:9px;
-    -webkit-border-bottom-right-radius:9px;
-  
-    padding: 10px;
-    background: #e6e6e6 url(images/gradient.png) 0 0 repeat-x;
-    border-top:1px solid #c8c8c8;
-    height:30px;
+  div#kml_window div.kml-file-input-wrapper,
+  div#kml_window div.kml-url-input-wrapper {
+    padding:15px;
   }
   
   #kml-file-chooser,
