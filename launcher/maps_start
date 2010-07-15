@@ -1,0 +1,6 @@
+#!/bin/sh
+
+PROGRAM=../../../moas.app/Contents/MacOS/moas
+$PROGRAM &
+PID=$!
+echo $PID > moas.pid

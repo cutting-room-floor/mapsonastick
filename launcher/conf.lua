@@ -1,5 +1,5 @@
 function love.conf(t)
-    t.screen.width = 300
-    t.screen.height = 400
+    t.screen.width = 220
+    t.screen.height = 130
     t.title = "Maps on a Stick"
 end

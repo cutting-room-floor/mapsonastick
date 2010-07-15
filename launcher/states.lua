@@ -1,11 +1,5 @@
 -----------------------
--- NO: A game of numbers
--- Created: 23.08.08 by Michael Enger
--- Version: 0.2
--- Website: http://www.facemeandscream.com
--- Licence: ZLIB
------------------------
--- States used.
+-- Maps on a Stick
 -----------------------
 
 -- Menu State
@@ -16,8 +10,11 @@ Menu.__index = Menu
 function Menu.create()
 	local temp = {}
 	setmetatable(temp, Menu)
-	temp.button = {	start = Button.create("Start", 90, 350),
-					stop = Button.create("Stop", 200, 350) }
+	temp.button = {
+          start =  Button.create("Start",  110, 40),
+          browse = Button.create("Browse", 110, 70),
+					stop =   Button.create("Stop",   110, 100)
+        }
 	return temp
 end
 
@@ -40,6 +37,8 @@ function Menu:mousepressed(x,y,button)
 				Controller.start()
 			elseif n == "stop" then
 				Controller.stop()
+			elseif n == "browse" then
+				Controller.browse()
 			end
 		end
 	end
@@ -55,9 +54,13 @@ Controller = {}
 Controller.__index = Controller
 
 function Controller.start()
-  fp = io.popen('moas')
+  os.execute('./maps_start')
 end
 
 function Controller:stop()
-  fp:close()
+  os.execute('./maps_stop')
+end
+
+function Controller:browse()
+  os.execute('open http://localhost:5000/')
 end

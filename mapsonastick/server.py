@@ -21,11 +21,9 @@ ALLOWED_EXTENSIONS = set(['kml'])
 app = Flask(__name__)
 
 def maps_dir():
-    if sys.platform == 'darwin' and hasattr(sys, 'frozen'):
-        if os.path.exists("../../../%s" % MAPS_DIR):
-            return "../../../%s" % MAPS_DIR
-    else:
-        return MAPS_DIR
+    # TODO: make this a flag
+    return "../../../%s" % MAPS_DIR
+    # return MAPS_DIR
 
 def kml_dir():
     if sys.platform == 'darwin' and hasattr(sys, 'frozen'):
@@ -86,15 +84,27 @@ def layers():
 @app.route('/tiles/1.0.0/<string:layername_64>/<int:z>/<int:x>/<int:y>.png')
 def tile(layername_64, z, x, y):
     """ serve a tile request """
-    layername = base64.urlsafe_b64decode(str(layername_64))
-    conn = sqlite3.connect(layername)
-    tile = conn.execute("""
-      select tile_data from tiles
-      where
-        zoom_level = %d and
-        tile_column = %d and
-        tile_row = %d;""" % (z, x, y))
-    return Response(tile.fetchone(), mimetype="image/png")
+    layername = "%s" % base64.urlsafe_b64decode(str(layername_64))
+    if not os.path.isfile(layername):
+        return "Map file not found: %s" % layername
+    try:
+        conn = sqlite3.connect(layername)
+    except Exception, e:
+        print "Could not connect: %s" % str(e)
+    try:
+        tile = conn.execute("""
+          select tile_data from tiles
+          where
+            zoom_level = %d and
+            tile_column = %d and
+            tile_row = %d;""" % (z, x, y))
+    except Exception, e:
+        print "Query failed: %s" % str(e)
+    try:
+        tile_data = tile.fetchone()
+    except Exception, e:
+        print "Tile fetch failed: %s" % str(e)
+    return Response(tile_data, mimetype="image/png")
 
 if __name__ == "__main__":
     app.run(debug=True)

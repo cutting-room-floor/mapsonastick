@@ -19,7 +19,8 @@ function Button.create(text,x,y)
 	temp.text = text -- the text in the button
 	temp.width = font["small"]:getWidth(text)
 	temp.height = font["small"]:getHeight()
-	temp.x = x - (temp.width / 2)
+	-- temp.x = x - (temp.width / 2)
+  temp.x = x
 	temp.y = y
 	return temp
 end

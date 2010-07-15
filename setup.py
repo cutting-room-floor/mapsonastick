@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='Maps on a Stick',
+    name='moas',
     version='0.1',
     long_description=__doc__,
     packages=['mapsonastick'],
@@ -11,7 +11,7 @@ setup(
     setup_requires=['py2app'],
     options={
       'py2app': {
-        'includes': ['werkzeug.local', 'werkzeug.templates', 'jinja2.ext', 'werkzeug.serving']
+        'includes': ['werkzeug.local', 'werkzeug.templates', 'jinja2.ext', 'werkzeug.serving'],
         }
       },
     install_requires=['flask', 'werkzeug']

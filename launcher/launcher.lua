@@ -1,11 +1,5 @@
 -----------------------
--- NO: A game of numbers
--- Created: 23.08.08 by Michael Enger
--- Version: 0.2
--- Website: http://www.facemeandscream.com
--- Licence: ZLIB
------------------------
--- States used.
+-- Maps on a Stick
 -----------------------
 
 -- Menu State
@@ -25,7 +19,7 @@ end
 
 function Menu:draw()
 
-	love.graphics.draw(graphics["logo"], 400, 125, 0, 1, 1, 100, 75)
+	love.graphics.draw(graphics["fullbg"], 400, 125, 0, 1, 1, 100, 75)
 	
 	for n,b in pairs(self.button) do
 		b:draw()
