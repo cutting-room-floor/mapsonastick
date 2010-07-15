@@ -87,23 +87,16 @@ def tile(layername_64, z, x, y):
     layername = "%s" % base64.urlsafe_b64decode(str(layername_64))
     if not os.path.isfile(layername):
         return "Map file not found: %s" % layername
-    try:
-        conn = sqlite3.connect(layername)
+    conn = sqlite3.connect(layername)
+    tile = conn.execute("""
+      select tile_data from tiles
+      where
+        zoom_level = %d and
+        tile_column = %d and
+        tile_row = %d;""" % (z, x, y))
+    tile_data = tile.fetchone()
     except Exception, e:
-        print "Could not connect: %s" % str(e)
-    try:
-        tile = conn.execute("""
-          select tile_data from tiles
-          where
-            zoom_level = %d and
-            tile_column = %d and
-            tile_row = %d;""" % (z, x, y))
-    except Exception, e:
-        print "Query failed: %s" % str(e)
-    try:
-        tile_data = tile.fetchone()
-    except Exception, e:
-        print "Tile fetch failed: %s" % str(e)
+        return "Tile could not be retrieved: %s" % str(e)
     return Response(tile_data, mimetype="image/png")
 
 if __name__ == "__main__":
