@@ -107,4 +107,4 @@ def tile(layername_64, z, x, y):
     return Response(tile_data, mimetype="image/png")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
