@@ -100,4 +100,8 @@ def tile(layername_64, z, x, y):
     return Response(tile_data, mimetype="image/png")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    if sys.platform == 'darwin':
+        spid = open('server.pid', 'w')
+        spid.write("%s\n" % str(os.getpid()))
+        spid.close()
+    app.run()
