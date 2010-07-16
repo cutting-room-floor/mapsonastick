@@ -2,9 +2,6 @@
 
 Maps on a Stick is a lightweight mapping solution for mobile, unplugged maps.
 
-It includes a launcher, called `runner.py`, that wraps functionality for 
-usage via a GUI.
-
 MapBox tilesets - rendered map tiles stored in structured SQLite databases - 
 are supported, as well as KML input.
 
@@ -16,23 +13,35 @@ not supported.
 1. Download the main maps on a stick application
 2. Run Maps.app on Macintosh or Maps.exe on Windows
 
-This work is distributed under the GPL license, (c) 2010, Development Seed
+# Usage
 
-Requirements (Running)
+Add map tiles by dropping `.mbtiles` files into the `Maps/` folder and KML
+by dropping KML files into the `KML/` folder, specifying a URL in the UI, or
+uploading files with the web interface.
 
-# Mac & Windows
+# Requirements (Running)
+
+## Mac & Windows
 
 * A .mbtiles mapfile
 
-Requirements (Building)
+# Requirements (Building)
 
-# Mac
+## Mac
 
 * [py2app](http://svn.pythonmac.org/py2app/py2app/trunk/doc/index.html)
 * [löve](http://love2d.org/)
 * [flask](http://flask.pocoo.org/)
 
-# Windows
+## Windows
 
 * [py2exe](http://www.py2exe.org/)
 * [flask](http://flask.pocoo.org/)
+
+# Licenses
+
+* This work is distributed under the GPL license, (c) 2010, Development Seed
+* Löve: zlib 
+* Flask: BSD 
+* py2app: MIT
+* pyexe: MIT
