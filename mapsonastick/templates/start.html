@@ -8,7 +8,6 @@
   <script src='{{ url_for('static', filename='js/jquery-1.3.2.js') }}'></script>
   <!-- small libraries -->
   <script src='{{ url_for('static', filename='js/jquery.uniform.js') }}'></script>
-  
   <!-- custom code -->
   <script src='{{ url_for('static', filename='js/mapbox.js') }}'></script>
   <script src='{{ url_for('static', filename='js/openlayers_blockswitcher.js') }}'></script>
@@ -16,7 +15,6 @@
  	<link rel='stylesheet' href='{{ url_for('static', filename='style.css') }}' type='text/css' media='screen' />
 </head>
 <body>
-  <!-- layers.js is included within the body so that it's in the javascript global namespace -->
   <div id='header'>
     <h1 class="site-name">Maps on a Stick: Afghanistan</h1>
   </div>
@@ -50,7 +48,6 @@
       </form>
       <a id='kml-url-add' href="#">Or add online KML</a>
     </div>
-    <h1 class="form-title"><a href="help.html">&laquo; Help</a></h1>
   </div> <!-- #left -->
   <div id='shadow-bottom'></div>
   <div id='shadow-top'></div>
@@ -72,13 +69,11 @@
   </div>
   <div id='kml_window'>
     <div id='kml-window-inner'>
-      
       <div class='kml-url-input-wrapper'>
         <input type='text' name='kml-url' size='55' id='kml-url' />
         <input type='button' name='kml-url-submit' id='kml-url-submit' value='Add KML' />
         or <a href="#" id='kml-url-input-cancel'>Close</a>
       </div>
-
     </div>
   </div>
 </body>
