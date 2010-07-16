@@ -41,9 +41,7 @@ function attributes_to_table(attributes) {
   out = "";
   for (key in attributes) {
     if (typeof attributes[key] === 'string') {
-      out += "<tr><th>" + 
-        "Name" +
-        "</th><td>" + 
+      out += "<tr><td colspan=2>" + 
         attributes[key] + "</td></tr>";
     }
     else {
@@ -63,7 +61,7 @@ function onFeatureSelect(feature) {
   popup = new OpenLayers.Popup.FramedCloud("stick", 
       feature.geometry.getBounds().getCenterLonLat(),
       null,
-      "<div style='font-size:.8em'><h3>" + attributes_to_table(feature.attributes) + "</h3></div>",
+      "<div style='font-size:.8em'>" + attributes_to_table(feature.attributes) + "</div>",
       null, true, onPopupClose);
   feature.popup = popup;
   map.addPopup(popup);
@@ -130,6 +128,7 @@ function add_kml(layer_title, layer_url) {
       'context': this
   });
   map.addLayer(l);
+  attachSelect(l);
 }
 
 /**
@@ -149,13 +148,18 @@ $.fn.get_layers = function(options) {
   return $({'layers':layers});
 };
 
-function attachSelect() {
+function attachSelect(l) {
   var layer, layers, selecter;
-  layers = [];
-  for (layer in map.layers) {
-    if (map.layers[layer].CLASS_NAME === 'OpenLayers.Layer.GML') {
-      layers.push(map.layers[layer]);
+  if (arguments.length < 1) {
+    layers = [];
+    for (layer in map.layers) {
+      if (map.layers[layer].CLASS_NAME === 'OpenLayers.Layer.Vector') {
+        layers.push(map.layers[layer]);
+      }
     }
+  }
+  else {
+    layers = [l]
   }
   map.removeControl(
     map.getControlsByClass('OpenLayers.Control.SelectFeature')[0]);
@@ -253,9 +257,8 @@ $(document).ready(
       var name, url;
       url = $("#kml-url").val();
       add_kml(name, url);
-      attachSelect();
       $('#kml-file-submit').attr({'disabled': true});
-      $('#kml-file-chooser').click();
+      $('#kml-url-add').click();
     });
   }
 );

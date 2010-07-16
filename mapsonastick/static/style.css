@@ -668,6 +668,27 @@ div.kml-input #kml-file-chooser {
   color: #fff;
 }
 
+#stick_contentDiv a {
+  color: #eee;
+  text-decoration: underline;
+}
+
+#stick_contentDiv table {
+  margin-left: 3px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: normal;
+  border-collapse: collapse;
+}
+
+#stick_contentDiv table th, 
+#stick_contentDiv table td {
+  padding: 1px;
+}
+
+#stick_contentDiv table tr {
+}
+
 div.openlayers-blockswitcher span.key {
   height:15px !important;
   width:15px !important;
