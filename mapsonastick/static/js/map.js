@@ -17,8 +17,8 @@ var styleindex = 0;
 baselayers = [];
 
 OpenLayers.ImgPath = '/static/images/openlayers/';
-
-OpenLayers.ProxyHost = '/proxy?url='
+OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
+OpenLayers.ProxyHost = '/proxy?url=';
 
 function onPopupClose(evt) {
   map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
