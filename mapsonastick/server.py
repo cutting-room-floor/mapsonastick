@@ -20,12 +20,12 @@ ALLOWED_EXTENSIONS = set(['kml'])
 app = Flask(__name__)
 
 def maps_dir():
-    # TODO: make this a flag
-    return "../../../%s" % MAPS_DIR
-    # return MAPS_DIR
+    if sys.platform == 'darwin' and hasattr(sys, 'frozen'):
+        return "../../../%s" % MAPS_DIR
+    else:
+        return MAPS_DIR
 
 def kml_dir():
-    return "../../../%s" % KML_DIR
     if sys.platform == 'darwin' and hasattr(sys, 'frozen'):
         return "../../../%s" % KML_DIR
     else:
