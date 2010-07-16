@@ -11,7 +11,7 @@ setup(
     setup_requires=['py2app'],
     options={
       'py2app': {
-        'includes': ['werkzeug.local', 'werkzeug.templates', 'jinja2.ext', 'werkzeug.serving'],
+        'includes': ['os', 'werkzeug.local', 'werkzeug.templates', 'jinja2.ext', 'werkzeug.serving'],
         }
       },
     install_requires=['flask', 'werkzeug']
