@@ -304,7 +304,7 @@ select {
 input.form-submit,
 input.form-submit-mini,
 div.uploader span.action,
-#kml-file-input-cancel {
+#kml-url-submit {
   -moz-border-radius:4px;
   -webkit-border-radius:4px;
   -khtml-border-radius:4px;
@@ -331,7 +331,7 @@ div.uploader span.action,
   input.form-submit:hover,
   input.form-submit-mini:hover,
   div.uploader span.action:hover,
-  #kml-file-input-cancel:hover { 
+  #kml-url-submit:hover { 
     background-color:#fff;
     border-color:#999;
     cursor:pointer;
@@ -340,18 +340,25 @@ div.uploader span.action,
   input.form-submit:active,
   input.form-submit-mini:active,
   div.uploader span.action:active,
-  #kml-file-input-cancel:active {
+  #kml-url-submit:active {
     background:#f0f0f0;
     border-color:#888;
     cursor:pointer;
   }
 
-#kml-file-input-cancel {
-  margin-left: 10px;
+#kml-url-input-cancel {
   height:28px;
 }
 
 div#kml-window-inner div.right { float: right; }
+
+/*
+ * KML Interface
+ */
+#kml-url {
+  font-size: 14px;
+  padding: 3px;
+}
 
 /*
  * Fieldsets
@@ -436,25 +443,7 @@ div.uploader span.action {
 }
 
 div.uploader span.filename {
-  background:#fff;
-  border: 1px solid #c8c8c8;
-  border-top-color: #aaa;
-  -moz-border-radius:4px;
-  -webkit-border-radius:4px;
-  -khtml-border-radius:4px;
-  height: 28px;
-  line-height: 30px;
-  color: #404040;
-  width: 150px;
-  font-size: 14px;
-  padding: 0px 10px;
-  float: right;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-shadow: 0 1px 0 #eee;
-  white-space: nowrap;
-  cursor: default;
+  display:none;
 }
 
 div.uploader input {
@@ -775,7 +764,8 @@ div#kml_window {
 }
 
   div#kml_window label {
-    color: #000;
+    display: block;
+    color:#000;
     }
 
   div#kml-window-inner {
@@ -811,7 +801,6 @@ div#kml_window {
       margin:0;
     }
 
-  div#kml_window div.kml-file-input-wrapper,
   div#kml_window div.kml-url-input-wrapper {
     padding:15px;
   }

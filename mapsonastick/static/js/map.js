@@ -227,6 +227,7 @@ $(document).ready(
 
 $(document).ready(
   function() {
+    $(function(){ $("input[type='file']").uniform({fileBtnText: 'Upload KML'}); })
     $('#kml-url-add').toggle(
       function() {
         $('#kml_window').css({'display': 'block'});
@@ -238,9 +239,9 @@ $(document).ready(
     $('#kml-file-button').click(function() {
       $('#kml-file-input').click();
     });
-    $('#kml-file-input-cancel').click(
+    $('#kml-url-input-cancel').click(
       function() {
-        $('#kml-file-chooser').click();
+        $('#kml-url-add').click();
       }
     );
     $('#kml-file-input').change(

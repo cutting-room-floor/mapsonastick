@@ -46,8 +46,7 @@
     </div> <!-- .openlayers-blockswitcher -->
     <div class='kml-input'>
       <form id='kml-file-form' enctype='multipart/form-data' method='POST' action='/kml'>
-        <input id='kml-file-button' class='form-submit-mini' type='button' value='Upload KML' />
-        <input style='display:none;' id='kml-file-input' name='kml-file' type='file' />
+        <input id='kml-file-input' name='kml-file' type='file' />
       </form>
       <a id='kml-url-add' href="#">Or add online KML</a>
     </div>
@@ -73,14 +72,11 @@
   </div>
   <div id='kml_window'>
     <div id='kml-window-inner'>
-      <div class='right'>
-        <a href="#" id='kml-file-input-cancel'>Close</a>
-      </div>
       
       <div class='kml-url-input-wrapper'>
-        <label for='kml-url'>KML URL</label>
-        <input type='text' name='kml-url' size='70' id='kml-url' />
+        <input type='text' name='kml-url' size='55' id='kml-url' />
         <input type='button' name='kml-url-submit' id='kml-url-submit' value='Add KML' />
+        or <a href="#" id='kml-url-input-cancel'>Close</a>
       </div>
 
     </div>
