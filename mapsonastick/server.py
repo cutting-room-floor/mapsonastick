@@ -15,7 +15,6 @@ from werkzeug import Response, secure_filename
 
 MAPS_DIR = 'Maps'
 KML_DIR = 'KML'
-UPLOAD_FOLDER = 'KML'
 ALLOWED_EXTENSIONS = set(['kml'])
 
 app = Flask(__name__)
@@ -26,9 +25,9 @@ def maps_dir():
     # return MAPS_DIR
 
 def kml_dir():
+    return "../../../%s" % KML_DIR
     if sys.platform == 'darwin' and hasattr(sys, 'frozen'):
-        if os.path.exists("../../../%s" % KML_DIR):
-            return "../../../%s" % KML_DIR
+        return "../../../%s" % KML_DIR
     else:
         return KML_DIR
 
@@ -62,7 +61,7 @@ def kml():
         file = request.files['kml-file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(UPLOAD_FOLDER, filename))
+            file.save(os.path.join(kml_dir(), filename))
             return redirect(url_for('home'))
         else:
             return 'File not allowed'
