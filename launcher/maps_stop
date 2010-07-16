@@ -1,4 +1,4 @@
 #!/bin/sh
 pid2kill=`cat moas.pid`
 kill -9 $pid2kill
-rm $pidfile
+rm moas.pid
