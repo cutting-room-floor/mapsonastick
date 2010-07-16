@@ -17,3 +17,22 @@ not supported.
 2. Run Maps.app on Macintosh or Maps.exe on Windows
 
 This work is distributed under the GPL license, (c) 2010, Development Seed
+
+Requirements (Running)
+
+# Mac & Windows
+
+* A .mbtiles mapfile
+
+Requirements (Building)
+
+# Mac
+
+* [py2app](http://svn.pythonmac.org/py2app/py2app/trunk/doc/index.html)
+* [löve](http://love2d.org/)
+* [flask](http://flask.pocoo.org/)
+
+# Windows
+
+* [py2exe](http://www.py2exe.org/)
+* [flask](http://flask.pocoo.org/)
