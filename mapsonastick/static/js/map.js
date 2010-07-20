@@ -130,22 +130,24 @@ function attachSelect(l) {
 function load_layers() {
   var layer_list;
   $.getJSON('/layers', function(resp) {
+    var last = {};
     for(var i = 0; i < resp.layers.length; i++) {
       var b = OpenLayers.Bounds.fromArray(resp.layers[i][2]);
       var x = b.transform(
         new OpenLayers.Projection('EPSG:4326'),
         new OpenLayers.Projection('EPSG:900913'));
-      map.addLayer(
-        new OpenLayers.Layer.TMS(resp.layers[i][1], '/tiles/',
+      last = new OpenLayers.Layer.TMS(resp.layers[i][1], '/tiles/',
         {
           layername: resp.layers[i][0],
           type: 'png',
-          ext: b 
+          ext: x
         }
-      ));
-      last = resp.layers[i];
+      );
+      map.addLayer(last);
     }
-    map.zoomToExtent(x);
+    console.log(last);
+    map.setBaseLayer(last);
+    map.zoomToExtent(last.options.ext);
     for(var i = 0; i < resp.overlays.length; i++) {
       add_kml(resp.overlays[i], "/kml?url=" + resp.overlays[i]);
     }

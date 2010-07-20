@@ -182,6 +182,9 @@ OpenLayersPlusBlockswitcher.layerClick = function(element) {
     $('.layers.base .layers-content .activated').removeClass('activated');
     $(element).addClass('activated');
     layer.map.setBaseLayer(layer);
+    if (layer.options.ext !== null) {
+      layer.map.zoomToExtent(layer.options.ext);
+    }
   }
   else {
     layer.setVisibility($(element).is(':checked'));
