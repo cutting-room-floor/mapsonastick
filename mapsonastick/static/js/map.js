@@ -24,18 +24,6 @@ function onPopupClose(evt) {
   map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
 }
 
-function new_style(dict) {
-  var k, i;
-  styleindex++;
-  i = 0;
-  for (k in dict) {
-    if (i === styleindex) {
-      return dict[k];
-    }
-    i++;
-  }
-}
-
 function attributes_to_table(attributes) {
   var key, out;
   out = "";
@@ -54,7 +42,6 @@ function attributes_to_table(attributes) {
   return "<table>" + out + "</table>";
 }
 
-
 function onFeatureSelect(feature) {
   var popup;
   selectedFeature = feature;
@@ -72,18 +59,6 @@ function onFeatureUnselect(feature) {
   feature.popup.destroy();
   feature.popup = null;
 }    
-
-/*
- * From php.js
- */
-function basename (path, suffix) {
-  var b = path.replace(/^.*[\/\\]/g, '');
-      if (typeof(suffix) === 'string' && b.substr(b.length-suffix.length) === suffix) {
-      b = b.substr(0, b.length-suffix.length);
-  }
-  return b;
-}
-
 
 /**
  * Basic KML constructor. Only necessary to correctly
@@ -131,23 +106,6 @@ function add_kml(layer_title, layer_url) {
   attachSelect(l);
 }
 
-/**
- * jQuery function which gets layers out of an OpenLayers map object
- * @param options optional options dictionary
- * @return jquery object with property layers: layer array
- */
-$.fn.get_layers = function(options) {
-  var all_layers, layers;
-  all_layers = this[0].layers.slice(); // not certain of why .slice is called
-  layers = [];
-  $.each(all_layers, function() {
-      if(this.isBaseLayer === false) {
-      layers.push(this);
-      }
-      });
-  return $({'layers':layers});
-};
-
 function attachSelect(l) {
   var layer, layers, selecter;
   if (arguments.length < 1) {
@@ -173,16 +131,21 @@ function load_layers() {
   var layer_list;
   $.getJSON('/layers', function(resp) {
     for(var i = 0; i < resp.layers.length; i++) {
+      var b = OpenLayers.Bounds.fromArray(resp.layers[i][2]);
+      var x = b.transform(
+        new OpenLayers.Projection('EPSG:4326'),
+        new OpenLayers.Projection('EPSG:900913'));
       map.addLayer(
         new OpenLayers.Layer.TMS(resp.layers[i][1], '/tiles/',
         {
           layername: resp.layers[i][0],
-          type: 'png'
+          type: 'png',
+          ext: b 
         }
       ));
-      map.zoomToMaxExtent();
-      map.zoomTo(2);
+      last = resp.layers[i];
     }
+    map.zoomToExtent(x);
     for(var i = 0; i < resp.overlays.length; i++) {
       add_kml(resp.overlays[i], "/kml?url=" + resp.overlays[i]);
     }
