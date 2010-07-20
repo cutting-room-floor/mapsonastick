@@ -5,7 +5,7 @@ __copyright__ = 'Copyright 2010, Tom MacWright'
 __version__ = '0.1'
 __license__ = 'BSD'
 
-import sqlite3, urllib2, os, json, sys, base64
+import sqlite3, urllib2, os, json, sys, base64, moasutil
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug import Response, secure_filename
 
@@ -37,7 +37,9 @@ def layers_list():
     for root, dirs, files in os.walk(maps_dir()):
         for file in files:
             if os.path.splitext(file)[1] == '.mbtiles':
-                layers.append((base64.urlsafe_b64encode(os.path.join(root, file)), file))
+                layers.append(
+                    (base64.urlsafe_b64encode(os.path.join(root, file)), file, 
+                      moasutil.bounds(os.path.join(root, file))))
     overlays = []
     for root, dirs, files in os.walk(kml_dir()):
         for file in files:
@@ -100,8 +102,10 @@ def tile(layername_64, z, x, y):
     return Response(tile_data, mimetype="image/png")
 
 if __name__ == "__main__":
+    """ since flask spawns a new process when run from the mac terminal,
+    write a pid file to keep track of this process """
     if sys.platform == 'darwin':
         spid = open('server.pid', 'w')
         spid.write("%s\n" % str(os.getpid()))
         spid.close()
-    app.run()
+    app.run(debug=True)
