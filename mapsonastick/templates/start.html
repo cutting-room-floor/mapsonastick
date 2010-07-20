@@ -19,6 +19,12 @@
     <h1 class="site-name">Maps on a Stick: Afghanistan</h1>
   </div>
   <div id='left'>
+    <div class='kml-input'>
+      <form id='kml-file-form' enctype='multipart/form-data' method='POST' action='/kml'>
+        <input id='kml-file-input' name='kml-file' type='file' />
+      </form>
+      <a id='kml-url-add' href="#">or online kml</a>
+    </div>
     <div class='openlayers-blockswitcher'>
       <div class='layers base'>
         <h2 class='layers-title'>Base layers</h2>
@@ -42,12 +48,6 @@
         </div>
       </div>
     </div> <!-- .openlayers-blockswitcher -->
-    <div class='kml-input'>
-      <form id='kml-file-form' enctype='multipart/form-data' method='POST' action='/kml'>
-        <input id='kml-file-input' name='kml-file' type='file' />
-      </form>
-      <a id='kml-url-add' href="#">Or add online KML</a>
-    </div>
   </div> <!-- #left -->
   <div id='shadow-bottom'></div>
   <div id='shadow-top'></div>
