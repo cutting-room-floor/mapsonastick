@@ -81,7 +81,7 @@ end
 
 function love.mousepressed(x, y, button)
 
-  pcall(os.execute('./browse'))
+  pcall(os.execute('open http://localhost:5000/'))
 
 end
 
