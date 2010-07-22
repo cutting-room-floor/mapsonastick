@@ -89,13 +89,8 @@ function attachSelect(l) {
  * @return none
  */
 function add_kml(layer_title, layer_url, layer_filename) {
-  var format_options, l;
-  format_options = {
-    extractStyles: true, 
-    extractAttributes: true,
-    maxDepth: 2
-  };
-  var args = OpenLayers.Util.getParameters();
+  var l, kml_title,
+      args = OpenLayers.Util.getParameters();
   l = new OpenLayers.Layer.Vector(
     layer_title,
     {
@@ -103,7 +98,12 @@ function add_kml(layer_title, layer_url, layer_filename) {
       strategies:[new OpenLayers.Strategy.Fixed()],
       protocol:new OpenLayers.Protocol.HTTP({
         url:layer_url,
-        format:new OpenLayers.Format.KML(format_options)
+        format:new OpenLayers.Format.KML({
+          extractStyles: true, 
+          extractAttributes: true,
+          keepData: true,
+          maxDepth: 2
+        })
       }),
       visibility: false
     }
@@ -114,6 +114,12 @@ function add_kml(layer_title, layer_url, layer_filename) {
   l.events.on({
       'loadend': function() {
         if (this.features.length > 0) {
+          kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
+          if (kml_title) {
+            this.title = kml_title;
+            OpenLayersPlusBlockswitcher.styleChanged = true;
+            OpenLayersPlusBlockswitcher.redraw();
+          }
           if (this.features.length == 1) {
             this.map.zoomToExtent(this.getDataExtent());
             this.map.zoomTo(10); // TODO: zoom to max provided by baselayer
