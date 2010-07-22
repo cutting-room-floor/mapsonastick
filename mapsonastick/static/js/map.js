@@ -88,13 +88,14 @@ function attachSelect(l) {
  * @param layer_url URL to the KML feed
  * @return none
  */
-function add_kml(layer_title, layer_url) {
+function add_kml(layer_title, layer_url, layer_filename) {
   var format_options, l;
   format_options = {
     extractStyles: true, 
     extractAttributes: true,
     maxDepth: 2
   };
+  var args = OpenLayers.Util.getParameters();
   l = new OpenLayers.Layer.Vector(
     layer_title,
     {
@@ -103,9 +104,13 @@ function add_kml(layer_title, layer_url) {
       protocol:new OpenLayers.Protocol.HTTP({
         url:layer_url,
         format:new OpenLayers.Format.KML(format_options)
-      })
+      }),
+      visibility: false
     }
   );
+  if (layer_filename !== null && args.added_file === layer_filename) {
+    l.setVisibility(true);
+  }
   l.events.on({
       'loadend': function() {
         if (this.features.length > 0) {
@@ -148,7 +153,7 @@ function load_layers() {
     map.setBaseLayer(last);
     map.zoomToExtent(last.options.ext);
     for(var j = 0; j < resp.overlays.length; j++) {
-      add_kml(resp.overlays[j], "/kml?url=" + resp.overlays[j]);
+      add_kml(resp.overlays[j], "/kml?url=" + resp.overlays[j], resp.overlays[j]);
     }
   });
 }
@@ -172,8 +177,7 @@ $(document).ready(
         controls: [
           new OpenLayers.Control.PanZoomBar(),
           new OpenLayers.Control.Attribution(),
-          new OpenLayers.Control.Navigation(),
-          new OpenLayers.Control.PermalinkPlus()
+          new OpenLayers.Control.Navigation()
           ],
         maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
           20037508.34, 20037508.34)
@@ -188,12 +192,6 @@ $(document).ready(
     selectControl = new OpenLayers.Control.SelectFeature([],
         {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
 
-    map.events.on({
-        'moveend':         updatePageHash,
-        'changelayer':     updatePageHash,
-        'changebaselayer': updatePageHash,
-        scope: map
-    });
     map.addControl(selectControl);
     selectControl.activate();
     OpenLayersPlusBlockswitcher.hattach($('.openlayers-blockswitcher'), map);

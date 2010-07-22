@@ -64,7 +64,7 @@ def kml():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(kml_dir(), filename))
-            return redirect(url_for('home'))
+            return redirect(url_for('home', added_file=filename))
         else:
             return 'File not allowed'
     else:
