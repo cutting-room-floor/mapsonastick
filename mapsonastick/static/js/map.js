@@ -9,7 +9,7 @@
  * for Maps on a Stick.
  *
  * @author Tom MacWright
- * @version 1.0
+ * @version 2.0
  */
 
 var map, baselayers, myswitcher, selectedFeature, styleindex;
@@ -58,7 +58,28 @@ function onFeatureUnselect(feature) {
   map.removePopup(feature.popup);
   feature.popup.destroy();
   feature.popup = null;
-}    
+}
+
+function attachSelect(l) {
+  var layer, layers, selecter;
+  if (arguments.length < 1) {
+    layers = [];
+    for (layer in map.layers) {
+      if (map.layers[layer].CLASS_NAME === 'OpenLayers.Layer.Vector') {
+        layers.push(map.layers[layer]);
+      }
+    }
+  }
+  else {
+    layers = [l];
+  }
+  map.removeControl(
+    map.getControlsByClass('OpenLayers.Control.SelectFeature')[0]);
+  selecter = new OpenLayers.Control.SelectFeature(layers,
+        {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
+  map.addControl(selecter);
+  selecter.activate();
+}
 
 /**
  * Basic KML constructor. Only necessary to correctly
@@ -81,7 +102,7 @@ function add_kml(layer_title, layer_url) {
       strategies:[new OpenLayers.Strategy.Fixed()],
       protocol:new OpenLayers.Protocol.HTTP({
         url:layer_url,
-        format:new OpenLayers.Format.KML(format_options),
+        format:new OpenLayers.Format.KML(format_options)
       })
     }
   );
@@ -106,29 +127,8 @@ function add_kml(layer_title, layer_url) {
   attachSelect(l);
 }
 
-function attachSelect(l) {
-  var layer, layers, selecter;
-  if (arguments.length < 1) {
-    layers = [];
-    for (layer in map.layers) {
-      if (map.layers[layer].CLASS_NAME === 'OpenLayers.Layer.Vector') {
-        layers.push(map.layers[layer]);
-      }
-    }
-  }
-  else {
-    layers = [l]
-  }
-  map.removeControl(
-    map.getControlsByClass('OpenLayers.Control.SelectFeature')[0]);
-  selecter = new OpenLayers.Control.SelectFeature(layers,
-        {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
-  map.addControl(selecter);
-  selecter.activate();
-}
 
 function load_layers() {
-  var layer_list;
   $.getJSON('/layers', function(resp) {
     var last = {};
     for(var i = 0; i < resp.layers.length; i++) {
@@ -145,11 +145,10 @@ function load_layers() {
       );
       map.addLayer(last);
     }
-    console.log(last);
     map.setBaseLayer(last);
     map.zoomToExtent(last.options.ext);
-    for(var i = 0; i < resp.overlays.length; i++) {
-      add_kml(resp.overlays[i], "/kml?url=" + resp.overlays[i]);
+    for(var j = 0; j < resp.overlays.length; j++) {
+      add_kml(resp.overlays[j], "/kml?url=" + resp.overlays[j]);
     }
   });
 }
@@ -159,7 +158,7 @@ $(document).ready(
     /**
      * @TODO: these should be moved outside this function
      */
-    var options, mapnik, selectControl;
+    var options, selectControl;
         /**
          * set options so that KML markers with lat/lon points can
          * be placed on map tiles that are in spherical mercator
@@ -173,7 +172,8 @@ $(document).ready(
         controls: [
           new OpenLayers.Control.PanZoomBar(),
           new OpenLayers.Control.Attribution(),
-          new OpenLayers.Control.Navigation()
+          new OpenLayers.Control.Navigation(),
+          new OpenLayers.Control.PermalinkPlus()
           ],
         maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
           20037508.34, 20037508.34)
@@ -188,15 +188,17 @@ $(document).ready(
     selectControl = new OpenLayers.Control.SelectFeature([],
         {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
 
+    map.events.on({
+        'moveend':         updatePageHash,
+        'changelayer':     updatePageHash,
+        'changebaselayer': updatePageHash,
+        scope: map
+    });
     map.addControl(selectControl);
     selectControl.activate();
     OpenLayersPlusBlockswitcher.hattach($('.openlayers-blockswitcher'), map);
-  }
-);
 
-$(document).ready(
-  function() {
-    $(function(){ $("input[type='file']").uniform({fileBtnText: 'Upload KML'}); })
+    $(function(){ $("input[type='file']").uniform({fileBtnText: 'Upload KML'});});
     $('#kml-url-add').toggle(
       function() {
         $('#kml_window').css({'display': 'block'});
