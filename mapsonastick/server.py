@@ -19,6 +19,17 @@ ALLOWED_EXTENSIONS = set(['kml'])
 
 app = Flask(__name__)
 
+class MapCache(object):
+    def __init__(self):
+        self.connections = {}
+
+    def get(self, filename):
+        if not self.connections.has_key(filename):
+            self.connections[filename] = sqlite3.connect(filename)
+        return self.connections[filename]
+
+map_cache = MapCache()
+
 def maps_dir():
     if sys.platform == 'darwin' and False:
         return "../../../%s" % MAPS_DIR
@@ -89,17 +100,15 @@ def tile(layername_64, z, x, y):
     if not os.path.isfile(layername):
         return "Map file not found: %s" % layername
     try:
-        conn = sqlite3.connect(layername)
-        tile = conn.execute("""
+        return Response(map_cache.get(layername).execute("""
           select tile_data from tiles
           where
             zoom_level = %d and
             tile_column = %d and
-            tile_row = %d;""" % (z, x, y))
-        tile_data = tile.fetchone()
+            tile_row = %d;""" % (z, x, y)).fetchone(),
+            mimetype="image/png")
     except Exception, e:
         return "Tile could not be retrieved: %s" % str(e)
-    return Response(tile_data, mimetype="image/png")
 
 if __name__ == "__main__":
     """ since flask spawns a new process when run from the mac terminal,
