@@ -38,6 +38,13 @@ uploading files with the web interface.
 * [py2exe](http://www.py2exe.org/)
 * [flask](http://flask.pocoo.org/)
 
+# Layout
+
+* `launcher` Lua code and included resources (icons and shell scripts) for the launcher application
+* `launcher_dist` Distribution files to polish the Mac application bundle for the launcher
+* `mapsonastick` The Maps on a Stick server module in Python
+* `dist`, `build` Working directories for packaging the application as an executable
+
 # Licenses
 
 * This work is distributed under the GPL license, (c) 2010, Development Seed
