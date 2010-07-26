@@ -158,6 +158,7 @@ function load_layers() {
     }
     map.setBaseLayer(last);
     map.zoomToExtent(last.options.ext);
+    map.zoomIn();
     for(var j = 0; j < resp.overlays.length; j++) {
       add_kml(resp.overlays[j], "/kml?url=" + resp.overlays[j], resp.overlays[j]);
     }

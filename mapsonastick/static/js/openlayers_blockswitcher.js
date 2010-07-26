@@ -184,6 +184,7 @@ OpenLayersPlusBlockswitcher.layerClick = function(element) {
     layer.map.setBaseLayer(layer);
     if (layer.options.ext !== null) {
       layer.map.zoomToExtent(layer.options.ext);
+      layer.map.zoomIn();
     }
   }
   else {
