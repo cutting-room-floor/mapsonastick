@@ -1,7 +1,4 @@
-import sqlite3, os
-
-import math
-
+import sqlite3, os, math
 
 class SphericalMercator(object):
     """
