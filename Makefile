@@ -4,7 +4,7 @@ clean:
 	rm -rf {build,dist}
 
 build:
-	python setup.py py2app
+	/Library/Frameworks/Python.framework/Versions/2.7/bin/python setup.py py2app
 	cp -r mapsonastick/templates dist/moas.app/Contents/Resources
 	cp -r mapsonastick/static dist/moas.app/Contents/Resources
 	mkdir dist/Maps
