@@ -165,7 +165,7 @@ function load_layers() {
   });
 }
 
-$(document).ready(
+$(window).load(
   function() {
     /**
      * @TODO: these should be moved outside this function
