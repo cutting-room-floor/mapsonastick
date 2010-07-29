@@ -1,0 +1,2 @@
+recursive-include mapsonastick/templates *
+recursive-include mapsonastick/static *

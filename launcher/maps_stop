@@ -1,0 +1,7 @@
+#!/bin/sh
+pypid2kill=`cat ../../../moas.app/Contents/Resources/server.pid`
+pid2kill=`cat moas.pid`
+kill -9 $pid2kill
+kill -9 $pypid2kill
+rm moas.pid
+rm ../../../moas.app/Contents/Resources/server.pid
