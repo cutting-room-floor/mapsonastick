@@ -20,6 +20,7 @@ ALLOWED_EXTENSIONS = set(['kml'])
 app = Flask(__name__)
 
 class MapCache(object):
+    """ a simple static cache to prevent reconnecting to sqlite """
     def __init__(self):
         self.connections = {}
 
@@ -31,13 +32,13 @@ class MapCache(object):
 map_cache = MapCache()
 
 def maps_dir():
-    if sys.platform == 'darwin' and False:
+    if sys.platform == 'darwin' and True:
         return "../../../%s" % MAPS_DIR
     else:
         return MAPS_DIR
 
 def kml_dir():
-    if sys.platform == 'darwin' and False:
+    if sys.platform == 'darwin' and True:
         return "../../../%s" % KML_DIR
     else:
         return KML_DIR
@@ -55,7 +56,7 @@ def layers_list():
            layers.append(layer)
     overlays = []
     for root, dirs, files in os.walk(kml_dir()):
-        overlays = filter(lambda l: os.path.splitext(l)[1] == '.kml', files)
+        overlays.extend(filter(lambda l: os.path.splitext(l)[1] == '.kml', files))
     return {'layers': layers, 'overlays': overlays}
 
 def allowed_file(filename):
@@ -117,4 +118,4 @@ if __name__ == "__main__":
         spid = open('server.pid', 'w')
         spid.write("%s\n" % str(os.getpid()))
         spid.close()
-    app.run(debug=True)
+    app.run()
