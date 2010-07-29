@@ -12,13 +12,52 @@
  * @version 2.0
  */
 
-var map, baselayers, myswitcher, selectedFeature, styleindex;
-var styleindex = 0;
-baselayers = [];
+var map, selectedFeature;
 
 OpenLayers.ImgPath = '/static/images/openlayers/';
 OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
 OpenLayers.ProxyHost = '/proxy?url=';
+
+
+OpenLayers.Feature.Vector.style['default'] = {
+    fillColor: "#B40500",
+    fillOpacity: 0.7, 
+    hoverFillColor: "white",
+    hoverFillOpacity: 0.8,
+    strokeColor: "#B40500",
+    strokeOpacity: 0.2,
+    strokeWidth: 2,
+    strokeLinecap: "round",
+    strokeDashstyle: "solid",
+    hoverStrokeColor: "red",
+    hoverStrokeOpacity: 1,
+    hoverStrokeWidth: 0.2,
+    pointRadius: 6,
+    hoverPointRadius: 1,
+    hoverPointUnit: "%",
+    pointerEvents: "visiblePainted",
+    cursor: "inherit"
+};
+
+OpenLayers.Feature.Vector.style['select'] = {
+    fillColor: "#B40500",
+    fillOpacity: 1, 
+    hoverFillColor: "white",
+    hoverFillOpacity: 0.8,
+    strokeColor: "#000000",
+    strokeOpacity: 1,
+    strokeWidth: 2,
+    strokeLinecap: "round",
+    strokeDashstyle: "solid",
+    hoverStrokeColor: "red",
+    hoverStrokeOpacity: 1,
+    hoverStrokeWidth: 0.2,
+    pointRadius: 6,
+    hoverPointRadius: 1,
+    hoverPointUnit: "%",
+    pointerEvents: "visiblePainted",
+    cursor: "pointer"
+};
 
 function onPopupClose(evt) {
   map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
@@ -138,6 +177,28 @@ function add_kml(layer_title, layer_url, layer_filename) {
   attachSelect(l);
 }
 
+function resolution_range(start, end) {
+  var res = [156543.0339,
+    78271.51695,
+    39135.758475,
+    19567.8792375,
+    9783.93961875,
+    4891.969809375,
+    2445.9849046875,
+    1222.99245234375,
+    611.496226171875,
+    305.7481130859375,
+    152.87405654296876,
+    76.43702827148438,
+    38.21851413574219,
+    19.109257067871095,
+    9.554628533935547,
+    4.777314266967774,
+    2.388657133483887,
+    1.1943285667419434,
+    0.5971642833709717];
+  return (arguments.length == 0) ? res : res.slice(start, end + 1);
+}
 
 function load_layers() {
   $.getJSON('/layers', function(resp) {
@@ -151,7 +212,11 @@ function load_layers() {
         {
           layername: resp.layers[i]['path'],
           type: 'png',
-          ext: x
+          ext: x,
+          serverResolutions: resolution_range(),
+          resolutions: resolution_range(
+            resp.layers[i]['zooms'][0], 
+            resp.layers[i]['zooms'][1]),
         }
       );
       map.addLayer(last);
