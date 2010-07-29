@@ -31,13 +31,13 @@ class MapCache(object):
 map_cache = MapCache()
 
 def maps_dir():
-    if sys.platform == 'darwin' and False:
+    if sys.platform == 'darwin' and True:
         return "../../../%s" % MAPS_DIR
     else:
         return MAPS_DIR
 
 def kml_dir():
-    if sys.platform == 'darwin' and False:
+    if sys.platform == 'darwin' and True:
         return "../../../%s" % KML_DIR
     else:
         return KML_DIR
@@ -117,4 +117,4 @@ if __name__ == "__main__":
         spid = open('server.pid', 'w')
         spid.write("%s\n" % str(os.getpid()))
         spid.close()
-    app.run(debug=True)
+    app.run()
