@@ -31,13 +31,13 @@ class MapCache(object):
 map_cache = MapCache()
 
 def maps_dir():
-    if sys.platform == 'darwin' and True:
+    if sys.platform == 'darwin' and False:
         return "../../../%s" % MAPS_DIR
     else:
         return MAPS_DIR
 
 def kml_dir():
-    if sys.platform == 'darwin' and True:
+    if sys.platform == 'darwin' and False:
         return "../../../%s" % KML_DIR
     else:
         return KML_DIR
@@ -46,16 +46,16 @@ def layers_list():
     """ return a json object of layers ready for configuration """
     layers = []
     for root, dirs, files in os.walk(maps_dir()):
-        for file in files:
-            if os.path.splitext(file)[1] == '.mbtiles':
-                layers.append(
-                    (base64.urlsafe_b64encode(os.path.join(root, file)), file, 
-                      moasutil.bounds(os.path.join(root, file))))
+        for file in filter(lambda l: os.path.splitext(l)[1] == '.mbtiles', files):
+           layer = {
+             'path': base64.urlsafe_b64encode(os.path.join(root, file)),
+             'filename': file
+           }
+           layer.update(moasutil.restrictions(os.path.join(root, file)))
+           layers.append(layer)
     overlays = []
     for root, dirs, files in os.walk(kml_dir()):
-        for file in files:
-            if os.path.splitext(file)[1] == '.kml':
-                overlays.append(file)
+        overlays = filter(lambda l: os.path.splitext(l)[1] == '.kml', files)
     return {'layers': layers, 'overlays': overlays}
 
 def allowed_file(filename):
@@ -117,4 +117,4 @@ if __name__ == "__main__":
         spid = open('server.pid', 'w')
         spid.write("%s\n" % str(os.getpid()))
         spid.close()
-    app.run()
+    app.run(debug=True)

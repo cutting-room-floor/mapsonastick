@@ -56,7 +56,8 @@ class SphericalMercator(object):
         maxx,maxy = self.px_to_ll(ur,zoom)
         return (minx,miny,maxx,maxy)
 
-def bounds(db):
+def restrictions(db):
+    """ return bounding box and min/max zoom levels """
     if not os.path.isfile(db):
         return "Map file not found: %s" % db
     try:
@@ -66,6 +67,9 @@ def bounds(db):
 
     max_zoom_q = conn.execute("select max(zoom_level) from tiles;")
     max_zoom = max_zoom_q.fetchone()[0]
+
+    min_zoom_q = conn.execute("select min(zoom_level) from tiles;")
+    min_zoom = min_zoom_q.fetchone()[0]
 
     min_w_q = conn.execute("select tile_column from tiles where zoom_level='%s' order by tile_column asc limit 1;" % max_zoom)
     min_w = min_w_q.fetchone()[0]
@@ -82,4 +86,7 @@ def bounds(db):
     sm = SphericalMercator(levels=18)
     env_nw = sm.xyz_to_envelope(min_w, min_n, max_zoom, tms_style = True)
     env_se = sm.xyz_to_envelope(min_e, min_s, max_zoom, tms_style = True)
-    return [env_se[0], env_nw[1], env_nw[0], env_se[1]]
+    return {
+      'bounds': [env_se[0], env_nw[1], env_nw[0], env_se[1]],
+      'zooms': [min_zoom, max_zoom]
+    }

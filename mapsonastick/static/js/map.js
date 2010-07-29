@@ -143,13 +143,13 @@ function load_layers() {
   $.getJSON('/layers', function(resp) {
     var last = {};
     for(var i = 0; i < resp.layers.length; i++) {
-      var b = OpenLayers.Bounds.fromArray(resp.layers[i][2]);
+      var b = OpenLayers.Bounds.fromArray(resp.layers[i]['bounds']);
       var x = b.transform(
         new OpenLayers.Projection('EPSG:4326'),
         new OpenLayers.Projection('EPSG:900913'));
-      last = new OpenLayers.Layer.TMS(resp.layers[i][1], '/tiles/',
+      last = new OpenLayers.Layer.TMS(resp.layers[i]['filename'], '/tiles/',
         {
-          layername: resp.layers[i][0],
+          layername: resp.layers[i]['path'],
           type: 'png',
           ext: x
         }
