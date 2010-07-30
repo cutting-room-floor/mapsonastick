@@ -170,6 +170,7 @@ function add_kml(layer_title, layer_url, layer_filename) {
         else {
           this.map.removeLayer(this);
         }
+        attachSelect(this);
       },
       'context': this
   });
