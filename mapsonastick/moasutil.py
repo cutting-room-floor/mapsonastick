@@ -71,16 +71,16 @@ def restrictions(db):
     min_zoom_q = conn.execute("select min(zoom_level) from tiles;")
     min_zoom = min_zoom_q.fetchone()[0]
 
-    min_w_q = conn.execute("select tile_column from tiles where zoom_level='%s' order by tile_column asc limit 1;" % max_zoom)
+    min_w_q = conn.execute("select min(tile_column) from tiles where zoom_level='%s';" % max_zoom)
     min_w = min_w_q.fetchone()[0]
 
-    min_n_q = conn.execute("select tile_row from tiles where zoom_level='%s' order by tile_row asc limit 1;" % max_zoom)
+    min_n_q = conn.execute("select min(tile_row) from tiles where zoom_level='%s';" % max_zoom)
     min_n = min_n_q.fetchone()[0]
 
-    min_s_q = conn.execute("select tile_row from tiles where zoom_level='%s' order by tile_row desc limit 1;" % max_zoom)
+    min_s_q = conn.execute("select max(tile_row) from tiles where zoom_level='%s';" % max_zoom)
     min_s = min_s_q.fetchone()[0]
 
-    min_e_q = conn.execute("select tile_column from tiles where zoom_level='%s' order by tile_column desc limit 1;" % max_zoom)
+    min_e_q = conn.execute("select max(tile_column) from tiles where zoom_level='%s';" % max_zoom)
     min_e = min_e_q.fetchone()[0]
 
     sm = SphericalMercator(levels=18)
