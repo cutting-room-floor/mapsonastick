@@ -47,16 +47,19 @@ def layers_list():
     """ return a json object of layers ready for configuration """
     layers = []
     for root, dirs, files in os.walk(maps_dir()):
-        for file in filter(lambda l: os.path.splitext(l)[1] == '.mbtiles', files):
-           layer = {
-             'path': base64.urlsafe_b64encode(os.path.join(root, file)),
-             'filename': file
-           }
-           layer.update(moasutil.restrictions(os.path.join(root, file)))
-           layers.append(layer)
+        for file in filter(lambda l: os.path.splitext(l)[1] == '.mbtiles' and not l.startswith('.'), files):
+            try:
+                layer = {
+                  'path': base64.urlsafe_b64encode(os.path.join(root, file)),
+                  'filename': file
+                }
+                layer.update(moasutil.restrictions(os.path.join(root, file)))
+                layers.append(layer)
+            except:
+                pass
     overlays = []
     for root, dirs, files in os.walk(kml_dir()):
-        overlays.extend(filter(lambda l: os.path.splitext(l)[1] == '.kml', files))
+        overlays.extend(filter(lambda l: os.path.splitext(l)[1] == '.kml' and not l.startswith('.'), files))
     return {'layers': layers, 'overlays': overlays}
 
 def allowed_file(filename):
