@@ -5,9 +5,19 @@ __copyright__ = 'Copyright 2010, Tom MacWright'
 __version__ = '0.1'
 __license__ = 'BSD'
 
-import sqlite3, urllib2, os, json, sys, base64, moasutil
-from flask import Flask, render_template, request, redirect, url_for
+import sqlite3, urllib2, os, sys, base64
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from werkzeug import Response, secure_filename
+
+try:
+    import moasutil
+except ImportError:
+    from mapsonastick import moasutil
+
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 """
     Maps on a Stick: a simple tile server
@@ -83,8 +93,11 @@ def kml():
         else:
             return 'File not allowed'
     else:
-        url = request.args.get('url', False)
-        return open(os.path.join(kml_dir(), url)).read()
+        try:
+            url = request.args.get('url', False)
+            return send_file(open(os.path.join(kml_dir(), url), 'rb'))
+        except Exception, e:
+            return str(e)
 
 
 @app.route('/proxy', methods=['GET'])
@@ -121,4 +134,5 @@ if __name__ == "__main__":
         spid = open('server.pid', 'w')
         spid.write("%s\n" % str(os.getpid()))
         spid.close()
-    app.run(debug=True)
+	app.config['SERVER_NAME'] = 'localhost'
+    app.run()
