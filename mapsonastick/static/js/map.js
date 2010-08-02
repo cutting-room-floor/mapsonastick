@@ -214,7 +214,7 @@ function load_layers() {
           type: 'png',
           ext: x,
           serverResolutions: resolution_range(),
-          isBaseLayer: ((resp.layers[i]['type'] || 'base') == 'base'),
+          isBaseLayer: ((resp.layers[i]['type'] || 'baselayer') == 'baselayer'),
           resolutions: resolution_range(
             resp.layers[i]['zooms'][0], 
             resp.layers[i]['zooms'][1]),
