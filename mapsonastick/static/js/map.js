@@ -203,27 +203,26 @@ function resolution_range(start, end) {
 
 function load_layers() {
   $.getJSON('/layers', function(resp) {
-    var last = {};
     for(var i = 0; i < resp.layers.length; i++) {
       var b = OpenLayers.Bounds.fromArray(resp.layers[i]['bounds']);
       var x = b.transform(
         new OpenLayers.Projection('EPSG:4326'),
         new OpenLayers.Projection('EPSG:900913'));
-      last = new OpenLayers.Layer.TMS(resp.layers[i]['filename'], '/tiles/',
+      map.addLayer(new OpenLayers.Layer.TMS((resp.layers[i]['name'] || resp.layers[i]['filename']), '/tiles/',
         {
           layername: resp.layers[i]['path'],
           type: 'png',
           ext: x,
           serverResolutions: resolution_range(),
+          isBaseLayer: ((resp.layers[i]['type'] || 'base') == 'base'),
           resolutions: resolution_range(
             resp.layers[i]['zooms'][0], 
             resp.layers[i]['zooms'][1]),
         }
-      );
-      map.addLayer(last);
+      ));
     }
-    map.setBaseLayer(last);
-    map.zoomToExtent(last.options.ext);
+    map.setBaseLayer(map.getLayersBy('isBaseLayer', true)[0]);
+    map.zoomToExtent(map.getLayersBy('isBaseLayer', true)[0].options.ext);
     map.zoomIn();
     for(var j = 0; j < resp.overlays.length; j++) {
       add_kml(resp.overlays[j], "/kml?url=" + resp.overlays[j], resp.overlays[j]);

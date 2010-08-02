@@ -65,6 +65,12 @@ def restrictions(db):
     except Exception, e:
         return "Problem connecting to tileset: %s" % str(e)
 
+    try:
+        metadata_q = conn.execute("select * from metadata;")
+        metadata = dict(metadata_q.fetchall())
+    except Exception, e:
+        metadata = {}
+
     max_zoom_q = conn.execute("select max(zoom_level) from tiles;")
     max_zoom = max_zoom_q.fetchone()[0]
 
@@ -86,7 +92,8 @@ def restrictions(db):
     sm = SphericalMercator(levels=18)
     env_nw = sm.xyz_to_envelope(min_w, min_n, max_zoom, tms_style = True)
     env_se = sm.xyz_to_envelope(min_e, min_s, max_zoom, tms_style = True)
-    return {
-      'bounds': [env_se[0], env_nw[1], env_nw[0], env_se[1]],
-      'zooms': [min_zoom, max_zoom]
-    }
+
+    metadata['zooms'] = [min_zoom, max_zoom]
+    metadata['bounds'] = [env_se[0], env_nw[1], env_nw[0], env_se[1]]
+
+    return metadata
