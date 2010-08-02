@@ -39,7 +39,7 @@ OpenLayers.Feature.Vector.style['default'] = {
     cursor: "inherit"
 };
 
-OpenLayers.Feature.Vector.style['select'] = {
+OpenLayers.Feature.Vector.style.select = {
     fillColor: "#B40500",
     fillOpacity: 1, 
     hoverFillColor: "white",
@@ -198,26 +198,26 @@ function resolution_range(start, end) {
     2.388657133483887,
     1.1943285667419434,
     0.5971642833709717];
-  return (arguments.length == 0) ? res : res.slice(start, end + 1);
+  return (arguments.length === 0) ? res : res.slice(start, end + 1);
 }
 
 function load_layers() {
   $.getJSON('/layers', function(resp) {
     for(var i = 0; i < resp.layers.length; i++) {
-      var b = OpenLayers.Bounds.fromArray(resp.layers[i]['bounds']);
+      var b = OpenLayers.Bounds.fromArray(resp.layers[i].bounds);
       var x = b.transform(
         new OpenLayers.Projection('EPSG:4326'),
         new OpenLayers.Projection('EPSG:900913'));
-      map.addLayer(new OpenLayers.Layer.TMS((resp.layers[i]['name'] || resp.layers[i]['filename']), '/tiles/',
+      map.addLayer(new OpenLayers.Layer.TMS((resp.layers[i].name || resp.layers[i].filename), '/tiles/',
         {
-          layername: resp.layers[i]['path'],
+          layername: resp.layers[i].path,
           type: 'png',
           ext: x,
           serverResolutions: resolution_range(),
-          isBaseLayer: ((resp.layers[i]['type'] || 'baselayer') == 'baselayer'),
+          isBaseLayer: ((resp.layers[i].type || 'baselayer') == 'baselayer'),
           resolutions: resolution_range(
-            resp.layers[i]['zooms'][0], 
-            resp.layers[i]['zooms'][1]),
+            resp.layers[i].zooms[0], 
+            resp.layers[i].zooms[1])
         }
       ));
     }
