@@ -224,6 +224,11 @@ function resolution_range(start, end) {
 
 function load_layers() {
   $.getJSON('/layers', function(resp) {
+    if (resp.layers.length == 0) {
+      moas_message('', 'You currently have no layers loaded in Maps on a Stick. ' +
+        'You can add layers by dropping .mbtiles files into the Maps/ folder of your installation');
+      return;
+    }
     for(var i = 0; i < resp.layers.length; i++) {
       var b = OpenLayers.Bounds.fromArray(resp.layers[i].bounds);
       var x = b.transform(
