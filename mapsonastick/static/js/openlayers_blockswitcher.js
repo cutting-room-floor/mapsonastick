@@ -186,7 +186,7 @@ OpenLayersPlusBlockswitcher.selectStyle = function(element) {
 
 OpenLayersPlusBlockswitcher.layerZoom = function(element) {
   var layer = $(element).data('layer');
-  if (layer.options.ext !== undefined) {
+  if (layer.options.ext !== null) {
     layer.map.zoomToExtent(layer.options.ext);
     layer.map.zoomIn();
   }

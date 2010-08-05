@@ -18,6 +18,14 @@ OpenLayers.ImgPath = '/static/images/openlayers/';
 OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
 OpenLayers.ProxyHost = '/proxy?url=';
 
+// message wrapper, replaceable by TileMill components
+function moas_message(title, message, type) {
+  alert(message);
+}
+
+function moas_confirm(title, message, type) {
+  return confirm(message);
+}
 
 OpenLayers.Feature.Vector.style['default'] = {
     fillColor: "#B40500",
@@ -153,6 +161,14 @@ function add_kml(layer_title, layer_url, layer_filename) {
   l.events.on({
       'loadend': function() {
         if (this.features.length > 0) {
+
+          if (this.features.length > 900 && // 900 is an arbitary number
+            !moas_confirm('', 'This KML file (' + layer_filename + ') contains over ' +
+            'two hundred points. It may cause your browser to operate slowly. Are you ' +
+            'sure you want to load this layer?')) {
+              this.map.removeLayer(this);
+          }
+
           try {
             kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
             if (kml_title !== "") {
@@ -161,7 +177,6 @@ function add_kml(layer_title, layer_url, layer_filename) {
               OpenLayersPlusBlockswitcher.redraw();
             }
           } catch(err) { }
-
           if (this.features.length == 1) {
             this.map.zoomToExtent(this.getDataExtent());
             this.map.zoomTo(10); // TODO: zoom to max provided by baselayer
@@ -171,6 +186,9 @@ function add_kml(layer_title, layer_url, layer_filename) {
           }
         }
         else {
+          moas_message('', 'This KML file (' + layer_filename + 
+            ') could not be loaded. It may be empty or corrupted. If this' +
+            ' error persists, you may want to remove the file from the KML folder.');
           this.map.removeLayer(this);
         }
         attachSelect(this);
