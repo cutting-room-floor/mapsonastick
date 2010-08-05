@@ -580,6 +580,27 @@ div.openlayers-blockswitcher div.radio span.icon {
   cursor:pointer;
 }
 
+div.openlayers-blockswitcher div.layer-tools {
+  float:right;
+  display:none;
+}
+
+div.openlayers-blockswitcher div.form-item:hover div.layer-tools {
+  display:block;
+}
+
+div.openlayers-blockswitcher a.layer-zoom {
+  display:block;
+  float:left;
+  width:20px;
+  height:20px;
+  background:transparent url(images/sprite.png) no-repeat scroll -375px -65px;
+  margin-right:5px;
+  margin-bottom:5px;
+  cursor:pointer;
+  text-indent:-999px;
+}
+
 div.openlayers-blockswitcher div.activated span.icon {
   background-position:0 -27px;
 }

@@ -99,7 +99,12 @@ OpenLayersPlusBlockswitcher.redraw = function() {
     this.layerStates = new Array(len);
     for (var i = 0; i < len; i++) {
       var layerState = this.map.layers[i];
-      this.layerStates[i] = {'name': layerState.name, 'visibility': layerState.visibility, 'inRange': layerState.inRange, 'id': layerState.id};
+      this.layerStates[i] = {
+        'name': layerState.name,
+        'visibility': layerState.visibility, 
+        'inRange': layerState.inRange, 
+        'id': layerState.id
+      };
     }
 
     layers = this.map.layers.slice();
@@ -113,14 +118,20 @@ OpenLayersPlusBlockswitcher.redraw = function() {
         // Create input element
         var inputType = (baseLayer) ? "radio" : "checkbox";
         var inputElem = $('.factory .'+ inputType, this.blockswitcher).clone();
+        var layerTools = $('.factory .layer-tools').clone();
 
         // Append to container
         var container = baseLayer ? $('.layers.base', this.blockswitcher) : $('.layers.data', this.blockswitcher);
         container.show();
         $('.layers-content', container).append(inputElem);
+        $(inputElem).prepend(layerTools);
 
         // Set label text
         $('label', inputElem).append((layer.title !== undefined) ? layer.title : layer.name);
+
+        $('a.layer-zoom', inputElem).click(
+          function() { return OpenLayersPlusBlockswitcher.layerZoom(this); })
+          .data('layer', layer);
 
         // Add states and click handler
         if (baseLayer) {
@@ -172,6 +183,26 @@ OpenLayersPlusBlockswitcher.selectStyle = function(element) {
   OpenLayersPlusBlockswitcher.redraw();
   return false; // prevent layerClick from triggering
 };
+
+OpenLayersPlusBlockswitcher.layerZoom = function(element) {
+  var layer = $(element).data('layer');
+  if (layer.options.ext !== undefined) {
+    layer.map.zoomToExtent(layer.options.ext);
+    layer.map.zoomIn();
+  }
+  else if (!layer.isBaseLayer) {
+    if (layer.features.length == 1) {
+      layer.map.zoomToExtent(layer.getDataExtent());
+      layer.map.zoomTo(10); // TODO: zoom to max provided by baselayer
+    }
+    else {
+      layer.map.zoomToExtent(layer.getDataExtent());
+    }
+  }
+  return false;
+}
+
+
 
 /**
  * Click handler that activates or deactivates a layer.

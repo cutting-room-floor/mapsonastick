@@ -154,7 +154,7 @@ function add_kml(layer_title, layer_url, layer_filename) {
       'loadend': function() {
         if (this.features.length > 0) {
           kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
-          if (kml_title) {
+          if (kml_title !== "") {
             this.title = kml_title;
             OpenLayersPlusBlockswitcher.styleChanged = true;
             OpenLayersPlusBlockswitcher.redraw();
