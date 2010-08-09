@@ -213,7 +213,8 @@ OpenLayersPlusBlockswitcher.layerClick = function(element) {
     $('.layers.base .layers-content .activated').removeClass('activated');
     $(element).addClass('activated');
     layer.map.setBaseLayer(layer);
-    if (layer.options.ext !== null) {
+    if (layer.options.ext !== null && 
+      layer.options.ext.containsBounds(map.getExtent())) {
       layer.map.zoomToExtent(layer.options.ext);
       layer.map.zoomIn();
     }
