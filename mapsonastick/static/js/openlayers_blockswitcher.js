@@ -186,11 +186,11 @@ OpenLayersPlusBlockswitcher.selectStyle = function(element) {
 
 OpenLayersPlusBlockswitcher.layerZoom = function(element) {
   var layer = $(element).data('layer');
-  if (layer.options.ext !== null) {
+  if (layer.options.ext !== undefined) {
     layer.map.zoomToExtent(layer.options.ext);
     layer.map.zoomIn();
   }
-  else if (!layer.isBaseLayer) {
+  else if (!layer.isBaseLayer && layer.getDataExtent()) {
     if (layer.features.length == 1) {
       layer.map.zoomToExtent(layer.getDataExtent());
       layer.map.zoomTo(10); // TODO: zoom to max provided by baselayer
