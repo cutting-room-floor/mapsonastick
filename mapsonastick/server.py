@@ -25,7 +25,7 @@ except ImportError:
 
 MAPS_DIR = 'Maps'
 KML_DIR = 'KML'
-ALLOWED_EXTENSIONS = set(['kml'])
+ALLOWED_EXTENSIONS = set(['kml', 'rss'])
 
 app = Flask(__name__)
 
@@ -69,7 +69,7 @@ def layers_list():
                 pass
     overlays = []
     for root, dirs, files in os.walk(kml_dir()):
-        overlays.extend(filter(lambda l: os.path.splitext(l)[1] == '.kml' and not l.startswith('.'), files))
+        overlays.extend(filter(lambda l: os.path.splitext(l)[1] in ['.kml', '.rss'] and not l.startswith('.'), files))
     return {'layers': layers, 'overlays': overlays}
 
 def allowed_file(filename):

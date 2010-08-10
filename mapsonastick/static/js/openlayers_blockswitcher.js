@@ -90,7 +90,6 @@ OpenLayersPlusBlockswitcher.redraw = function() {
     $('.layers.data .layers-content div', this.blockswitcher).remove();
     $('.layers.base', this.blockswitcher).hide();
     $('.layers.data', this.blockswitcher).hide();
-
     // Save state -- for checking layer if the map state changed.
     // We save this before redrawing, because in the process of redrawing
     // we will trigger more visibility changes, and we want to not redraw
@@ -106,7 +105,6 @@ OpenLayersPlusBlockswitcher.redraw = function() {
         'id': layerState.id
       };
     }
-
     layers = this.map.layers.slice();
     for (i = 0, len = layers.length; i < len; i++) {
       var layer = layers[i];
@@ -201,8 +199,6 @@ OpenLayersPlusBlockswitcher.layerZoom = function(element) {
   }
   return false;
 }
-
-
 
 /**
  * Click handler that activates or deactivates a layer.
