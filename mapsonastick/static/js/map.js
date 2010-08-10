@@ -155,22 +155,18 @@ function add_kml(layer_title, layer_url, layer_filename) {
       visibility: false
     }
   );
-  if (layer_filename !== null && args.added_file === layer_filename) {
-    l.setVisibility(true);
-  }
+  l.setVisibility(layer_filename !== null && args.added_file === layer_filename);
   l.events.on({
       'loadend': function() {
         if (this.features.length > 0) {
-
           if (this.features.length > 900 && // 900 is an arbitary number
             !moas_confirm('', 'This KML file (' + layer_filename + ') contains over ' +
-            'two hundred points. It may cause your browser to operate slowly. Are you ' +
+            'nine hundred points. It may cause your browser to operate slowly. Are you ' +
             'sure you want to load this layer?')) {
               this.map.removeLayer(this);
           }
-
           try {
-            kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
+            var kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
             if (kml_title !== "") {
               this.title = kml_title;
               OpenLayersPlusBlockswitcher.styleChanged = true;
@@ -262,10 +258,7 @@ $(window).load(
      * @TODO: these should be moved outside this function
      */
     var options, selectControl;
-        /**
-         * set options so that KML markers with lat/lon points can
-         * be placed on map tiles that are in spherical mercator
-         */
+        
     options = {
         projection: new OpenLayers.Projection("EPSG:900913"),
         displayProjection: new OpenLayers.Projection("EPSG:4326"),
