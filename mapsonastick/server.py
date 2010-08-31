@@ -95,7 +95,10 @@ def kml():
     else:
         try:
             url = request.args.get('url', False)
-            return send_file(open(os.path.join(kml_dir(), url), 'rb'))
+            if os.path.isfile(os.path.join(kml_dir(), url)):
+                return send_file(open(os.path.join(kml_dir(), url), 'rb'))
+            else:
+                return send_file(open(os.path.join('static', url), 'rb'))
         except Exception, e:
             return str(e)
 
@@ -135,4 +138,4 @@ if __name__ == "__main__":
         spid.write("%s\n" % str(os.getpid()))
         spid.close()
 	app.config['SERVER_NAME'] = 'localhost'
-    app.run()
+    app.run(debug=True)
