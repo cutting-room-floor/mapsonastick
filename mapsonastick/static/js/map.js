@@ -28,75 +28,127 @@ function moas_confirm(title, message, type) {
 }
 
 OpenLayers.Feature.Vector.style['default'] = {
-    fillColor: "#B40500",
+    fillColor: '#B40500',
     fillOpacity: 0.7, 
-    hoverFillColor: "white",
+    hoverFillColor: 'white',
     hoverFillOpacity: 0.8,
-    strokeColor: "#B40500",
+    strokeColor: '#B40500',
     strokeOpacity: 0.2,
     strokeWidth: 2,
-    strokeLinecap: "round",
-    strokeDashstyle: "solid",
-    hoverStrokeColor: "red",
+    strokeLinecap: 'round',
+    strokeDashstyle: 'solid',
+    hoverStrokeColor: 'red',
     hoverStrokeOpacity: 1,
     hoverStrokeWidth: 0.2,
     pointRadius: 6,
     hoverPointRadius: 1,
-    hoverPointUnit: "%",
-    pointerEvents: "visiblePainted",
-    cursor: "inherit"
+    hoverPointUnit: '%',
+    pointerEvents: 'visiblePainted',
+    cursor: 'inherit'
 };
 
 OpenLayers.Feature.Vector.style.select = {
-    fillColor: "#B40500",
+    fillColor: '#B40500',
     fillOpacity: 1, 
-    hoverFillColor: "white",
+    hoverFillColor: 'white',
     hoverFillOpacity: 0.8,
-    strokeColor: "#000000",
+    strokeColor: '#000000',
     strokeOpacity: 1,
     strokeWidth: 2,
-    strokeLinecap: "round",
-    strokeDashstyle: "solid",
-    hoverStrokeColor: "red",
+    strokeLinecap: 'round',
+    strokeDashstyle: 'solid',
+    hoverStrokeColor: 'red',
     hoverStrokeOpacity: 1,
     hoverStrokeWidth: 0.2,
     pointRadius: 6,
     hoverPointRadius: 1,
-    hoverPointUnit: "%",
-    pointerEvents: "visiblePainted",
-    cursor: "pointer"
+    hoverPointUnit: '%',
+    pointerEvents: 'visiblePainted',
+    cursor: 'pointer'
 };
 
-function onPopupClose(evt) {
-  map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
+/**
+ * mapsona style definitions
+ *
+ * clicking the legend-color (the box to the left of layer names)
+ * will cycle through styles for vector layers.
+ */
+
+var default_styles = {
+  'green': new OpenLayers.StyleMap(
+    OpenLayers.Util.applyDefaults(
+        {
+          fillColor: '#93ce54', 
+          fillOpacity: 1, 
+          strokeColor: '#4c8014',
+          pointRadius: 4,
+          externalGraphic:'/images/default_marker.png'
+        },
+        OpenLayers.Feature.Vector.style['default']
+      )
+    ),
+  'yellow': new OpenLayers.StyleMap(
+    OpenLayers.Util.applyDefaults(
+        {
+          fillColor: '#ffae00', 
+          fillOpacity: 1, 
+          strokeColor: '#8d6000',
+          pointRadius: 4,
+          externalGraphic:'/images/default_marker.png'
+        },
+        OpenLayers.Feature.Vector.style['default']
+      )
+    ),
+  'black': new OpenLayers.StyleMap(
+    OpenLayers.Util.applyDefaults(
+        {
+          fillColor: 'black', 
+          fillOpacity: 0.6, 
+          strokeColor: 'white',
+          pointRadius: 4,
+          externalGraphic:'/images/default_marker.png'
+        },
+        OpenLayers.Feature.Vector.style['default']
+      )
+    ),
+};
+
+for(style in default_styles) {
+  default_styles[style].name = style;
 }
+
 
 function attributes_to_table(attributes) {
   var key, out;
-  out = "";
+  out = '';
   for (key in attributes) {
     if (typeof attributes[key] === 'string') {
-      out += "<tr><td colspan=2>" + 
-        attributes[key] + "</td></tr>";
+      out += '<tr><td colspan=2>' + 
+        attributes[key] + '</td></tr>';
     }
     else {
-      out += "<tr><th>" + 
+      out += '<tr><th>' + 
         attributes[key].displayName + 
-        "</th><td>" + 
-        attributes[key].value + "</td></tr>";
+        '</th><td>' + 
+        attributes[key].value + '</td></tr>';
     }
   }
-  return "<table>" + out + "</table>";
+  return '<table>' + out + '</table>';
 }
 
 function onFeatureSelect(feature) {
   var popup;
   selectedFeature = feature;
-  popup = new OpenLayers.Popup.FramedCloud("stick", 
+  popup = new OpenLayers.Popup.FramedCloud('stick', 
       feature.geometry.getBounds().getCenterLonLat(),
       null,
       "<div style='font-size:.8em'>" + attributes_to_table(feature.attributes) + "</div>",
-      null, true, onPopupClose);
+      null, true, 
+      // on popup close
+      function(evt) { 
+        map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
+      }
+    );
   feature.popup = popup;
   map.addPopup(popup);
 }
@@ -272,7 +324,7 @@ function resolution_range(start, end) {
 
 function load_layers() {
   $.getJSON('/layers', function(resp) {
-    if (resp.layers.length == 0) {
+    if (resp.layers.length === 0) {
       moas_message('', 'You currently have no layers loaded in Maps on a Stick. ' +
         'You can add layers by dropping .mbtiles files into the Maps/ folder of your installation');
       return;
@@ -295,7 +347,6 @@ function load_layers() {
             resp.layers[i].zooms[1])
         }
       ));
-      alert(!((resp.layers[i].type || 'baselayer') == 'baselayer'));
     }
     map.setBaseLayer(map.getLayersBy('isBaseLayer', true)[0]);
     map.zoomToExtent(map.getLayersBy('isBaseLayer', true)[0].options.ext);
@@ -316,9 +367,9 @@ $(window).load(
     /**
      * @TODO: these should be moved outside this function
      */
-    var options, selectControl;
-        
-    options = {
+    var selectControl;
+
+    map = new OpenLayers.Map('map', {
         projection: new OpenLayers.Projection("EPSG:900913"),
         displayProjection: new OpenLayers.Projection("EPSG:4326"),
         units: "m",
@@ -331,22 +382,19 @@ $(window).load(
           ],
         maxExtent: new OpenLayers.Bounds(-20037508.34, -20037508.34,
           20037508.34, 20037508.34)
-    };
-
-    map = new OpenLayers.Map('map', options);
+    });
 
     load_layers();
-    /**
-     * add layers defined in layers.js if they are available
-     */
+    
     selectControl = new OpenLayers.Control.SelectFeature([],
         {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
-
     map.addControl(selectControl);
     selectControl.activate();
+
     OpenLayersPlusBlockswitcher.hattach($('.openlayers-blockswitcher'), map);
 
     $(function(){ $("input[type='file']").uniform({fileBtnText: 'Upload KML'});});
+
     $('#kml-url-add').toggle(
       function() {
         $('#kml_window').css({'display': 'block'});
