@@ -5,7 +5,7 @@ __copyright__ = 'Copyright 2010, Tom MacWright'
 __version__ = '0.1'
 __license__ = 'BSD'
 
-import sqlite3, urllib2, os, sys, base64
+import sqlite3, urllib2, os, sys, base64, zipfile
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from werkzeug import Response, secure_filename
 
@@ -41,6 +41,18 @@ class MapCache(object):
 
 map_cache = MapCache()
 
+class ZipCache(object):
+    """ a simple static cache to prevent reconnecting to sqlite """
+    def __init__(self):
+        self.zips = {}
+
+    def get(self, filename):
+        if not self.zips.has_key(filename):
+            self.zips[filename] = zipfile.ZipFile(os.path.join('KML', filename))
+        return self.zips[filename]
+
+zip_cache = ZipCache()
+
 def maps_dir():
     if sys.platform == 'darwin' and False:
         return "../../../%s" % MAPS_DIR
@@ -52,6 +64,22 @@ def kml_dir():
         return "../../../%s" % KML_DIR
     else:
         return KML_DIR
+
+@app.route('/kmz/<string:filename_64>/<string:member>')
+def kmz(filename_64, member):
+  filename = "%s" % base64.urlsafe_b64decode(str(filename_64))
+  zip_file = zip_cache.get(filename)
+  stripped_names = dict([(os.path.split(n)[1], n) for n in zip_file.namelist()])
+  print stripped_names
+  return zip_file.read(stripped_names[member])
+
+
+def layer_entry(file):
+  ext = os.path.splitext(file)[1]
+  if ext in ['.kml', '.rss']:
+    return file
+  if ext == '.kmz':
+    return base64.urlsafe_b64encode(file)
 
 def layers_list():
     """ return a json object of layers ready for configuration """
@@ -69,7 +97,7 @@ def layers_list():
                 pass
     overlays = []
     for root, dirs, files in os.walk(kml_dir()):
-        overlays.extend(filter(lambda l: os.path.splitext(l)[1] in ['.kml', '.rss'] and not l.startswith('.'), files))
+        overlays.extend(map(layer_entry, files))
     return {'layers': layers, 'overlays': overlays}
 
 def allowed_file(filename):
