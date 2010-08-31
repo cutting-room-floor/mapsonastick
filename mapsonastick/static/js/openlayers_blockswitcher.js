@@ -68,7 +68,11 @@ OpenLayersPlusBlockswitcher.needsRedraw = function() {
   for (var i=0, len=this.layerStates.length; i<len; i++) {
     var layerState = this.layerStates[i];
     var layer = this.map.layers[i];
-    if ( (layerState.name !== layer.name) || (layerState.inRange !== layer.inRange) || (layerState.id !== layer.id) || (layerState.visibility !== layer.visibility) ) {
+    if (
+      (layerState.name !== layer.name) || 
+      (layerState.inRange !== layer.inRange) || 
+      (layerState.id !== layer.id) || 
+      (layerState.visibility !== layer.visibility)) {
       return true;
     }
   }
