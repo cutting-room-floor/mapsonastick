@@ -39,19 +39,28 @@ class MapCache(object):
             self.connections[filename] = sqlite3.connect(filename)
         return self.connections[filename]
 
-map_cache = MapCache()
+class KMZFile(object):
+    def __init__(self, filename):
+        self.zipfile = zipfile.ZipFile(filename)
+        try:
+            self.docroot = os.path.split([n for n in self.zipfile.namelist() if os.path.basename(n) == 'doc.kml'][0])[0]
+        except IndexError, e:
+            raise Exception('doc.kml not found in KMZ file')
+    def member(self, filename):
+        return self.zipfile.read(os.path.join(self.docroot, filename))
 
-class ZipCache(object):
-    """ a simple static cache to prevent reconnecting to sqlite """
+class KMZCache(object):
+    """ provides a simple interface for connecting to KMZ files """
     def __init__(self):
-        self.zips = {}
+        self.kmzs = {}
 
     def get(self, filename):
-        if not self.zips.has_key(filename):
-            self.zips[filename] = zipfile.ZipFile(os.path.join('KML', filename))
-        return self.zips[filename]
+        if not self.kmzs.has_key(filename):
+            self.kmzs[filename] = KMZFile(os.path.join('KML', filename))
+        return self.kmzs[filename]
 
-zip_cache = ZipCache()
+map_cache = MapCache()
+kmz_cache = KMZCache()
 
 def maps_dir():
     if sys.platform == 'darwin' and False:
@@ -65,21 +74,17 @@ def kml_dir():
     else:
         return KML_DIR
 
-@app.route('/kmz/<string:filename_64>/<string:member>')
-def kmz(filename_64, member):
-  filename = "%s" % base64.urlsafe_b64decode(str(filename_64))
-  zip_file = zip_cache.get(filename)
-  stripped_names = dict([(os.path.split(n)[1], n) for n in zip_file.namelist()])
-  print stripped_names
-  return zip_file.read(stripped_names[member])
-
-
 def layer_entry(file):
-  ext = os.path.splitext(file)[1]
-  if ext in ['.kml', '.rss']:
-    return file
-  if ext == '.kmz':
-    return base64.urlsafe_b64encode(file)
+  if os.path.splitext(file)[1] in ['.kmz', '.kml', '.rss', '.mbtiles']:
+    if os.path.splitext(file)[1] == '.kmz':
+      path = '/kmz/' + base64.urlsafe_b64encode(file) + '/doc.kml'
+    else:
+      # TODO: use proper routing
+      path = '/kml?url=' + file
+    return {
+      'path': path,
+      'filename': file
+    }
 
 def layers_list():
     """ return a json object of layers ready for configuration """
@@ -95,9 +100,8 @@ def layers_list():
                 layers.append(layer)
             except:
                 pass
-    overlays = []
     for root, dirs, files in os.walk(kml_dir()):
-        overlays.extend(map(layer_entry, files))
+        overlays = map(layer_entry, files)
     return {'layers': layers, 'overlays': overlays}
 
 def allowed_file(filename):
@@ -108,6 +112,12 @@ def allowed_file(filename):
 def home():
     """ serve the home page """
     return render_template('start.html')
+  
+@app.route('/kmz/<string:filename_64>/<path:member>')
+def kmz(filename_64, member):
+  filename = "%s" % base64.urlsafe_b64decode(str(filename_64))
+  zip_file = kmz_cache.get(filename)
+  return zip_file.member(member)
 
 @app.route('/kml', methods=['GET', 'POST'])
 def kml():
@@ -129,7 +139,6 @@ def kml():
                 return send_file(open(os.path.join('static', url), 'rb'))
         except Exception, e:
             return str(e)
-
 
 @app.route('/proxy', methods=['GET'])
 def proxy():
@@ -165,5 +174,5 @@ if __name__ == "__main__":
         spid = open('server.pid', 'w')
         spid.write("%s\n" % str(os.getpid()))
         spid.close()
-	app.config['SERVER_NAME'] = 'localhost'
+    app.config['SERVER_NAME'] = 'localhost'
     app.run(debug=True)

@@ -352,12 +352,13 @@ function load_layers() {
     map.zoomToExtent(map.getLayersBy('isBaseLayer', true)[0].options.ext);
     map.zoomIn();
     for(var j = 0; j < resp.overlays.length; j++) {
-      if(resp.overlays[j].search(".kml") !== -1) {
-        add_kml(resp.overlays[j], "/kml?url=" + resp.overlays[j], resp.overlays[j]);
-      }
+      add_kml(resp.overlays[j].file, resp.overlays[j].path, resp.overlays[j].file);
+      /**
+       * TODO: readd RSS
       if(resp.overlays[j].search(".rss") !== -1) {
         add_rss(resp.overlays[j], "/kml?url=" + resp.overlays[j], resp.overlays[j]);
       }
+      */
     }
   });
 }
