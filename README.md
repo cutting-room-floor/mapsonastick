@@ -19,6 +19,12 @@ Add map tiles by dropping `.mbtiles` files into the `Maps/` folder and KML
 by dropping KML files into the `KML/` folder, specifying a URL in the UI, or
 uploading files with the web interface.
 
+### KMZ Support
+
+Maps on a Stick, unlike bare OpenLayers, supports KMZ files, by simulating 
+their unpacking and using a special KMZ format type to prefix paths so that 
+they resolve. This has only been tested with Icons.
+
 ### Requirements (Running)
 
 #### Mac & Windows

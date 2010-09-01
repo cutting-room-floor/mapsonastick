@@ -187,7 +187,7 @@ function attachSelect(l) {
  * @param layer_url URL to the KML feed
  * @return none
  */
-function add_kml(layer_title, layer_url, layer_filename) {
+function add_kml(layer_title, layer_url, layer_filename, kmzBase) {
   var l, kml_title,
       args = OpenLayers.Util.getParameters();
   l = new OpenLayers.Layer.Vector(
@@ -197,11 +197,12 @@ function add_kml(layer_title, layer_url, layer_filename) {
       strategies:[new OpenLayers.Strategy.Fixed()],
       protocol:new OpenLayers.Protocol.HTTP({
         url:layer_url,
-        format:new OpenLayers.Format.KML({
+        format:new OpenLayers.Format.KMZ({
           extractStyles: true, 
           extractAttributes: true,
           keepData: true,
-          maxDepth: 2
+          maxDepth: 2,
+          kmzBase: kmzBase
         })
       }),
       visibility: false
@@ -352,7 +353,7 @@ function load_layers() {
     map.zoomToExtent(map.getLayersBy('isBaseLayer', true)[0].options.ext);
     map.zoomIn();
     for(var j = 0; j < resp.overlays.length; j++) {
-      add_kml(resp.overlays[j].file, resp.overlays[j].path, resp.overlays[j].file);
+      add_kml(resp.overlays[j].file, resp.overlays[j].path, resp.overlays[j].file, resp.overlays[j].kmzBase);
       /**
        * TODO: readd RSS
       if(resp.overlays[j].search(".rss") !== -1) {

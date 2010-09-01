@@ -78,12 +78,15 @@ def layer_entry(file):
   if os.path.splitext(file)[1] in ['.kmz', '.kml', '.rss', '.mbtiles']:
     if os.path.splitext(file)[1] == '.kmz':
       path = '/kmz/' + base64.urlsafe_b64encode(file) + '/doc.kml'
+      kmzBase = '/kmz/' + base64.urlsafe_b64encode(file) + '/'
     else:
       # TODO: use proper routing
       path = '/kml?url=' + file
+      kmlBase = ''
     return {
       'path': path,
-      'filename': file
+      'filename': file,
+      'kmzBase': kmzBase
     }
 
 def layers_list():
