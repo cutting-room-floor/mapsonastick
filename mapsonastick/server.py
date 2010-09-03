@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 __author__ = 'Tom MacWright (macwright [ -a- ] gmail.com)'
-__copyright__ = 'Copyright 2010, Tom MacWright'
-__version__ = '0.1'
+__copyright__ = 'Copyright 2010, Development Seed'
+__version__ = '2.0'
 __license__ = 'BSD'
 
 import sqlite3, urllib2, os, sys, base64, zipfile
@@ -23,11 +23,15 @@ except ImportError:
     Maps on a Stick: a simple tile server
 """
 
+# Maps directory which contains KML, mbtiles, etc.
 MAPS_DIR = 'Maps'
-KML_DIR = 'KML'
-ALLOWED_EXTENSIONS = set(['kml', 'rss'])
 
-app = Flask(__name__)
+# Extensions of allowed downloads
+ALLOWED_EXTENSIONS = set(['kml', 'rss', 'kmz'])
+
+##
+# CACHE CLASSES
+##
 
 class MapCache(object):
     """ a simple static cache to prevent reconnecting to sqlite """
@@ -44,7 +48,7 @@ class KMZFile(object):
         self.zipfile = zipfile.ZipFile(filename)
         try:
             self.docroot = os.path.split([n for n in self.zipfile.namelist() if os.path.basename(n) == 'doc.kml'][0])[0]
-        except IndexError, e:
+        except IndexError:
             raise Exception('doc.kml not found in KMZ file')
     def member(self, filename):
         return self.zipfile.read(os.path.join(self.docroot, filename))
@@ -56,11 +60,15 @@ class KMZCache(object):
 
     def get(self, filename):
         if not self.kmzs.has_key(filename):
-            self.kmzs[filename] = KMZFile(os.path.join('KML', filename))
+            self.kmzs[filename] = KMZFile(os.path.join(MAPS_DIR, filename))
         return self.kmzs[filename]
 
 map_cache = MapCache()
 kmz_cache = KMZCache()
+
+##
+# LOGIC FOR WEB FUNCTIONS
+##
 
 def maps_dir():
     if sys.platform == 'darwin' and False:
@@ -68,48 +76,39 @@ def maps_dir():
     else:
         return MAPS_DIR
 
-def kml_dir():
-    if sys.platform == 'darwin' and False:
-        return "../../../%s" % KML_DIR
-    else:
-        return KML_DIR
-
 def layer_entry(file):
-  if os.path.splitext(file)[1] in ['.kmz', '.kml', '.rss', '.mbtiles']:
-    if os.path.splitext(file)[1] == '.kmz':
-      path = '/kmz/' + base64.urlsafe_b64encode(file) + '/doc.kml'
-      kmzBase = '/kmz/' + base64.urlsafe_b64encode(file) + '/'
-    else:
-      # TODO: use proper routing
-      path = '/kml?url=' + file
-      kmlBase = ''
-    return {
-      'path': path,
-      'filename': file,
-      'kmzBase': kmzBase
-    }
+    """ return a layer entry for /layers """
+    if os.path.splitext(file)[1] in ['.kmz']:
+        return {
+            'path': '/kmz/' + base64.urlsafe_b64encode(file) + '/doc.kml',
+            'filename': file,
+            'kmzBase': '/kml/' + base64.urlsafe_b64encode(file) + '/'
+        }
+    if os.path.splitext(file)[1] in ['.kml', '.rss']:
+        return {
+            'path': '/kml?url=' + file,
+            'filename': file
+        }
+    if os.path.splitext(file)[1] in ['.mbtiles']:
+        return {
+            'path': base64.urlsafe_b64encode(os.path.join(maps_dir(), file)),
+            'filename': file,
+        }
 
 def layers_list():
     """ return a json object of layers ready for configuration """
-    layers = []
     for root, dirs, files in os.walk(maps_dir()):
-        for file in filter(lambda l: os.path.splitext(l)[1] == '.mbtiles' and not l.startswith('.'), files):
-            try:
-                layer = {
-                  'path': base64.urlsafe_b64encode(os.path.join(root, file)),
-                  'filename': file
-                }
-                layer.update(moasutil.restrictions(os.path.join(root, file)))
-                layers.append(layer)
-            except:
-                pass
-    for root, dirs, files in os.walk(kml_dir()):
-        overlays = map(layer_entry, files)
-    return {'layers': layers, 'overlays': overlays}
+        return map(layer_entry, files)
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+##
+# WEB-EXPOSED FUNCTIONS
+##
+
+app = Flask(__name__)
 
 @app.route('/')
 def home():
@@ -118,9 +117,10 @@ def home():
   
 @app.route('/kmz/<string:filename_64>/<path:member>')
 def kmz(filename_64, member):
-  filename = "%s" % base64.urlsafe_b64decode(str(filename_64))
-  zip_file = kmz_cache.get(filename)
-  return zip_file.member(member)
+    """ access to parts of a KMZ file as if they were not compressed """
+    filename = "%s" % base64.urlsafe_b64decode(str(filename_64))
+    zip_file = kmz_cache.get(filename)
+    return zip_file.member(member)
 
 @app.route('/kml', methods=['GET', 'POST'])
 def kml():
@@ -129,15 +129,15 @@ def kml():
         file = request.files['kml-file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(kml_dir(), filename))
+            file.save(os.path.join(maps_dir(), filename))
             return redirect(url_for('home', added_file=filename))
         else:
             return 'File not allowed'
     else:
         try:
             url = request.args.get('url', False)
-            if os.path.isfile(os.path.join(kml_dir(), url)):
-                return send_file(open(os.path.join(kml_dir(), url), 'rb'))
+            if os.path.isfile(os.path.join(maps_dir(), url)):
+                return send_file(open(os.path.join(maps_dir(), url), 'rb'))
             else:
                 return send_file(open(os.path.join('static', url), 'rb'))
         except Exception, e:
@@ -145,12 +145,14 @@ def kml():
 
 @app.route('/proxy', methods=['GET'])
 def proxy():
+    """ general-purpose proxy used for cross-domain KML """
     url = request.args.get('url', False)
     if url:
         return urllib2.urlopen(url).read()
 
 @app.route('/layers', methods=['GET'])
 def layers():
+    """ layers callback: returns information about map layers in MAPS_DIR """
     return Response(json.dumps(layers_list()))
 
 @app.route('/tiles/1.0.0/<string:layername_64>/<int:z>/<int:x>/<int:y>.png')
@@ -169,6 +171,10 @@ def tile(layername_64, z, x, y):
             mimetype="image/png")
     except Exception, e:
         return "Tile could not be retrieved: %s" % str(e)
+
+##
+# SERVER BOOTER
+##
 
 if __name__ == "__main__":
     """ since flask spawns a new process when run from the mac terminal,
