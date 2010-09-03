@@ -80,20 +80,21 @@ def layer_entry(file):
     """ return a layer entry for /layers """
     if os.path.splitext(file)[1] in ['.kmz']:
         return {
-            'type': 'kmz',
+            'format': 'kml',
             'path': '/kmz/' + base64.urlsafe_b64encode(file) + '/doc.kml',
             'filename': file,
             'kmzBase': '/kml/' + base64.urlsafe_b64encode(file) + '/'
         }
     if os.path.splitext(file)[1] in ['.kml', '.rss']:
         return {
-            'type': 'kml',
+            'format': 'kml',
             'path': '/kml?url=' + file,
-            'filename': file
+            'filename': file,
+            'kmzBase': ''
         }
     if os.path.splitext(file)[1] in ['.mbtiles']:
         l = {
-            'type': 'mbtiles',
+            'format': 'mbtiles',
             'path': base64.urlsafe_b64encode(os.path.join(maps_dir(), file)),
             'filename': file,
         }
@@ -159,7 +160,7 @@ def proxy():
 @app.route('/layers', methods=['GET'])
 def layers():
     """ layers callback: returns information about map layers in MAPS_DIR """
-    return Response(json.dumps(layers_list()))
+    return Response(json.dumps({'layers': layers_list()}))
 
 @app.route(
     '/tiles/1.0.0/<string:layername_64>/<int:z>/<int:x>/<int:y>.png', 

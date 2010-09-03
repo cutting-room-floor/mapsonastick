@@ -14,10 +14,6 @@
 
 var map, selectedFeature;
 
-OpenLayers.ImgPath = '/static/images/openlayers/';
-OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
-OpenLayers.ProxyHost = '/proxy?url=';
-
 // message wrapper, replaceable by TileMill components
 function moas_message(title, message, type) {
   alert(message);
@@ -26,97 +22,6 @@ function moas_message(title, message, type) {
 function moas_confirm(title, message, type) {
   return confirm(message);
 }
-
-OpenLayers.Feature.Vector.style['default'] = {
-    fillColor: '#B40500',
-    fillOpacity: 0.7, 
-    hoverFillColor: 'white',
-    hoverFillOpacity: 0.8,
-    strokeColor: '#B40500',
-    strokeOpacity: 0.2,
-    strokeWidth: 2,
-    strokeLinecap: 'round',
-    strokeDashstyle: 'solid',
-    hoverStrokeColor: 'red',
-    hoverStrokeOpacity: 1,
-    hoverStrokeWidth: 0.2,
-    pointRadius: 6,
-    hoverPointRadius: 1,
-    hoverPointUnit: '%',
-    pointerEvents: 'visiblePainted',
-    cursor: 'inherit'
-};
-
-OpenLayers.Feature.Vector.style.select = {
-    fillColor: '#B40500',
-    fillOpacity: 1, 
-    hoverFillColor: 'white',
-    hoverFillOpacity: 0.8,
-    strokeColor: '#000000',
-    strokeOpacity: 1,
-    strokeWidth: 2,
-    strokeLinecap: 'round',
-    strokeDashstyle: 'solid',
-    hoverStrokeColor: 'red',
-    hoverStrokeOpacity: 1,
-    hoverStrokeWidth: 0.2,
-    pointRadius: 6,
-    hoverPointRadius: 1,
-    hoverPointUnit: '%',
-    pointerEvents: 'visiblePainted',
-    cursor: 'pointer'
-};
-
-/**
- * mapsona style definitions
- *
- * clicking the legend-color (the box to the left of layer names)
- * will cycle through styles for vector layers.
- */
-
-var default_styles = {
-  'green': new OpenLayers.StyleMap(
-    OpenLayers.Util.applyDefaults(
-        {
-          fillColor: '#93ce54', 
-          fillOpacity: 1, 
-          strokeColor: '#4c8014',
-          pointRadius: 4,
-          externalGraphic:'/images/default_marker.png'
-        },
-        OpenLayers.Feature.Vector.style['default']
-      )
-    ),
-  'yellow': new OpenLayers.StyleMap(
-    OpenLayers.Util.applyDefaults(
-        {
-          fillColor: '#ffae00', 
-          fillOpacity: 1, 
-          strokeColor: '#8d6000',
-          pointRadius: 4,
-          externalGraphic:'/images/default_marker.png'
-        },
-        OpenLayers.Feature.Vector.style['default']
-      )
-    ),
-  'black': new OpenLayers.StyleMap(
-    OpenLayers.Util.applyDefaults(
-        {
-          fillColor: 'black', 
-          fillOpacity: 0.6, 
-          strokeColor: 'white',
-          pointRadius: 4,
-          externalGraphic:'/images/default_marker.png'
-        },
-        OpenLayers.Feature.Vector.style['default']
-      )
-    ),
-};
-
-for(style in default_styles) {
-  default_styles[style].name = style;
-}
-
 
 function attributes_to_table(attributes) {
   var key, out;
@@ -187,118 +92,145 @@ function attachSelect(l) {
  * @param layer_url URL to the KML feed
  * @return none
  */
-function add_kml(layer_title, layer_url, layer_filename, kmzBase) {
-  var l, kml_title,
-      args = OpenLayers.Util.getParameters();
-  l = new OpenLayers.Layer.Vector(
-    layer_title,
-    {
-      projection:'EPSG:4326',
-      strategies:[new OpenLayers.Strategy.Fixed()],
-      protocol:new OpenLayers.Protocol.HTTP({
-        url:layer_url,
-        format:new OpenLayers.Format.KMZ({
-          extractStyles: true, 
-          extractAttributes: true,
-          keepData: true,
-          maxDepth: 2,
-          kmzBase: kmzBase
-        })
-      }),
-      visibility: false
-    }
-  );
-  l.setVisibility(layer_filename !== null && args.added_file === layer_filename);
-  l.events.on({
-      'loadend': function() {
-        if (this.features.length > 0) {
-          if (this.features.length > 900 && // 900 is an arbitary number
-            !moas_confirm('', 'This KML file (' + layer_filename + ') contains over ' +
-            'nine hundred points. It may cause your browser to operate slowly. Are you ' +
-            'sure you want to load this layer?')) {
-              this.map.removeLayer(this);
-          }
-          try {
-            var kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
-            if (kml_title !== "") {
-              this.title = kml_title;
-              OpenLayersPlusBlockswitcher.styleChanged = true;
-              OpenLayersPlusBlockswitcher.redraw();
+var add_layer = {
+  /**
+   * MBTiles constructor
+   * @param layer object of layer options
+   */
+  mbtiles: function (layer) {
+    var b = OpenLayers.Bounds.fromArray(layer.bounds);
+    var x = b.transform(
+      new OpenLayers.Projection('EPSG:4326'),
+      new OpenLayers.Projection('EPSG:900913'));
+    map.addLayer(new OpenLayers.Layer.TMS((layer.name || layer.filename), '/tiles/',
+      {
+        layername: layer.path,
+        type: 'png',
+        ext: x,
+        visibility: false,
+        serverResolutions: resolution_range(),
+        isBaseLayer: ((layer.type || 'baselayer') == 'baselayer'),
+        resolutions: resolution_range(layer.zooms[0], layer.zooms[1])
+      }
+    ));
+  },
+  /**
+   * Basic KML constructor. Only necessary to correctly
+   * set projections
+   * @param layer object of layer options
+   * @return layer
+   */
+  kml: function (layer) {
+      var l, kml_title,
+          args = OpenLayers.Util.getParameters();
+      l = new OpenLayers.Layer.Vector(
+        layer.filename,
+        {
+          projection:'EPSG:4326',
+          strategies:[new OpenLayers.Strategy.Fixed()],
+          protocol:new OpenLayers.Protocol.HTTP({
+            url: layer.path,
+            format:new OpenLayers.Format.KMZ({
+              extractStyles: true, 
+              extractAttributes: true,
+              keepData: true,
+              maxDepth: 2,
+              kmzBase: layer.kmzBase
+            })
+          }),
+          visibility: false
+        }
+      );
+      l.setVisibility(layer.filename !== null && args.added_file === layer.filename);
+      l.events.on({
+          'loadend': function() {
+            if (this.features.length > 0) {
+              if (this.features.length > 900 && // 900 is an arbitary number
+                !moas_confirm('', 'This KML file (' + layer_filename + ') contains over ' +
+                'nine hundred points. It may cause your browser to operate slowly. Are you ' +
+                'sure you want to load this layer?')) {
+                  this.map.removeLayer(this);
+              }
+              try {
+                var kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
+                if (kml_title !== "") {
+                  this.title = kml_title;
+                  OpenLayersPlusBlockswitcher.styleChanged = true;
+                  OpenLayersPlusBlockswitcher.redraw();
+                }
+              } catch(err) { }
+              if (this.features.length == 1) {
+                this.map.zoomToExtent(this.getDataExtent());
+                this.map.zoomTo(10); // TODO: zoom to max provided by baselayer
+              }
+              else {
+                this.map.zoomToExtent(this.getDataExtent());
+              }
             }
-          } catch(err) { }
-          if (this.features.length == 1) {
-            this.map.zoomToExtent(this.getDataExtent());
-            this.map.zoomTo(10); // TODO: zoom to max provided by baselayer
+            else {
+              moas_message('', 'This KML file (' + layer_filename + 
+                ') could not be loaded. It may be empty or corrupted. If this' +
+                ' error persists, you may want to remove the file from the KML folder.');
+              this.map.removeLayer(this);
+            }
+            attachSelect(this);
+          },
+          'context': this
+      });
+      map.addLayer(l);
+      attachSelect(l);
+  },
+
+  /**
+   * Basic RSS constructor. Only necessary to correctly
+   * set projections
+   * @param layer object of layer options
+   * @return layer
+   */
+  rss: function (layer) {
+    var l, kml_title,
+        args = OpenLayers.Util.getParameters();
+    l = new OpenLayers.Layer.GeoRSS(layer_title, layer_url);
+    l.setVisibility(layer_filename !== null && args.added_file === layer_filename);
+    l.events.on({
+        'loadend': function() {
+          if (this.features.length > 0) {
+            if (this.features.length > 900 && // 900 is an arbitary number
+              !moas_confirm('', 'This KML file (' + layer_filename + ') contains over ' +
+              'nine hundred points. It may cause your browser to operate slowly. Are you ' +
+              'sure you want to load this layer?')) {
+                this.map.removeLayer(this);
+            }
+            try {
+              var kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
+              if (kml_title !== "") {
+                this.title = kml_title;
+                OpenLayersPlusBlockswitcher.styleChanged = true;
+                OpenLayersPlusBlockswitcher.redraw();
+              }
+            } catch(err) { }
+            if (this.features.length == 1) {
+              this.map.zoomToExtent(this.getDataExtent());
+              this.map.zoomTo(10); // TODO: zoom to max provided by baselayer
+            }
+            else {
+              this.map.zoomToExtent(this.getDataExtent());
+            }
           }
           else {
-            this.map.zoomToExtent(this.getDataExtent());
+            moas_message('', 'This KML file (' + layer_filename + 
+              ') could not be loaded. It may be empty or corrupted. If this' +
+              ' error persists, you may want to remove the file from the KML folder.');
+            this.map.removeLayer(this);
           }
-        }
-        else {
-          moas_message('', 'This KML file (' + layer_filename + 
-            ') could not be loaded. It may be empty or corrupted. If this' +
-            ' error persists, you may want to remove the file from the KML folder.');
-          this.map.removeLayer(this);
-        }
-        attachSelect(this);
-      },
-      'context': this
-  });
-  map.addLayer(l);
-  attachSelect(l);
-}
-
-
-/**
- * Basic KML constructor. Only necessary to correctly
- * set projections
- * @param layer_title Any alphanumeric layer title
- * @param layer_url URL to the KML feed
- * @return none
- */
-function add_rss(layer_title, layer_url, layer_filename) {
-  var l, kml_title,
-      args = OpenLayers.Util.getParameters();
-  l = new OpenLayers.Layer.GeoRSS(layer_title, layer_url);
-  l.setVisibility(layer_filename !== null && args.added_file === layer_filename);
-  l.events.on({
-      'loadend': function() {
-        if (this.features.length > 0) {
-          if (this.features.length > 900 && // 900 is an arbitary number
-            !moas_confirm('', 'This KML file (' + layer_filename + ') contains over ' +
-            'nine hundred points. It may cause your browser to operate slowly. Are you ' +
-            'sure you want to load this layer?')) {
-              this.map.removeLayer(this);
-          }
-          try {
-            var kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
-            if (kml_title !== "") {
-              this.title = kml_title;
-              OpenLayersPlusBlockswitcher.styleChanged = true;
-              OpenLayersPlusBlockswitcher.redraw();
-            }
-          } catch(err) { }
-          if (this.features.length == 1) {
-            this.map.zoomToExtent(this.getDataExtent());
-            this.map.zoomTo(10); // TODO: zoom to max provided by baselayer
-          }
-          else {
-            this.map.zoomToExtent(this.getDataExtent());
-          }
-        }
-        else {
-          moas_message('', 'This KML file (' + layer_filename + 
-            ') could not be loaded. It may be empty or corrupted. If this' +
-            ' error persists, you may want to remove the file from the KML folder.');
-          this.map.removeLayer(this);
-        }
-        attachSelect(this);
-      },
-      'context': this
-  });
-  map.addLayer(l);
-  attachSelect(l);
-}
+          attachSelect(this);
+        },
+        'context': this
+    });
+    map.addLayer(l);
+    attachSelect(l);
+  }
+};
 
 function resolution_range(start, end) {
   var res = [156543.0339,
@@ -331,36 +263,12 @@ function load_layers() {
       return;
     }
     for(var i = 0; i < resp.layers.length; i++) {
-      var b = OpenLayers.Bounds.fromArray(resp.layers[i].bounds);
-      var x = b.transform(
-        new OpenLayers.Projection('EPSG:4326'),
-        new OpenLayers.Projection('EPSG:900913'));
-      map.addLayer(new OpenLayers.Layer.TMS((resp.layers[i].name || resp.layers[i].filename), '/tiles/',
-        {
-          layername: resp.layers[i].path,
-          type: 'png',
-          ext: x,
-          visibility: false,
-          serverResolutions: resolution_range(),
-          isBaseLayer: ((resp.layers[i].type || 'baselayer') == 'baselayer'),
-          resolutions: resolution_range(
-            resp.layers[i].zooms[0], 
-            resp.layers[i].zooms[1])
-        }
-      ));
+      layer = resp.layers[i];
+      add_layer[layer.format](layer);
     }
     map.setBaseLayer(map.getLayersBy('isBaseLayer', true)[0]);
     map.zoomToExtent(map.getLayersBy('isBaseLayer', true)[0].options.ext);
     map.zoomIn();
-    for(var j = 0; j < resp.overlays.length; j++) {
-      add_kml(resp.overlays[j].file, resp.overlays[j].path, resp.overlays[j].file, resp.overlays[j].kmzBase);
-      /**
-       * TODO: readd RSS
-      if(resp.overlays[j].search(".rss") !== -1) {
-        add_rss(resp.overlays[j], "/kml?url=" + resp.overlays[j], resp.overlays[j]);
-      }
-      */
-    }
   });
 }
 
