@@ -80,20 +80,25 @@ def layer_entry(file):
     """ return a layer entry for /layers """
     if os.path.splitext(file)[1] in ['.kmz']:
         return {
+            'type': 'kmz',
             'path': '/kmz/' + base64.urlsafe_b64encode(file) + '/doc.kml',
             'filename': file,
             'kmzBase': '/kml/' + base64.urlsafe_b64encode(file) + '/'
         }
     if os.path.splitext(file)[1] in ['.kml', '.rss']:
         return {
+            'type': 'kml',
             'path': '/kml?url=' + file,
             'filename': file
         }
     if os.path.splitext(file)[1] in ['.mbtiles']:
-        return {
+        l = {
+            'type': 'mbtiles',
             'path': base64.urlsafe_b64encode(os.path.join(maps_dir(), file)),
             'filename': file,
         }
+        l.update(moasutil.restrictions(os.path.join(maps_dir(), file)))
+        return l
 
 def layers_list():
     """ return a json object of layers ready for configuration """
@@ -110,12 +115,13 @@ def allowed_file(filename):
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def home():
     """ serve the home page """
     return render_template('start.html')
   
-@app.route('/kmz/<string:filename_64>/<path:member>')
+@app.route(
+    '/kmz/<string:filename_64>/<path:member>', methods=['GET'])
 def kmz(filename_64, member):
     """ access to parts of a KMZ file as if they were not compressed """
     filename = "%s" % base64.urlsafe_b64decode(str(filename_64))
@@ -155,7 +161,9 @@ def layers():
     """ layers callback: returns information about map layers in MAPS_DIR """
     return Response(json.dumps(layers_list()))
 
-@app.route('/tiles/1.0.0/<string:layername_64>/<int:z>/<int:x>/<int:y>.png')
+@app.route(
+    '/tiles/1.0.0/<string:layername_64>/<int:z>/<int:x>/<int:y>.png', 
+    methods=['GET'])
 def tile(layername_64, z, x, y):
     """ serve a tile request """
     layername = "%s" % base64.urlsafe_b64decode(str(layername_64))
