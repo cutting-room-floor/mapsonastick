@@ -83,7 +83,7 @@ def layer_entry(file):
             'format': 'kml',
             'path': '/kmz/' + base64.urlsafe_b64encode(file) + '/doc.kml',
             'filename': file,
-            'kmzBase': '/kml/' + base64.urlsafe_b64encode(file) + '/'
+            'kmzBase': '/kmz/' + base64.urlsafe_b64encode(file) + '/'
         }
     if os.path.splitext(file)[1] in ['.kml', '.rss']:
         return {
