@@ -517,7 +517,7 @@ label {
 }
 
 #map {
-  background-color: #fff;
+  background:#ddd url(images/checker-bg.png) 0% 0% repeat;
   bottom: 30px;
   position: absolute;
   top: 30px;
@@ -859,3 +859,15 @@ div#kml_window {
   #kml-file-chooser,
   #kml-file-input-cancel { display: block; }
 
+
+div.loading {
+  background:#eee url(../images/swirly.gif) 50% 50% no-repeat;
+  opacity:.5;
+  position:absolute;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  top:0px;
+  }
+
+div.page-loading { top:40px; }
