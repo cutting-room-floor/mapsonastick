@@ -256,7 +256,11 @@ function resolution_range(start, end) {
 }
 
 function load_layers() {
+  $('#left').append(TileMill.template('page-loading', {}));
+
   $.getJSON('/layers', function(resp) {
+    $('#left .page-loading').remove();
+
     if (resp.layers.length === 0) {
       moas_message('', 'You currently have no layers loaded in Maps on a Stick. ' +
         'You can add layers by dropping .mbtiles files into the Maps/ folder of your installation');

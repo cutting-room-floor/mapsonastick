@@ -861,7 +861,7 @@ div#kml_window {
 
 
 div.loading {
-  background:#eee url(../images/swirly.gif) 50% 50% no-repeat;
+  background:#eee url(images/swirly.gif) 50% 50% no-repeat;
   opacity:.5;
   position:absolute;
   left:0px;
