@@ -71,29 +71,41 @@ def restrictions(db):
     except Exception, e:
         metadata = {}
 
-    max_zoom_q = conn.execute("select max(zoom_level) from tiles;")
-    max_zoom = max_zoom_q.fetchone()[0]
+    if metadata.has_key('zooms'):
+        metadata['zooms'] = metadata['zooms'].split(',')
+    else:
+        max_zoom_q = conn.execute("select max(zoom_level) from tiles;")
+        max_zoom = max_zoom_q.fetchone()[0]
 
-    min_zoom_q = conn.execute("select min(zoom_level) from tiles;")
-    min_zoom = min_zoom_q.fetchone()[0]
+        min_zoom_q = conn.execute("select min(zoom_level) from tiles;")
+        min_zoom = min_zoom_q.fetchone()[0]
+        metadata['zooms'] = [min_zoom, max_zoom]
+        conn.execute(
+            "insert into metadata (name, value) values('zooms', ?)", 
+            (",".join(map(str, metadata['zooms'])),))
 
-    min_w_q = conn.execute("select min(tile_column) from tiles where zoom_level='%s';" % max_zoom)
-    min_w = min_w_q.fetchone()[0]
+    if metadata.has_key('bounds'):
+        metadata['bounds'] = metadata['bounds'].split(',')
+    else:
+        min_w_q = conn.execute("select min(tile_column) from tiles where zoom_level='%s';" % max_zoom)
+        min_w = min_w_q.fetchone()[0]
 
-    min_n_q = conn.execute("select min(tile_row) from tiles where zoom_level='%s';" % max_zoom)
-    min_n = min_n_q.fetchone()[0]
+        min_n_q = conn.execute("select min(tile_row) from tiles where zoom_level='%s';" % max_zoom)
+        min_n = min_n_q.fetchone()[0]
 
-    min_s_q = conn.execute("select max(tile_row) from tiles where zoom_level='%s';" % max_zoom)
-    min_s = min_s_q.fetchone()[0]
+        min_s_q = conn.execute("select max(tile_row) from tiles where zoom_level='%s';" % max_zoom)
+        min_s = min_s_q.fetchone()[0]
 
-    min_e_q = conn.execute("select max(tile_column) from tiles where zoom_level='%s';" % max_zoom)
-    min_e = min_e_q.fetchone()[0]
+        min_e_q = conn.execute("select max(tile_column) from tiles where zoom_level='%s';" % max_zoom)
+        min_e = min_e_q.fetchone()[0]
 
-    sm = SphericalMercator(levels=18)
-    env_nw = sm.xyz_to_envelope(min_w, min_n, max_zoom, tms_style = True)
-    env_se = sm.xyz_to_envelope(min_e, min_s, max_zoom, tms_style = True)
+        sm = SphericalMercator(levels=18)
+        env_nw = sm.xyz_to_envelope(min_w, min_n, max_zoom, tms_style = True)
+        env_se = sm.xyz_to_envelope(min_e, min_s, max_zoom, tms_style = True)
+        metadata['bounds'] = [env_se[0], env_nw[1], env_nw[0], env_se[1]]
 
-    metadata['zooms'] = [min_zoom, max_zoom]
-    metadata['bounds'] = [env_se[0], env_nw[1], env_nw[0], env_se[1]]
+        conn.execute(
+            "insert into metadata (name, value) values('bounds', ?)", 
+            (",".join(map(str,metadata['bounds'])),))
 
     return metadata
