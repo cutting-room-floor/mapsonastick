@@ -102,7 +102,7 @@ def restrictions(db):
         sm = SphericalMercator(levels=18)
         env_nw = sm.xyz_to_envelope(min_w, min_n, max_zoom, tms_style = True)
         env_se = sm.xyz_to_envelope(min_e, min_s, max_zoom, tms_style = True)
-        metadata['bounds'] = [env_se[0], env_nw[1], env_nw[0], env_se[1]]
+        metadata['bounds'] = [env_nw[0], env_nw[1], env_se[0], env_se[1]]
 
         conn.execute(
             "insert into metadata (name, value) values('bounds', ?)", 

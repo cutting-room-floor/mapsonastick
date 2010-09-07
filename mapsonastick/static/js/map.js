@@ -113,6 +113,7 @@ var add_layer = {
         resolutions: resolution_range(layer.zooms[0], layer.zooms[1])
       }
     ));
+    map.restrictedExtent = x;
   },
   /**
    * Basic KML constructor. Only necessary to correctly
