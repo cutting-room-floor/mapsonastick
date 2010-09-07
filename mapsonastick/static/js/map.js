@@ -146,7 +146,7 @@ var add_layer = {
           'loadend': function() {
             if (this.features.length > 0) {
               if (this.features.length > 900 && // 900 is an arbitary number
-                !moas_confirm('', 'This KML file (' + layer_filename + ') contains over ' +
+                !moas_confirm('', 'This KML file (' + layer.filename + ') contains over ' +
                 'nine hundred points. It may cause your browser to operate slowly. Are you ' +
                 'sure you want to load this layer?')) {
                   this.map.removeLayer(this);
@@ -168,7 +168,7 @@ var add_layer = {
               }
             }
             else {
-              moas_message('', 'This KML file (' + layer_filename + 
+              moas_message('', 'This KML file (' + layer.filename + 
                 ') could not be loaded. It may be empty or corrupted. If this' +
                 ' error persists, you may want to remove the file from the KML folder.');
               this.map.removeLayer(this);
@@ -191,12 +191,12 @@ var add_layer = {
     var l, kml_title,
         args = OpenLayers.Util.getParameters();
     l = new OpenLayers.Layer.GeoRSS(layer_title, layer_url);
-    l.setVisibility(layer_filename !== null && args.added_file === layer_filename);
+    l.setVisibility(layer.filename !== null && args.added_file === layer.filename);
     l.events.on({
         'loadend': function() {
           if (this.features.length > 0) {
             if (this.features.length > 900 && // 900 is an arbitary number
-              !moas_confirm('', 'This KML file (' + layer_filename + ') contains over ' +
+              !moas_confirm('', 'This KML file (' + layer.filename + ') contains over ' +
               'nine hundred points. It may cause your browser to operate slowly. Are you ' +
               'sure you want to load this layer?')) {
                 this.map.removeLayer(this);
@@ -218,7 +218,7 @@ var add_layer = {
             }
           }
           else {
-            moas_message('', 'This KML file (' + layer_filename + 
+            moas_message('', 'This KML file (' + layer.filename + 
               ') could not be loaded. It may be empty or corrupted. If this' +
               ' error persists, you may want to remove the file from the KML folder.');
             this.map.removeLayer(this);

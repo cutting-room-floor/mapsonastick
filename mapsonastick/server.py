@@ -26,6 +26,8 @@ except ImportError:
 # Maps directory which contains KML, mbtiles, etc.
 MAPS_DIR = 'Maps'
 
+IS_MAC_DIST = True
+
 # Extensions of allowed downloads
 ALLOWED_EXTENSIONS = set(['kml', 'rss', 'kmz'])
 
@@ -60,7 +62,7 @@ class KMZCache(object):
 
     def get(self, filename):
         if not self.kmzs.has_key(filename):
-            self.kmzs[filename] = KMZFile(os.path.join(MAPS_DIR, filename))
+            self.kmzs[filename] = KMZFile(os.path.join(maps_dir(), filename))
         return self.kmzs[filename]
 
 map_cache = MapCache()
@@ -71,7 +73,7 @@ kmz_cache = KMZCache()
 ##
 
 def maps_dir():
-    if sys.platform == 'darwin' and False:
+    if IS_MAC_DIST:
         return "../../../%s" % MAPS_DIR
     else:
         return MAPS_DIR
@@ -101,10 +103,13 @@ def layer_entry(file):
         l.update(moasutil.restrictions(os.path.join(maps_dir(), file)))
         return l
 
+def layer_valid(file):
+    return os.path.splitext(file)[1] in ['.mbtiles', '.kml', '.rss', '.kmz']
+
 def layers_list():
     """ return a json object of layers ready for configuration """
     for root, dirs, files in os.walk(maps_dir()):
-        return map(layer_entry, files)
+        return map(layer_entry, filter(layer_valid, files))
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -125,9 +130,12 @@ def home():
     '/kmz/<string:filename_64>/<path:member>', methods=['GET'])
 def kmz(filename_64, member):
     """ access to parts of a KMZ file as if they were not compressed """
-    filename = "%s" % base64.urlsafe_b64decode(str(filename_64))
-    zip_file = kmz_cache.get(filename)
-    return zip_file.member(member)
+    try:
+        filename = "%s" % base64.urlsafe_b64decode(str(filename_64))
+        zip_file = kmz_cache.get(filename)
+        return zip_file.member(member)
+    except Exception, e:
+        return str(e)
 
 @app.route('/kml', methods=['GET', 'POST'])
 def kml():
@@ -193,4 +201,4 @@ if __name__ == "__main__":
         spid.write("%s\n" % str(os.getpid()))
         spid.close()
     app.config['SERVER_NAME'] = 'localhost'
-    app.run(debug=True)
+    app.run()

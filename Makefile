@@ -6,7 +6,6 @@ build:
 	cp -r mapsonastick/templates dist/moas.app/Contents/Resources
 	cp -r mapsonastick/static dist/moas.app/Contents/Resources
 	mkdir dist/Maps
-	mkdir dist/KML
 	cp -r /Applications/love.app dist/Start\ MapBox.app
 	cd launcher && zip -r ../launcher.love *
 	cp launcher.love dist/Start\ MapBox.app/Contents/Resources/
