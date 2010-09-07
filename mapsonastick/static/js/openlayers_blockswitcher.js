@@ -175,6 +175,7 @@ OpenLayersPlusBlockswitcher.selectStyle = function(element) {
     default_styles_keys.push(k);
   }
   current_index = default_styles_keys.indexOf(current_style);
+  if (current_index == -1)  current_index++;
 
   $(this).data('layer').styleMap = 
     default_styles[default_styles_keys[

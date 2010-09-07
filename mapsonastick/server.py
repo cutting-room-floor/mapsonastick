@@ -26,7 +26,7 @@ except ImportError:
 # Maps directory which contains KML, mbtiles, etc.
 MAPS_DIR = 'Maps'
 
-IS_MAC_DIST = True
+DIST = 'dev'
 
 # Extensions of allowed downloads
 ALLOWED_EXTENSIONS = set(['kml', 'rss', 'kmz'])
@@ -73,10 +73,12 @@ kmz_cache = KMZCache()
 ##
 
 def maps_dir():
-    if IS_MAC_DIST:
-        return "../../../%s" % MAPS_DIR
-    else:
-        return MAPS_DIR
+    if DIST == 'mac':
+        return "../../../../%s" % MAPS_DIR
+    if DIST == 'win':
+        return "../%s" % MAPS_DIR
+    if DIST == 'dev':
+        return "%s" % MAPS_DIR
 
 def layer_entry(file):
     """ return a layer entry for /layers """
@@ -104,7 +106,7 @@ def layer_entry(file):
         return l
 
 def layer_valid(file):
-    return os.path.splitext(file)[1] in ['.mbtiles', '.kml', '.rss', '.kmz']
+    return (os.path.splitext(file)[1] in ['.mbtiles', '.kml', '.rss', '.kmz']) and not os.path.basename(file).startswith('.')
 
 def layers_list():
     """ return a json object of layers ready for configuration """
@@ -168,7 +170,10 @@ def proxy():
 @app.route('/layers', methods=['GET'])
 def layers():
     """ layers callback: returns information about map layers in MAPS_DIR """
-    return Response(json.dumps({'layers': layers_list()}))
+    try:
+        return Response(json.dumps({'layers': layers_list()}))
+    except Exception, e:
+        return str(e)
 
 @app.route(
     '/tiles/1.0.0/<string:layername_64>/<int:z>/<int:x>/<int:y>.png', 

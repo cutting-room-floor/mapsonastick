@@ -333,7 +333,11 @@ $(window).load(
     $('#kml-url-submit').click(function() {
       var name, url;
       url = $("#kml-url").val();
-      add_kml(name, url);
+      add_layer.kml({
+        filename: url,
+        path: url,
+        kmzBase: ''
+      });
       $('#kml-file-submit').attr({'disabled': true});
       $('#kml-url-add').click();
     });

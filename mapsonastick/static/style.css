@@ -232,7 +232,7 @@ div.olPopupContent div.ol-popup-name div.meta {
   background:#f2f2f2 none repeat scroll 0 0;
   float:left;
   width:250px;
-  bottom:0;
+  bottom:15px;
   left:0;
   overflow:auto;
   position:fixed;
@@ -809,7 +809,7 @@ div#kml_window {
   position: absolute;
   left: 250px;
   right: 0;
-  top: 30px;
+  top: 40px;
   bottom: 30px;
   background-image:url(images/kml_window.png);
 }

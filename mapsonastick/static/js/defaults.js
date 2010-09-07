@@ -55,8 +55,7 @@ var default_styles = {
           fillColor: '#93ce54', 
           fillOpacity: 1, 
           strokeColor: '#4c8014',
-          pointRadius: 4,
-          externalGraphic:'/images/default_marker.png'
+          pointRadius: 4
         },
         OpenLayers.Feature.Vector.style['default']
       )
@@ -67,8 +66,7 @@ var default_styles = {
           fillColor: '#ffae00', 
           fillOpacity: 1, 
           strokeColor: '#8d6000',
-          pointRadius: 4,
-          externalGraphic:'/images/default_marker.png'
+          pointRadius: 4
         },
         OpenLayers.Feature.Vector.style['default']
       )
@@ -79,8 +77,7 @@ var default_styles = {
           fillColor: 'black', 
           fillOpacity: 0.6, 
           strokeColor: 'white',
-          pointRadius: 4,
-          externalGraphic:'/images/default_marker.png'
+          pointRadius: 4
         },
         OpenLayers.Feature.Vector.style['default']
       )
