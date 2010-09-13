@@ -2,21 +2,17 @@
 
 Maps on a Stick is a lightweight mapping solution for mobile, unplugged maps.
 
-MapBox tilesets - rendered map tiles stored in structured SQLite databases - 
-are supported, as well as KML input.
-
-File-based tilesets, as used in the previous version of Maps on a Stick, are 
-not supported.
+MapBox tilesets (`.mbtiles`), KML, GeoRSS, and KMZ files are supported.
 
 ### Using Maps on a Stick
 
 1. Download the main maps on a stick application
-2. Run Maps.app on Macintosh or Maps.exe on Windows
+2. Run Maps.app on Macintosh or `Start MapBox.bat` on Windows
 
 ### Usage
 
-Add map tiles by dropping `.mbtiles` files into the `Maps/` folder and KML
-by dropping KML files into the `KML/` folder, specifying a URL in the UI, or
+Add map tiles by dropping `.mbtiles`, `.kml`, and `.kmz` (Google Earth) files 
+into the `Maps/` folder or specifying a URL in the interface, or
 uploading files with the web interface.
 
 ### KMZ Support
@@ -29,9 +25,13 @@ they resolve. This has only been tested with Icons.
 
 #### Mac & Windows
 
-* A .mbtiles mapfile
+* An .mbtiles mapfile
+* Maps on a Stick
 
 ### Requirements (Building)
+
+**These are not required for simply running Maps on a Stick: the downloadable
+distributions are self-contained**
 
 #### Mac
 
