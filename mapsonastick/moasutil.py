@@ -1,5 +1,10 @@
 import sqlite3, os, math
 
+__author__ = 'Tom MacWright (macwright [ -a- ] gmail.com)'
+__copyright__ = 'Copyright 2010, Development Seed'
+__version__ = '2.0'
+__license__ = 'BSD'
+
 class SphericalMercator(object):
     """
     Python class defining Spherical Mercator Projection.

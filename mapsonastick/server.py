@@ -26,7 +26,7 @@ except ImportError:
 # Maps directory which contains KML, mbtiles, etc.
 MAPS_DIR = 'Maps'
 
-DIST = 'dev'
+DIST = 'mac'
 
 # Extensions of allowed downloads
 ALLOWED_EXTENSIONS = set(['kml', 'rss', 'kmz'])
@@ -46,13 +46,18 @@ class MapCache(object):
         return self.connections[filename]
 
 class KMZFile(object):
+    """ items in the KMZCache system: provide accessor methods """
     def __init__(self, filename):
+        """ initializes an internal zipfile object and determines whether the
+        doc.kml is in the root or a higher-up directory. Note that doc.kml 
+        is required."""
         self.zipfile = zipfile.ZipFile(filename)
         try:
             self.docroot = os.path.split([n for n in self.zipfile.namelist() if os.path.basename(n) == 'doc.kml'][0])[0]
         except IndexError:
             raise Exception('doc.kml not found in KMZ file')
     def member(self, filename):
+        """ get a file from a kmz archive, relative to the root """
         return self.zipfile.read(os.path.join(self.docroot, filename))
 
 class KMZCache(object):
@@ -106,6 +111,8 @@ def layer_entry(file):
         return l
 
 def layer_valid(file):
+    """ filter layers to prevent .DS_Store, etc. files from
+    causing problems. """
     return (os.path.splitext(file)[1] in ['.mbtiles', '.kml', '.rss', '.kmz']) and not os.path.basename(file).startswith('.')
 
 def layers_list():

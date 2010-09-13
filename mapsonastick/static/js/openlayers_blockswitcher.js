@@ -16,10 +16,10 @@ OpenLayersPlusBlockswitcher.hattach = function(element, map) {
   this.blockswitcher = element;
 
   map.events.on({
-    "addlayer": this.redraw,
-    "changelayer": this.redraw,
-    "removelayer": this.redraw,
-    "changebaselayer": this.redraw,
+    'addlayer': this.redraw,
+    'changelayer': this.redraw,
+    'removelayer': this.redraw,
+    'changebaselayer': this.redraw,
     scope: this
   });
   this.redraw();
@@ -46,10 +46,10 @@ OpenLayersPlusBlockswitcher.attach = function(context) {
     this.blockswitcher = $('div.openlayers-blockswitcher');
 
     data.openlayers.events.on({
-      "addlayer": this.redraw,
-      "changelayer": this.redraw,
-      "removelayer": this.redraw,
-      "changebaselayer": this.redraw,
+      'addlayer': this.redraw,
+      'changelayer': this.redraw,
+      'removelayer': this.redraw,
+      'changebaselayer': this.redraw,
       scope: this
     });
   }
@@ -62,16 +62,16 @@ OpenLayersPlusBlockswitcher.attach = function(context) {
  * {Boolean} The layer state changed since the last redraw() call.
  */
 OpenLayersPlusBlockswitcher.needsRedraw = function() {
-  if ( !this.layerStates.length || (this.map.layers.length != this.layerStates.length) ) {
+  if (!this.layerStates.length || (this.map.layers.length != this.layerStates.length)) {
     return true;
   }
-  for (var i=0, len=this.layerStates.length; i<len; i++) {
+  for (var i = 0, len = this.layerStates.length; i < len; i++) {
     var layerState = this.layerStates[i];
     var layer = this.map.layers[i];
     if (
-      (layerState.name !== layer.name) || 
-      (layerState.inRange !== layer.inRange) || 
-      (layerState.id !== layer.id) || 
+      (layerState.name !== layer.name) ||
+      (layerState.inRange !== layer.inRange) ||
+      (layerState.id !== layer.id) ||
       (layerState.visibility !== layer.visibility)) {
       return true;
     }
@@ -104,8 +104,8 @@ OpenLayersPlusBlockswitcher.redraw = function() {
       var layerState = this.map.layers[i];
       this.layerStates[i] = {
         'name': layerState.name,
-        'visibility': layerState.visibility, 
-        'inRange': layerState.inRange, 
+        'visibility': layerState.visibility,
+        'inRange': layerState.inRange,
         'id': layerState.id
       };
     }
@@ -118,8 +118,8 @@ OpenLayersPlusBlockswitcher.redraw = function() {
         var checked = baseLayer ? (layer === this.map.baseLayer) : layer.getVisibility();
 
         // Create input element
-        var inputType = (baseLayer) ? "radio" : "checkbox";
-        var inputElem = $('.factory .'+ inputType, this.blockswitcher).clone();
+        var inputType = (baseLayer) ? 'radio' : 'checkbox';
+        var inputElem = $('.factory .' + inputType, this.blockswitcher).clone();
         var layerTools = $('.factory .layer-tools').clone();
 
         // Append to container
@@ -164,7 +164,7 @@ OpenLayersPlusBlockswitcher.redraw = function() {
 };
 
 OpenLayersPlusBlockswitcher.selectStyle = function(element) {
-  var k,j,y;
+  var k, j, y;
   y = false;
   current_style = $(this).data('layer').styleMap.name;
 
@@ -175,9 +175,9 @@ OpenLayersPlusBlockswitcher.selectStyle = function(element) {
     default_styles_keys.push(k);
   }
   current_index = default_styles_keys.indexOf(current_style);
-  if (current_index == -1)  current_index++;
+  if (current_index == -1) current_index++;
 
-  $(this).data('layer').styleMap = 
+  $(this).data('layer').styleMap =
     default_styles[default_styles_keys[
       (current_index + 1) % (default_styles_keys.length)]];
 
@@ -203,7 +203,7 @@ OpenLayersPlusBlockswitcher.layerZoom = function(element) {
     }
   }
   return false;
-}
+};
 
 /**
  * Click handler that activates or deactivates a layer.
@@ -214,7 +214,7 @@ OpenLayersPlusBlockswitcher.layerClick = function(element) {
     $('.layers.base .layers-content .activated').removeClass('activated');
     $(element).addClass('activated');
     layer.map.setBaseLayer(layer);
-    if (layer.options.ext !== null && 
+    if (layer.options.ext !== null &&
       layer.options.ext.containsBounds(map.getExtent())) {
       layer.map.zoomToExtent(layer.options.ext);
       layer.map.zoomIn();
@@ -233,11 +233,11 @@ OpenLayersPlusBlockswitcher.layerClick = function(element) {
   * {Object} An object with css properties and values that can be applied to an element
   *
   */
-OpenLayersPlusBlockswitcher.styleMapToCSS = function (styleMap) {
+OpenLayersPlusBlockswitcher.styleMapToCSS = function(styleMap) {
   css = {};
   default_style = styleMap.styles['default'].defaultStyle;
   if (default_style.fillColor === 'transparent' && typeof default_style.externalGraphic !== 'undefined') {
-    css['background-image'] = 'url('+default_style.externalGraphic+')';
+    css['background-image'] = 'url(' + default_style.externalGraphic + ')';
     css['background-repeat'] = 'no-repeat';
     css['background-color'] = 'transparent';
     css.width = default_style.pointRadius * 2;

@@ -3,9 +3,9 @@
 /*global OpenLayers $ default_styles document jQuery window OpenLayersPlusBlockswitcher layers */
 
 /**
- * Maps on a Stick 
+ * Maps on a Stick
  *
- * This file contains all of the custom javascript logic 
+ * This file contains all of the custom javascript logic
  * for Maps on a Stick.
  *
  * @author Tom MacWright
@@ -28,13 +28,13 @@ function attributes_to_table(attributes) {
   out = '';
   for (key in attributes) {
     if (typeof attributes[key] === 'string') {
-      out += '<tr><td colspan=2>' + 
+      out += '<tr><td colspan=2>' +
         attributes[key] + '</td></tr>';
     }
     else {
-      out += '<tr><th>' + 
-        attributes[key].displayName + 
-        '</th><td>' + 
+      out += '<tr><th>' +
+        attributes[key].displayName +
+        '</th><td>' +
         attributes[key].value + '</td></tr>';
     }
   }
@@ -44,13 +44,13 @@ function attributes_to_table(attributes) {
 function onFeatureSelect(feature) {
   var popup;
   selectedFeature = feature;
-  popup = new OpenLayers.Popup.FramedCloud('stick', 
+  popup = new OpenLayers.Popup.FramedCloud('stick',
       feature.geometry.getBounds().getCenterLonLat(),
       null,
-      "<div style='font-size:.8em'>" + attributes_to_table(feature.attributes) + "</div>",
-      null, true, 
+      "<div style='font-size:.8em'>" + attributes_to_table(feature.attributes) + '</div>',
+      null, true,
       // on popup close
-      function(evt) { 
+      function(evt) {
         map.getControlsByClass('OpenLayers.Control.SelectFeature')[0].unselect(selectedFeature);
       }
     );
@@ -88,16 +88,16 @@ function attachSelect(l) {
 /**
  * Basic KML constructor. Only necessary to correctly
  * set projections
- * @param layer_title Any alphanumeric layer title
- * @param layer_url URL to the KML feed
- * @return none
+ * @param layer_title Any alphanumeric layer title.
+ * @param layer_url URL to the KML feed.
+ * @return none.
  */
 var add_layer = {
   /**
    * MBTiles constructor
-   * @param layer object of layer options
+   * @param layer object of layer options.
    */
-  mbtiles: function (layer) {
+  mbtiles: function(layer) {
     var b = OpenLayers.Bounds.fromArray(layer.bounds);
     var x = b.transform(
       new OpenLayers.Projection('EPSG:4326'),
@@ -118,21 +118,21 @@ var add_layer = {
   /**
    * Basic KML constructor. Only necessary to correctly
    * set projections
-   * @param layer object of layer options
-   * @return layer
+   * @param layer object of layer options.
+   * @return layer.
    */
-  kml: function (layer) {
+  kml: function(layer) {
       var l, kml_title,
           args = OpenLayers.Util.getParameters();
       l = new OpenLayers.Layer.Vector(
         layer.filename,
         {
-          projection:'EPSG:4326',
-          strategies:[new OpenLayers.Strategy.Fixed()],
-          protocol:new OpenLayers.Protocol.HTTP({
+          projection: 'EPSG:4326',
+          strategies: [new OpenLayers.Strategy.Fixed()],
+          protocol: new OpenLayers.Protocol.HTTP({
             url: layer.path,
-            format:new OpenLayers.Format.KMZ({
-              extractStyles: true, 
+            format: new OpenLayers.Format.KMZ({
+              extractStyles: true,
               extractAttributes: true,
               keepData: true,
               maxDepth: 2,
@@ -154,12 +154,12 @@ var add_layer = {
               }
               try {
                 var kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
-                if (kml_title !== "") {
+                if (kml_title !== '') {
                   this.title = kml_title;
                   OpenLayersPlusBlockswitcher.styleChanged = true;
                   OpenLayersPlusBlockswitcher.redraw();
                 }
-              } catch(err) { }
+              } catch (err) { }
               if (this.features.length == 1) {
                 this.map.zoomToExtent(this.getDataExtent());
                 this.map.zoomTo(10); // TODO: zoom to max provided by baselayer
@@ -169,7 +169,7 @@ var add_layer = {
               }
             }
             else {
-              moas_message('', 'This KML file (' + layer.filename + 
+              moas_message('', 'This KML file (' + layer.filename +
                 ') could not be loaded. It may be empty or corrupted. If this' +
                 ' error persists, you may want to remove the file from the KML folder.');
               this.map.removeLayer(this);
@@ -185,10 +185,10 @@ var add_layer = {
   /**
    * Basic RSS constructor. Only necessary to correctly
    * set projections
-   * @param layer object of layer options
-   * @return layer
+   * @param layer object of layer options.
+   * @return layer.
    */
-  rss: function (layer) {
+  rss: function(layer) {
     var l, kml_title,
         args = OpenLayers.Util.getParameters();
     l = new OpenLayers.Layer.GeoRSS(layer_title, layer_url);
@@ -204,12 +204,12 @@ var add_layer = {
             }
             try {
               var kml_title = $(this.protocol.format.data).find('kml > Document > name').text();
-              if (kml_title !== "") {
+              if (kml_title !== '') {
                 this.title = kml_title;
                 OpenLayersPlusBlockswitcher.styleChanged = true;
                 OpenLayersPlusBlockswitcher.redraw();
               }
-            } catch(err) { }
+            } catch (err) { }
             if (this.features.length == 1) {
               this.map.zoomToExtent(this.getDataExtent());
               this.map.zoomTo(10); // TODO: zoom to max provided by baselayer
@@ -219,7 +219,7 @@ var add_layer = {
             }
           }
           else {
-            moas_message('', 'This KML file (' + layer.filename + 
+            moas_message('', 'This KML file (' + layer.filename +
               ') could not be loaded. It may be empty or corrupted. If this' +
               ' error persists, you may want to remove the file from the KML folder.');
             this.map.removeLayer(this);
@@ -267,7 +267,7 @@ function load_layers() {
         'You can add layers by dropping .mbtiles files into the Maps/ folder of your installation');
       return;
     }
-    for(var i = 0; i < resp.layers.length; i++) {
+    for (var i = 0; i < resp.layers.length; i++) {
       layer = resp.layers[i];
       add_layer[layer.format](layer);
     }
@@ -285,9 +285,9 @@ $(window).load(
     var selectControl;
 
     map = new OpenLayers.Map('map', {
-        projection: new OpenLayers.Projection("EPSG:900913"),
-        displayProjection: new OpenLayers.Projection("EPSG:4326"),
-        units: "m",
+        projection: new OpenLayers.Projection('EPSG:900913'),
+        displayProjection: new OpenLayers.Projection('EPSG:4326'),
+        units: 'm',
         maxResolution: 156543.0339,
         theme: 'static/images/openlayers/style.css',
         controls: [
@@ -300,7 +300,7 @@ $(window).load(
     });
 
     load_layers();
-    
+
     selectControl = new OpenLayers.Control.SelectFeature([],
         {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
     map.addControl(selectControl);
@@ -308,7 +308,7 @@ $(window).load(
 
     OpenLayersPlusBlockswitcher.hattach($('.openlayers-blockswitcher'), map);
 
-    $(function(){ $("input[type='file']").uniform({fileBtnText: 'Upload KML'});});
+    $(function() { $("input[type='file']").uniform({fileBtnText: 'Upload KML'});});
 
     $('#kml-url-add').toggle(
       function() {
@@ -333,7 +333,7 @@ $(window).load(
     );
     $('#kml-url-submit').click(function() {
       var name, url;
-      url = $("#kml-url").val();
+      url = $('#kml-url').val();
       add_layer.kml({
         filename: url,
         path: url,
